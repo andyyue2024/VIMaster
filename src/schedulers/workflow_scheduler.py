@@ -6,6 +6,7 @@ import logging
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 from enum import Enum
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from src.models.data_models import (
     StockAnalysisContext, AnalysisReport, InvestmentSignal, FinancialMetrics
 )
@@ -19,11 +20,14 @@ from src.data.akshare_provider import AkshareDataProvider
 
 logger = logging.getLogger(__name__)
 
+# Default number of threads for concurrent execution
+DEFAULT_MAX_WORKERS = 4
+
 
 class ExecutionMode(Enum):
     """执行模式"""
     SEQUENTIAL = "sequential"  # 顺序执行
-    PARALLEL = "parallel"  # 并行执行（当前版本仅支持部分并行）
+    PARALLEL = "parallel"  # 并行执行（支持组合分析和多只股票并行处理）
 
 
 class WorkflowScheduler:
@@ -191,24 +195,31 @@ class WorkflowScheduler:
 
         return context
 
-    def analyze_stocks(self, stock_codes: List[str]) -> AnalysisReport:
+    def analyze_stocks(self, stock_codes: List[str], max_workers: int = DEFAULT_MAX_WORKERS) -> AnalysisReport:
         """
         分析多只股票，生成综合报告
 
         Args:
             stock_codes: 股票代码列表
+            max_workers: 并行执行时的最大线程数 (默认为4)
 
         Returns:
             分析报告
         """
-        logger.info(f"开始分析 {len(stock_codes)} 只股票")
+        logger.info(f"开始分析 {len(stock_codes)} 只股票 (执行模式: {self.execution_mode.value})")
 
         report = AnalysisReport(
             report_id=f"report_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         )
 
-        for stock_code in stock_codes:
-            context = self.analyze_stock(stock_code)
+        if self.execution_mode == ExecutionMode.PARALLEL and len(stock_codes) > 1:
+            # 并行执行多只股票分析
+            results = self._analyze_stocks_parallel(stock_codes, max_workers)
+        else:
+            # 顺序执行
+            results = self._analyze_stocks_sequential(stock_codes)
+
+        for context in results:
             if context:
                 report.stocks.append(context)
                 report.total_stocks_analyzed += 1
@@ -228,6 +239,56 @@ class WorkflowScheduler:
 
         logger.info(f"分析完成: {report.total_stocks_analyzed}/{len(stock_codes)} 只股票")
         return report
+
+    def _analyze_stocks_sequential(self, stock_codes: List[str]) -> List[Optional[StockAnalysisContext]]:
+        """
+        顺序分析多只股票
+
+        Args:
+            stock_codes: 股票代码列表
+
+        Returns:
+            分析结果列表
+        """
+        results = []
+        for stock_code in stock_codes:
+            context = self.analyze_stock(stock_code)
+            results.append(context)
+        return results
+
+    def _analyze_stocks_parallel(self, stock_codes: List[str], max_workers: int) -> List[Optional[StockAnalysisContext]]:
+        """
+        并行分析多只股票
+
+        Args:
+            stock_codes: 股票代码列表
+            max_workers: 最大线程数
+
+        Returns:
+            分析结果列表（保持原始顺序）
+        """
+        # 初始化结果列表，使用索引保持顺序
+        results: List[Optional[StockAnalysisContext]] = [None] * len(stock_codes)
+        stock_code_to_index = {code: idx for idx, code in enumerate(stock_codes)}
+
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            # 提交所有任务
+            future_to_stock = {
+                executor.submit(self.analyze_stock, stock_code): stock_code
+                for stock_code in stock_codes
+            }
+
+            # 收集结果，直接放入对应索引位置
+            for future in as_completed(future_to_stock):
+                stock_code = future_to_stock[future]
+                idx = stock_code_to_index[stock_code]
+                try:
+                    results[idx] = future.result()
+                except Exception as e:
+                    logger.error(f"并行分析股票 {stock_code} 失败: {str(e)}")
+                    results[idx] = None
+
+        return results
 
     def get_execution_summary(self) -> str:
         """获取执行摘要"""
@@ -251,17 +312,32 @@ class AnalysisManager:
     提供高级分析接口
     """
 
-    def __init__(self):
-        self.scheduler = WorkflowScheduler(ExecutionMode.SEQUENTIAL)
+    def __init__(self, execution_mode: ExecutionMode = ExecutionMode.PARALLEL):
+        """
+        初始化分析管理器
+
+        Args:
+            execution_mode: 执行模式 (默认为并行模式以提高组合分析性能)
+        """
+        self.scheduler = WorkflowScheduler(execution_mode)
         self.scheduler.register_agents()
 
     def analyze_single_stock(self, stock_code: str) -> Optional[StockAnalysisContext]:
         """分析单只股票"""
         return self.scheduler.analyze_stock(stock_code)
 
-    def analyze_portfolio(self, stock_codes: List[str]) -> AnalysisReport:
-        """分析股票组合"""
-        return self.scheduler.analyze_stocks(stock_codes)
+    def analyze_portfolio(self, stock_codes: List[str], max_workers: int = DEFAULT_MAX_WORKERS) -> AnalysisReport:
+        """
+        分析股票组合
+
+        Args:
+            stock_codes: 股票代码列表
+            max_workers: 并行执行时的最大线程数 (默认为4)
+
+        Returns:
+            分析报告
+        """
+        return self.scheduler.analyze_stocks(stock_codes, max_workers)
 
     def get_investment_recommendations(self, stock_codes: List[str], signal: InvestmentSignal) -> List[StockAnalysisContext]:
         """
