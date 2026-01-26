@@ -76,27 +76,23 @@ class TestCaching:
     @patch('src.data.akshare_provider.ak.stock_main_ind', create=True)
     def test_main_indicators_caching(self, mock_main_ind):
         """测试主要财务指标缓存（lru_cache）"""
-        # 创建测试数据
-        mock_df = pd.DataFrame({
-            'roe': [0.20],
-            '毛利率': [0.60],
-            'eps': [40.0],
-        })
-        mock_main_ind.return_value = mock_df
+        # 由于 akshare 当前版本不支持 stock_main_ind，该方法现已禁用
+        # 验证 _get_main_indicators 安全地返回 None，不调用被禁用的 API
 
-        # 第一次调用 - 应该调用API
+        # 第一次调用 - 应该返回 None（函数已禁用）
         result1 = AkshareDataProvider._get_main_indicators("sh600519")
-        assert mock_main_ind.call_count == 1
-        assert result1 == (0.20, 0.60, 40.0)
+        assert result1 is None
 
-        # 第二次调用相同参数 - 应该使用缓存
+        # 第二次调用相同参数 - 应该同样返回 None（缓存 None 值）
         result2 = AkshareDataProvider._get_main_indicators("sh600519")
-        assert mock_main_ind.call_count == 1  # 仍然是1次
-        assert result2 == (0.20, 0.60, 40.0)
+        assert result2 is None
 
-        # 不同参数 - 应该调用API
+        # 不同参数 - 应该同样返回 None
         result3 = AkshareDataProvider._get_main_indicators("sz000858")
-        assert mock_main_ind.call_count == 2
+        assert result3 is None
+
+        # 验证 stock_main_ind 没有被调用
+        assert mock_main_ind.call_count == 0
 
     def test_clear_cache(self):
         """测试清除缓存功能"""

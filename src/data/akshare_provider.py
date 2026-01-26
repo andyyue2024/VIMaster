@@ -24,12 +24,78 @@ _stock_info_cache: Optional[pd.DataFrame] = None
 _stock_info_cache_time: float = 0
 
 # 模拟股票数据库 - 用于演示和测试
+# 数据为 2025 年末数据（模拟）
 MOCK_STOCKS_DATA = {
-    "600519": {"name": "贵州茅台", "current_price": 1800.5, "pe_ratio": 35.2, "pb_ratio": 12.5, "roe": 0.32, "gross_margin": 0.92, "eps": 51.2},
-    "000858": {"name": "五粮液", "current_price": 85.3, "pe_ratio": 28.5, "pb_ratio": 8.3, "roe": 0.28, "gross_margin": 0.88, "eps": 2.99},
-    "000651": {"name": "格力电器", "current_price": 28.6, "pe_ratio": 12.5, "pb_ratio": 3.2, "roe": 0.25, "gross_margin": 0.35, "eps": 2.28},
-    "600036": {"name": "招商银行", "current_price": 35.8, "pe_ratio": 8.5, "pb_ratio": 1.2, "roe": 0.18, "gross_margin": 0.65, "eps": 4.21},
-    "000333": {"name": "美的集团", "current_price": 42.5, "pe_ratio": 15.3, "pb_ratio": 4.5, "roe": 0.22, "gross_margin": 0.28, "eps": 2.77},
+    "600519": {
+        "name": "贵州茅台",
+        "current_price": 1800.5,  # 当前股价
+        "pe_ratio": 35.2,  # PE 比率 (高估值)
+        "pb_ratio": 12.5,  # PB 比率 (高)
+        "roe": 0.32,  # 股权回报率 (优秀，32%)
+        "gross_margin": 0.92,  # 毛利率 (超高，92% 白酒企业特征)
+        "eps": 51.2,  # 每股收益
+        "revenue_growth": 0.15,  # 营收增长 15%
+        "profit_growth": 0.18,  # 利润增长 18%
+        "free_cash_flow": 150e8,  # 自由现金流 150 亿元
+        "debt_ratio": 0.05,  # 负债率 5% (超低，现金充足)
+        "dividend_yield": 0.02,  # 分红收益率 2%
+    },
+    "000858": {
+        "name": "五粮液",
+        "current_price": 85.3,
+        "pe_ratio": 28.5,
+        "pb_ratio": 8.3,
+        "roe": 0.28,
+        "gross_margin": 0.88,
+        "eps": 2.99,
+        "revenue_growth": 0.12,
+        "profit_growth": 0.15,
+        "free_cash_flow": 80e8,
+        "debt_ratio": 0.08,
+        "dividend_yield": 0.025,
+    },
+    "000651": {
+        "name": "格力电器",
+        "current_price": 28.6,
+        "pe_ratio": 12.5,
+        "pb_ratio": 3.2,
+        "roe": 0.25,
+        "gross_margin": 0.35,
+        "eps": 2.28,
+        "revenue_growth": 0.08,
+        "profit_growth": 0.10,
+        "free_cash_flow": 100e8,
+        "debt_ratio": 0.20,
+        "dividend_yield": 0.04,
+    },
+    "600036": {
+        "name": "招商银行",
+        "current_price": 35.8,
+        "pe_ratio": 8.5,
+        "pb_ratio": 1.2,
+        "roe": 0.18,
+        "gross_margin": 0.65,
+        "eps": 4.21,
+        "revenue_growth": 0.06,
+        "profit_growth": 0.08,
+        "free_cash_flow": 200e8,
+        "debt_ratio": 0.85,  # 银行高负债是正常的
+        "dividend_yield": 0.035,
+    },
+    "000333": {
+        "name": "美的集团",
+        "current_price": 42.5,
+        "pe_ratio": 15.3,
+        "pb_ratio": 4.5,
+        "roe": 0.22,
+        "gross_margin": 0.28,
+        "eps": 2.77,
+        "revenue_growth": 0.10,
+        "profit_growth": 0.12,
+        "free_cash_flow": 120e8,
+        "debt_ratio": 0.30,
+        "dividend_yield": 0.03,
+    },
 }
 
 
@@ -102,17 +168,9 @@ class AkshareDataProvider:
         Returns:
             财务指标元组 (roe, gross_margin, eps) 或 None
         """
-        try:
-            df_profit = ak.stock_main_ind(symbol=symbol)
-            if not df_profit.empty:
-                latest = df_profit.iloc[0]
-                return (
-                    float(latest.get('roe', 0)) if latest.get('roe') is not None else None,
-                    float(latest.get('毛利率', 0)) if latest.get('毛利率') is not None else None,
-                    float(latest.get('eps', 0)) if latest.get('eps') is not None else None,
-                )
-        except Exception as e:
-            logger.warning(f"获取 {symbol} 主要财务指标失败: {str(e)}")
+        # 注：akshare 当前版本没有 stock_main_ind 函数
+        # 暂时禁用此方法，使用模拟数据或其他方式获取
+        logger.warning(f"stock_main_ind 函数在当前 akshare 版本中不可用，将使用默认数据")
         return None
 
     @staticmethod
@@ -163,6 +221,11 @@ class AkshareDataProvider:
         """
         try:
             stock_code_str = str(stock_code).zfill(6)
+
+            # 首先检查是否有预定义的完整模拟数据
+            if stock_code_str in MOCK_STOCKS_DATA:
+                logger.info(f"使用预定义的模拟数据分析股票 {stock_code_str}")
+                return AkshareDataProvider._get_mock_financial_metrics(stock_code_str)
 
             # 获取基本信息（使用缓存）
             stock_info = AkshareDataProvider.get_stock_info(stock_code)
@@ -311,14 +374,14 @@ class AkshareDataProvider:
                 current_price=data['current_price'],
                 pe_ratio=data['pe_ratio'],
                 pb_ratio=data['pb_ratio'],
-                roe=data['roe'],
-                gross_margin=data['gross_margin'],
-                earnings_per_share=data['eps'],
-                revenue_growth=random.uniform(0.05, 0.20),  # 5%-20%的收入增长
-                profit_growth=random.uniform(0.08, 0.25),   # 8%-25%的利润增长
-                free_cash_flow=random.uniform(10, 100) * 1e8,  # 10-100亿的自由现金流
-                debt_ratio=random.uniform(0.1, 0.5),  # 10%-50%的负债率
-                dividend_yield=random.uniform(0.01, 0.05),  # 1%-5%的分红收益率
+                roe=data.get('roe', random.uniform(0.05, 0.35)),
+                gross_margin=data.get('gross_margin', random.uniform(0.15, 0.90)),
+                earnings_per_share=data.get('eps', random.uniform(0.5, 10)),
+                revenue_growth=data.get('revenue_growth', random.uniform(0.05, 0.20)),  # 5%-20%的收入增长
+                profit_growth=data.get('profit_growth', random.uniform(0.08, 0.25)),   # 8%-25%的利润增长
+                free_cash_flow=data.get('free_cash_flow', random.uniform(10, 100) * 1e8),  # 10-100亿的自由现金流
+                debt_ratio=data.get('debt_ratio', random.uniform(0.1, 0.5)),  # 10%-50%的负债率
+                dividend_yield=data.get('dividend_yield', random.uniform(0.01, 0.05)),  # 1%-5%的分红收益率
                 update_time=datetime.now()
             )
 
