@@ -31,7 +31,7 @@ class ValueInvestingApp:
         if context:
             self._print_stock_report(context)
         else:
-            print(f"✗ 无法分析股票 {stock_code}，请检查代码是否正确")
+            print(f"[!] 无法分析股票 {stock_code}，请检查代码是否正确")
 
     def analyze_multiple_stocks(self, stock_codes: List[str]) -> None:
         """分析多只股票并生成报告"""
@@ -138,7 +138,7 @@ class ValueInvestingApp:
             print(f"  止损价:       {decision.stop_loss_price}")
             print(f"  止盈价:       {decision.take_profit_price}")
             print(f"  建议仓位:     {decision.position_size:.2%}")
-            print(f"  决策清单通过: {'✓' if decision.checklist_passed else '✗'}")
+            print(f"  决策清单通过: {'YES' if decision.checklist_passed else 'NO'}")
 
         # 综合评分
         print("\n【综合评估】")
@@ -168,12 +168,12 @@ class ValueInvestingApp:
 
         for stock in report.stocks:
             signal_emoji = {
-                InvestmentSignal.STRONG_BUY: "🟢🟢",
-                InvestmentSignal.BUY: "🟢",
-                InvestmentSignal.HOLD: "🟡",
-                InvestmentSignal.SELL: "🔴",
-                InvestmentSignal.STRONG_SELL: "🔴🔴",
-            }.get(stock.final_signal, "❓")
+                InvestmentSignal.STRONG_BUY: "[++]",
+                InvestmentSignal.BUY: "[+]",
+                InvestmentSignal.HOLD: "[=]",
+                InvestmentSignal.SELL: "[-]",
+                InvestmentSignal.STRONG_SELL: "[--]",
+            }.get(stock.final_signal, "[?]")
 
             print(f"\n{stock.stock_code} {signal_emoji} {stock.final_signal.value}")
             print(f"  综合评分: {stock.overall_score:.2f}/100")
