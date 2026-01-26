@@ -3,10 +3,11 @@ Pytest 配置和 fixtures
 """
 import pytest
 import sys
+import os
 import logging
 
 # 设置项目路径
-sys.path.insert(0, 'E:\\Workplace-Pycharm\\VIMaster')
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # 配置日志
 logging.basicConfig(

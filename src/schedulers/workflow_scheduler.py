@@ -73,13 +73,17 @@ class WorkflowScheduler:
 
         # 步骤 1: 数据准备
         logger.info(f"步骤 1: 获取财务数据")
-        metrics = AkshareDataProvider.get_financial_metrics(stock_code)
-        if not metrics:
-            logger.error(f"无法获取股票 {stock_code} 的财务数据")
-            return None
+        try:
+            metrics = AkshareDataProvider.get_financial_metrics(stock_code)
+            if not metrics:
+                logger.error(f"无法获取股票 {stock_code} 的财务数据")
+                return None
 
-        context.financial_metrics = metrics
-        context.stock_name = metrics.stock_code  # 更新股票名称
+            context.financial_metrics = metrics
+            context.stock_name = metrics.stock_code  # 更新股票名称
+        except Exception as e:
+            logger.error(f"获取股票 {stock_code} 数据失败: {str(e)}")
+            return None
 
         # 步骤 2-9: 执行 Agent 分析
         try:

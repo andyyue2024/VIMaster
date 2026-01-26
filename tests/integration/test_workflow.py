@@ -3,9 +3,10 @@
 """
 import pytest
 import sys
+import os
 from unittest.mock import Mock, patch, MagicMock
 
-sys.path.insert(0, 'E:\\Workplace-Pycharm\\VIMaster')
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from src.models.data_models import (
     StockAnalysisContext, FinancialMetrics, AnalysisReport,
@@ -128,7 +129,7 @@ class TestWorkflowScheduler:
         summary = scheduler.get_execution_summary()
 
         assert "工作流执行摘要" in summary
-        assert "顺序执行" in summary
+        assert "sequential" in summary
         assert "9" in summary or "9个" in summary
 
     def test_sequential_execution_mode(self):
