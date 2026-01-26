@@ -27,7 +27,7 @@ DEFAULT_MAX_WORKERS = 4
 class ExecutionMode(Enum):
     """执行模式"""
     SEQUENTIAL = "sequential"  # 顺序执行
-    PARALLEL = "parallel"  # 并行执行（支持组合分析）
+    PARALLEL = "parallel"  # 并行执行（支持组合分析和多只股票并行处理）
 
 
 class WorkflowScheduler:
@@ -261,9 +261,11 @@ class WorkflowScheduler:
             max_workers: 最大线程数
 
         Returns:
-            分析结果列表
+            分析结果列表（保持原始顺序）
         """
-        results: Dict[str, Optional[StockAnalysisContext]] = {}
+        # 初始化结果列表，使用索引保持顺序
+        results: List[Optional[StockAnalysisContext]] = [None] * len(stock_codes)
+        stock_code_to_index = {code: idx for idx, code in enumerate(stock_codes)}
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             # 提交所有任务
@@ -272,18 +274,17 @@ class WorkflowScheduler:
                 for stock_code in stock_codes
             }
 
-            # 收集结果
+            # 收集结果，直接放入对应索引位置
             for future in as_completed(future_to_stock):
                 stock_code = future_to_stock[future]
+                idx = stock_code_to_index[stock_code]
                 try:
-                    context = future.result()
-                    results[stock_code] = context
+                    results[idx] = future.result()
                 except Exception as e:
                     logger.error(f"并行分析股票 {stock_code} 失败: {str(e)}")
-                    results[stock_code] = None
+                    results[idx] = None
 
-        # 保持原始顺序返回结果
-        return [results.get(stock_code) for stock_code in stock_codes]
+        return results
 
     def get_execution_summary(self) -> str:
         """获取执行摘要"""

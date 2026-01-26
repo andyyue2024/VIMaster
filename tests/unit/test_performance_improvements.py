@@ -3,12 +3,13 @@
 """
 import pytest
 import sys
+import os
 import time
 from unittest.mock import Mock, patch, MagicMock
 import pandas as pd
 
 # 添加项目根目录到路径
-sys.path.insert(0, 'E:\\Workplace-Pycharm\\VIMaster')
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from src.data.akshare_provider import (
     AkshareDataProvider, clear_cache,
@@ -260,20 +261,27 @@ class TestParallelExecution:
 class TestAnalysisManagerIntegration:
     """测试分析管理器集成"""
 
+    def setup_method(self):
+        """每个测试前清除缓存"""
+        clear_cache()
+
     @patch('src.data.akshare_provider.AkshareDataProvider.get_financial_metrics')
     @patch('src.data.akshare_provider.AkshareDataProvider.get_industry_info')
     def test_analyze_portfolio_parallel(self, mock_industry, mock_metrics):
         """测试并行分析组合"""
-        mock_metrics.return_value = FinancialMetrics(
-            stock_code="600519",
-            pe_ratio=25.0,
-            pb_ratio=10.0,
-            roe=0.20,
-            gross_margin=0.60,
-            current_price=1000.0,
-            earnings_per_share=40.0,
-            debt_ratio=0.25
-        )
+        def create_mock_metrics(stock_code):
+            return FinancialMetrics(
+                stock_code=stock_code,
+                pe_ratio=25.0,
+                pb_ratio=10.0,
+                roe=0.20,
+                gross_margin=0.60,
+                current_price=1000.0,
+                earnings_per_share=40.0,
+                debt_ratio=0.25
+            )
+
+        mock_metrics.side_effect = create_mock_metrics
 
         mock_industry.return_value = {
             "industry": "食品饮料",
@@ -281,7 +289,7 @@ class TestAnalysisManagerIntegration:
         }
 
         manager = AnalysisManager(execution_mode=ExecutionMode.PARALLEL)
-        report = manager.analyze_portfolio(["600519", "600519"])
+        report = manager.analyze_portfolio(["600519", "000858"])
 
         assert report.total_stocks_analyzed == 2
 

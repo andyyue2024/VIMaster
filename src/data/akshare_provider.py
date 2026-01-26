@@ -16,10 +16,10 @@ logger = logging.getLogger(__name__)
 CACHE_EXPIRY_SECONDS = 300
 
 # Module-level cache for DataFrames that can't use lru_cache
-_stock_spot_cache: Optional[Dict[str, Any]] = None
+_stock_spot_cache: Optional[pd.DataFrame] = None
 _stock_spot_cache_time: float = 0
 
-_stock_info_cache: Optional[Dict[str, Any]] = None
+_stock_info_cache: Optional[pd.DataFrame] = None
 _stock_info_cache_time: float = 0
 
 
@@ -97,9 +97,9 @@ class AkshareDataProvider:
             if not df_profit.empty:
                 latest = df_profit.iloc[0]
                 return (
-                    float(latest.get('roe', 0)) if latest.get('roe') else None,
-                    float(latest.get('毛利率', 0)) if latest.get('毛利率') else None,
-                    float(latest.get('eps', 0)) if latest.get('eps') else None,
+                    float(latest.get('roe', 0)) if latest.get('roe') is not None else None,
+                    float(latest.get('毛利率', 0)) if latest.get('毛利率') is not None else None,
+                    float(latest.get('eps', 0)) if latest.get('eps') is not None else None,
                 )
         except Exception as e:
             logger.warning(f"获取 {symbol} 主要财务指标失败: {str(e)}")
