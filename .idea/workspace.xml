@@ -4,40 +4,44 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="add value invest code">
-      <change afterPath="$PROJECT_DIR$/AGENT_UNIT_TESTS_SUMMARY.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ANALYSIS_REPORT_600519.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/COMPLETION_SUMMARY.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FINAL_REPORT.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PROJECT_COMPLETION_REPORT.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/QUICK_REFERENCE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/QUICK_START.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/analyze_600519.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/behavioral_discipline_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/buy_signal_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/equity_thinking_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/financial_analysis_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/moat_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/risk_management_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/safety_margin_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/sell_signal_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/valuation_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_behavioral_discipline_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_buy_signal_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_equity_thinking_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_financial_analysis_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_moat_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_risk_management_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_safety_margin_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_sell_signal_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_valuation_agent.py" afterDir="false" />
+    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 添加股票分析脚本和多个Agent模块，优化数据获取和分析流程">
+      <change afterPath="$PROJECT_DIR$/QUICK_REFERENCE_V2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/demo_advanced_analysis.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/demo_industry_comparison.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/demo_industry_integration.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/demo_multi_source.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/ADVANCED_ANALYSIS_COMPLETION_CHECKLIST.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/ADVANCED_ANALYSIS_DELIVERY.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/ADVANCED_ANALYSIS_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/INDUSTRY_ANALYSIS_CHECKLIST.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/INDUSTRY_ANALYSIS_SUMMARY.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/INDUSTRY_COMPARISON_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/INDUSTRY_COMPARISON_REPORT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/MULTI_SOURCE_DATA_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/MULTI_SOURCE_INTEGRATION_REPORT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/analysis/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/analysis/comprehensive_analyzer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/analysis/industry_comparator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/analysis/portfolio_optimizer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/analysis/valuation_history_analyzer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/data/baostock_provider.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/data/data_source_base.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/data/multi_source_provider.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/data/tushare_provider.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_advanced_analysis.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_industry_comparator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_multi_source_provider.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README_FIXES.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/REPAIR_REPORT.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/agents/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/agents/value_investing_agents.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/value_investing_agents.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/akshare_provider.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/akshare_provider.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_performance_improvements.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_performance_improvements.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AGENT_UNIT_TESTS_SUMMARY.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/AGENT_UNIT_TESTS_SUMMARY.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ANALYSIS_REPORT_600519.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/ANALYSIS_REPORT_600519.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FIXES_SUMMARY.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/QUICK_REFERENCE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/analyze_600519.py" beforeDir="false" afterPath="$PROJECT_DIR$/demo/analyze_600519.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo.py" beforeDir="false" afterPath="$PROJECT_DIR$/demo/demo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo_analyze.py" beforeDir="false" afterPath="$PROJECT_DIR$/demo/demo_analyze.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/__init__.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +52,13 @@
     <persistenceIdMap>
       <entry key="_E:/Workplace-Pycharm/VIMaster" value="38W76tMjbHQRfvXk8kKrhpqMA2f" />
     </persistenceIdMap>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -109,9 +120,15 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
-    "settings.editor.selected.configurable": "com.github.copilot.settings.chat.ChatConfigurable"
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Workplace-Pycharm\VIMaster\demo" />
+      <recent name="E:\Workplace-Pycharm\VIMaster\docs" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -135,7 +152,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768909925744</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat: 添加股票分析脚本和多个Agent模块，优化数据获取和分析流程">
+      <option name="closed" value="true" />
+      <created>1769428439677</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1769428439677</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -163,7 +188,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add value invest code" />
-    <option name="LAST_COMMIT_MESSAGE" value="add value invest code" />
+    <MESSAGE value="feat: 添加股票分析脚本和多个Agent模块，优化数据获取和分析流程" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加股票分析脚本和多个Agent模块，优化数据获取和分析流程" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
