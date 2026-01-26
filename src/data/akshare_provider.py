@@ -6,13 +6,104 @@ import pandas as pd
 from typing import Optional, Dict, Any
 from src.models.data_models import FinancialMetrics
 from datetime import datetime
+from functools import lru_cache
+import time
 import logging
 
 logger = logging.getLogger(__name__)
 
+# Cache expiry time in seconds (5 minutes)
+CACHE_EXPIRY_SECONDS = 300
+
+# Module-level cache for DataFrames that can't use lru_cache
+_stock_spot_cache: Optional[Dict[str, Any]] = None
+_stock_spot_cache_time: float = 0
+
+_stock_info_cache: Optional[Dict[str, Any]] = None
+_stock_info_cache_time: float = 0
+
+
+def _get_cached_stock_spot() -> Optional[pd.DataFrame]:
+    """
+    获取缓存的股票实时行情数据
+    Returns:
+        股票实时行情DataFrame或None
+    """
+    global _stock_spot_cache, _stock_spot_cache_time
+    current_time = time.time()
+
+    if _stock_spot_cache is not None and (current_time - _stock_spot_cache_time) < CACHE_EXPIRY_SECONDS:
+        return _stock_spot_cache
+
+    try:
+        _stock_spot_cache = ak.stock_zh_a_spot()
+        _stock_spot_cache_time = current_time
+        return _stock_spot_cache
+    except Exception as e:
+        logger.error(f"获取股票实时行情失败: {str(e)}")
+        return None
+
+
+def _get_cached_stock_info_df() -> Optional[pd.DataFrame]:
+    """
+    获取缓存的股票基本信息数据
+    Returns:
+        股票基本信息DataFrame或None
+    """
+    global _stock_info_cache, _stock_info_cache_time
+    current_time = time.time()
+
+    if _stock_info_cache is not None and (current_time - _stock_info_cache_time) < CACHE_EXPIRY_SECONDS:
+        return _stock_info_cache
+
+    try:
+        _stock_info_cache = ak.stock_info_a_code_name()
+        _stock_info_cache_time = current_time
+        return _stock_info_cache
+    except Exception as e:
+        logger.error(f"获取股票基本信息失败: {str(e)}")
+        return None
+
+
+def clear_cache() -> None:
+    """清除所有缓存"""
+    global _stock_spot_cache, _stock_spot_cache_time
+    global _stock_info_cache, _stock_info_cache_time
+
+    _stock_spot_cache = None
+    _stock_spot_cache_time = 0
+    _stock_info_cache = None
+    _stock_info_cache_time = 0
+
+    # Clear lru_cache decorated functions
+    AkshareDataProvider._get_main_indicators.cache_clear()
+
 
 class AkshareDataProvider:
     """Akshare 数据提供者"""
+
+    @staticmethod
+    @lru_cache(maxsize=128)
+    def _get_main_indicators(symbol: str) -> Optional[tuple]:
+        """
+        获取主要财务指标（带缓存）
+        Args:
+            symbol: 股票代码 (如: "sh600519")
+        Returns:
+            财务指标元组 (roe, gross_margin, eps) 或 None
+        """
+        try:
+            df_profit = ak.stock_main_ind(symbol=symbol)
+            if not df_profit.empty:
+                latest = df_profit.iloc[0]
+                return (
+                    float(latest.get('roe', 0)) if latest.get('roe') else None,
+                    float(latest.get('毛利率', 0)) if latest.get('毛利率') else None,
+                    float(latest.get('eps', 0)) if latest.get('eps') else None,
+                )
+        except Exception as e:
+            logger.warning(f"获取 {symbol} 主要财务指标失败: {str(e)}")
+        return None
 
     @staticmethod
     def get_stock_info(stock_code: str) -> Optional[Dict[str, Any]]:
@@ -24,8 +115,11 @@ class AkshareDataProvider:
             股票信息字典或None
         """
         try:
-            # 获取实时行情数据
-            df = ak.stock_zh_a_spot()
+            # 使用缓存的实时行情数据
+            df = _get_cached_stock_spot()
+            if df is None:
+                return None
+
             stock_code_str = str(stock_code).zfill(6)
 
             # 过滤该股票的数据
@@ -59,32 +153,29 @@ class AkshareDataProvider:
         try:
             stock_code_str = str(stock_code).zfill(6)
 
-            # 获取基本信息
+            # 获取基本信息（使用缓存）
             stock_info = AkshareDataProvider.get_stock_info(stock_code)
             if not stock_info:
                 return None
 
-            # 获取财务数据
-            try:
-                # 获取利润表数据
-                df_profit = ak.stock_main_ind(symbol=f"sh{stock_code_str}" if stock_code_str.startswith('6') else f"sz{stock_code_str}")
+            # 获取财务数据（使用缓存）
+            symbol = f"sh{stock_code_str}" if stock_code_str.startswith('6') else f"sz{stock_code_str}"
+            indicators = AkshareDataProvider._get_main_indicators(symbol)
 
-                if not df_profit.empty:
-                    latest = df_profit.iloc[0]
-
-                    metrics = FinancialMetrics(
-                        stock_code=stock_code_str,
-                        current_price=stock_info.get('current_price'),
-                        pe_ratio=stock_info.get('pe_ratio'),
-                        pb_ratio=stock_info.get('pb_ratio'),
-                        roe=float(latest.get('roe', 0)) if latest.get('roe') else None,
-                        gross_margin=float(latest.get('毛利率', 0)) if latest.get('毛利率') else None,
-                        earnings_per_share=float(latest.get('eps', 0)) if latest.get('eps') else None,
-                        update_time=datetime.now()
-                    )
-                    return metrics
-            except Exception as e:
-                logger.warning(f"获取 {stock_code} 详细财务数据失败: {str(e)}")
+            if indicators:
+                roe, gross_margin, eps = indicators
+                metrics = FinancialMetrics(
+                    stock_code=stock_code_str,
+                    current_price=stock_info.get('current_price'),
+                    pe_ratio=stock_info.get('pe_ratio'),
+                    pb_ratio=stock_info.get('pb_ratio'),
+                    roe=roe,
+                    gross_margin=gross_margin,
+                    earnings_per_share=eps,
+                    update_time=datetime.now()
+                )
+                return metrics
+            else:
                 # 返回基本指标
                 return FinancialMetrics(
                     stock_code=stock_code_str,
@@ -132,8 +223,11 @@ class AkshareDataProvider:
             行业信息字典或None
         """
         try:
-            # 获取行业分类数据
-            df = ak.stock_info_a_code_name()
+            # 使用缓存的行业分类数据
+            df = _get_cached_stock_info_df()
+            if df is None:
+                return None
+
             stock_code_str = str(stock_code).zfill(6)
 
             stock_data = df[df['代码'] == stock_code_str]
