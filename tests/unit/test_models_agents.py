@@ -3,12 +3,12 @@
 """
 import pytest
 import sys
-import os
+from pathlib import Path
 from datetime import datetime
 from unittest.mock import Mock, patch, MagicMock
 
 # 添加项目根目录到路径
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from src.models.data_models import (
     FinancialMetrics, CompetitiveModality, ValuationAnalysis,

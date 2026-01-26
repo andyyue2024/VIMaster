@@ -3,11 +3,11 @@ Pytest 配置和 fixtures
 """
 import pytest
 import sys
-import os
 import logging
+from pathlib import Path
 
 # 设置项目路径
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 # 配置日志
 logging.basicConfig(

@@ -3,10 +3,10 @@
 """
 import pytest
 import sys
-import os
+from pathlib import Path
 from unittest.mock import Mock, patch, MagicMock
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from src.models.data_models import (
     StockAnalysisContext, FinancialMetrics, AnalysisReport,
