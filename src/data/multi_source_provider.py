@@ -163,18 +163,35 @@ class MultiSourceDataProvider:
 
     def get_industry_info(self, stock_code: str) -> Optional[Dict[str, Any]]:
         """
-        获取行业信息 - 智能降级
+        获取行业信息 - 智能降级 + 缓存
         Args:
             stock_code: 股票代码
         Returns:
             行业信息字典或None
         """
+        # 检查缓存
+        cache = get_cache()
+        cache_key = f"industry_info:{stock_code}"
+
+        config = CacheConfigManager.get_config()
+        if config.enabled:
+            cached = cache.get(cache_key)
+            if cached is not None:
+                logger.debug(f"从缓存获取股票 {stock_code} 行业信息")
+                return cached
+
+        # 从数据源获取
+        result = None
         for source in self.sources:
             if source.is_available:
                 try:
                     result = source.get_industry_info(stock_code)
                     if result:
                         logger.info(f"从 {source.name} 获取股票 {stock_code} 行业信息成功")
+                        # 存入缓存
+                        if config.enabled:
+                            ttl = CacheConfigManager.get_ttl_for("industry_info")
+                            cache.set(cache_key, result, ttl_seconds=ttl)
                         return result
                 except Exception as e:
                     logger.warning(f"从 {source.name} 获取行业信息失败: {str(e)}")
@@ -185,11 +202,40 @@ class MultiSourceDataProvider:
             result = AkshareDataProvider.get_industry_info(stock_code)
             if result:
                 logger.info(f"从 AkShare 获取股票 {stock_code} 行业信息成功（备选）")
+                # 存入缓存
+                if config.enabled:
+                    ttl = CacheConfigManager.get_ttl_for("industry_info")
+                    cache.set(cache_key, result, ttl_seconds=ttl)
                 return result
         except Exception as e:
             logger.warning(f"AkShare 降级失败: {str(e)}")
 
         return None
+
+    def clear_cache(self, stock_code: Optional[str] = None) -> None:
+        """
+        清空缓存
+        Args:
+            stock_code: 股票代码，如果为None则清空所有缓存
+        """
+        cache = get_cache()
+        if stock_code is None:
+            cache.clear()
+            logger.info("所有缓存已清空")
+        else:
+            # 清空该股票的所有缓存
+            count = cache.delete_pattern(f"{stock_code}:")
+            logger.info(f"股票 {stock_code} 的 {count} 个缓存已清空")
+
+    def get_cache_stats(self) -> Dict[str, Any]:
+        """获取缓存统计信息"""
+        cache = get_cache()
+        return cache.get_stats()
+
+    def print_cache_stats(self) -> None:
+        """打印缓存统计信息"""
+        cache = get_cache()
+        cache.print_stats()
 
     def get_source_stats(self) -> Dict[str, Any]:
         """获取数据源统计信息"""
