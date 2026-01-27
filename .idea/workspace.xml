@@ -4,11 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 集成机器学习评分模型，支持股票评分与投资组合排序">
-      <change afterPath="$PROJECT_DIR$/src/storage/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/storage/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 添加数据库存储模块，支持分析结果的存储与查询">
+      <change afterPath="$PROJECT_DIR$/src/utils/enhanced_logging.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/performance_monitor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_logging_monitoring.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SCHEDULED_REPORTS_GUIDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/SCHEDULED_REPORTS_GUIDE.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/features.txt" beforeDir="false" afterPath="$PROJECT_DIR$/features.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quick_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/quick_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agents/base_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/base_agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/schedulers/workflow_scheduler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/schedulers/workflow_scheduler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verify.py" beforeDir="false" afterPath="$PROJECT_DIR$/demo/verify.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,6 +101,7 @@
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\Workplace-Pycharm\VIMaster\demo" />
+      <recent name="E:\Workplace-Pycharm\VIMaster\tests" />
       <recent name="E:\Workplace-Pycharm\VIMaster\docs" />
     </key>
   </component>
@@ -175,7 +184,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769479959216</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="feat: 添加数据库存储模块，支持分析结果的存储与查询">
+      <option name="closed" value="true" />
+      <created>1769480690691</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1769480690691</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -208,7 +225,8 @@
     <MESSAGE value="feat: 添加实时数据缓存机制，支持TTL、自动刷新和线程安全" />
     <MESSAGE value="feat: 实现API重试机制，支持多种重试策略、断路器和速率限制" />
     <MESSAGE value="feat: 集成机器学习评分模型，支持股票评分与投资组合排序" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 集成机器学习评分模型，支持股票评分与投资组合排序" />
+    <MESSAGE value="feat: 添加数据库存储模块，支持分析结果的存储与查询" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加数据库存储模块，支持分析结果的存储与查询" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

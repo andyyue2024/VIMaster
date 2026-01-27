@@ -4,7 +4,7 @@
 快速功能测试
 """
 import sys
-sys.path.insert(0, '.')
+sys.path.insert(0, '..')
 
 from src.data.akshare_provider import AkshareDataProvider
 

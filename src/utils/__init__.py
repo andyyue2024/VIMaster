@@ -20,6 +20,21 @@ from src.utils.advanced_retry import (
     RateLimiter,
     ConditionalRetry,
 )
+from src.utils.enhanced_logging import (
+    setup_logging,
+    get_context_logger,
+    log_exception,
+    EnhancedFormatter,
+    ErrorContextLogger,
+)
+from src.utils.performance_monitor import (
+    PerformanceMonitor,
+    PerformanceMetric,
+    SystemMonitor,
+    get_monitor,
+    measure_time,
+    measure_async_time,
+)
 
 __all__ = [
     # Retry mechanism
@@ -41,4 +56,17 @@ __all__ = [
     "CircuitBreakerOpen",
     "RateLimiter",
     "ConditionalRetry",
+    # Enhanced logging
+    "setup_logging",
+    "get_context_logger",
+    "log_exception",
+    "EnhancedFormatter",
+    "ErrorContextLogger",
+    # Performance monitor
+    "PerformanceMonitor",
+    "PerformanceMetric",
+    "SystemMonitor",
+    "get_monitor",
+    "measure_time",
+    "measure_async_time",
 ]
