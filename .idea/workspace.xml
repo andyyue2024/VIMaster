@@ -4,19 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 添加 LLM 专家 Agent 模块，支持多位分析专家分析与配置">
-      <change afterPath="$PROJECT_DIR$/demo/test_llm_settings_api.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/web/templates/community.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/web/templates/experts.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/web/templates/masters.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/web/templates/reports.html" afterDir="false" />
+    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 添加社区和报告页面，增强用户交互与分析报告功能">
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_desktop_app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/llm_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/llm_config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/web/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/web/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/web/templates/analyze.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/web/templates/analyze.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/web/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/web/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/web/templates/settings.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/web/templates/settings.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/test_llm_agents.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_llm_agents.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/test_llm_settings_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_llm_settings_api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/features.txt" beforeDir="false" afterPath="$PROJECT_DIR$/features.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agents/llm/expert_agents.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/llm/expert_agents.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agents/llm/master_agents.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/llm/master_agents.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,6 +85,7 @@
     "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python tests.Python tests in test_desktop_app.py.executor": "Run",
     "Python.conftest.executor": "Run",
     "Python.demo.executor": "Run",
     "Python.demo_analyze.executor": "Run",
@@ -107,11 +106,11 @@
       <recent name="E:\Workplace-Pycharm\VIMaster\src\agents\experts" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Workplace-Pycharm\VIMaster\tests\unit" />
       <recent name="E:\Workplace-Pycharm\VIMaster\src\agents\masters" />
       <recent name="E:\Workplace-Pycharm\VIMaster\src\agents\master1" />
       <recent name="E:\Workplace-Pycharm\VIMaster\src\agents" />
       <recent name="E:\Workplace-Pycharm\VIMaster\demo" />
-      <recent name="E:\Workplace-Pycharm\VIMaster\tests" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -297,7 +296,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769496908454</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="feat: 添加社区和报告页面，增强用户交互与分析报告功能">
+      <option name="closed" value="true" />
+      <created>1769498602142</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1769498602142</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -342,7 +349,8 @@
     <MESSAGE value="feat: 添加 PC 客户端界面，基于 PyQt6 实现股票分析、投资组合和历史记录功能" />
     <MESSAGE value="feat: 添加 LLM 大师 Agent 模块，支持多位投资大师分析与配置" />
     <MESSAGE value="feat: 添加 LLM 专家 Agent 模块，支持多位分析专家分析与配置" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加 LLM 专家 Agent 模块，支持多位分析专家分析与配置" />
+    <MESSAGE value="feat: 添加社区和报告页面，增强用户交互与分析报告功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加社区和报告页面，增强用户交互与分析报告功能" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

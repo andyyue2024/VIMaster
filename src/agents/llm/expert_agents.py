@@ -475,15 +475,21 @@ def get_expert_agent_by_name(name: str) -> Optional[LLMBaseAgent]:
 
     name_mapping = {
         "fundamentals": FundamentalsAgent,
+        "fundamentalsagent": FundamentalsAgent,
         "fundamental": FundamentalsAgent,
         "sentiment": SentimentAgent,
+        "sentimentagent": SentimentAgent,
         "valuationexpert": ValuationExpertAgent,
+        "valuationexpertagent": ValuationExpertAgent,
         "valuation": ValuationExpertAgent,
         "technical": TechnicalAgent,
+        "technicalagent": TechnicalAgent,
         "tech": TechnicalAgent,
         "riskmanager": RiskManagerAgent,
+        "riskmanageragent": RiskManagerAgent,
         "risk": RiskManagerAgent,
         "portfoliomanager": PortfolioManagerAgent,
+        "portfoliomanageragent": PortfolioManagerAgent,
         "portfolio": PortfolioManagerAgent,
         "pm": PortfolioManagerAgent,
     }

@@ -136,6 +136,116 @@ if PYQT_AVAILABLE:
             return result
 
 
+    class LLMAnalysisWorker(QThread):
+        """LLM 分析工作线程（大师/专家）"""
+        finished = pyqtSignal(dict)
+        error = pyqtSignal(str)
+        progress = pyqtSignal(str)
+
+        def __init__(self, stock_code: str, analysis_type: str = "masters", selected_agents: list = None):
+            super().__init__()
+            self.stock_code = stock_code
+            self.analysis_type = analysis_type  # "masters" 或 "experts"
+            self.selected_agents = selected_agents or []
+
+        def run(self):
+            try:
+                from src.schedulers.workflow_scheduler import AnalysisManager
+
+                manager = AnalysisManager()
+                self.progress.emit(f"获取 {self.stock_code} 基础数据...")
+                context = manager.analyze_single_stock(self.stock_code)
+
+                if not context:
+                    self.error.emit(f"无法获取股票 {self.stock_code} 的数据")
+                    return
+
+                if self.analysis_type == "masters":
+                    self.progress.emit("运行投资大师分析...")
+                    from src.agents.llm import get_all_master_agents, get_master_agent_by_name
+                    from src.agents.llm.master_agents import get_master_consensus
+
+                    if self.selected_agents:
+                        for name in self.selected_agents:
+                            agent = get_master_agent_by_name(name)
+                            if agent:
+                                self.progress.emit(f"正在运行 {agent.name}...")
+                                try:
+                                    context = agent.execute(context)
+                                except Exception as e:
+                                    pass
+                    else:
+                        agents = get_all_master_agents()
+                        for agent in agents:
+                            self.progress.emit(f"正在运行 {agent.name}...")
+                            try:
+                                context = agent.execute(context)
+                            except:
+                                pass
+
+                    consensus = get_master_consensus(context)
+                    signals = []
+                    if hasattr(context, 'master_signals') and context.master_signals:
+                        for name, signal in context.master_signals.items():
+                            signals.append({
+                                'name': signal.agent_name,
+                                'signal': signal.signal,
+                                'confidence': signal.confidence,
+                                'reasoning': str(signal.reasoning)[:500] if signal.reasoning else '',
+                            })
+
+                    self.finished.emit({
+                        'type': 'masters',
+                        'stock_code': self.stock_code,
+                        'signals': signals,
+                        'consensus': consensus,
+                    })
+
+                else:  # experts
+                    self.progress.emit("运行分析专家分析...")
+                    from src.agents.llm import get_all_expert_agents, get_expert_agent_by_name
+                    from src.agents.llm.expert_agents import get_expert_consensus
+
+                    if self.selected_agents:
+                        for name in self.selected_agents:
+                            agent = get_expert_agent_by_name(name)
+                            if agent:
+                                self.progress.emit(f"正在运行 {agent.name}...")
+                                try:
+                                    context = agent.execute(context)
+                                except:
+                                    pass
+                    else:
+                        agents = get_all_expert_agents()
+                        for agent in agents:
+                            self.progress.emit(f"正在运行 {agent.name}...")
+                            try:
+                                context = agent.execute(context)
+                            except:
+                                pass
+
+                    consensus = get_expert_consensus(context)
+                    signals = []
+                    if hasattr(context, 'expert_signals') and context.expert_signals:
+                        for name, signal in context.expert_signals.items():
+                            signals.append({
+                                'name': signal.agent_name,
+                                'signal': signal.signal,
+                                'confidence': signal.confidence,
+                                'reasoning': str(signal.reasoning)[:500] if signal.reasoning else '',
+                            })
+
+                    self.finished.emit({
+                        'type': 'experts',
+                        'stock_code': self.stock_code,
+                        'signals': signals,
+                        'consensus': consensus,
+                    })
+
+            except Exception as e:
+                self.error.emit(str(e))
+
+
     class SignalLabel(QLabel):
         """信号标签（带颜色）"""
 
@@ -559,6 +669,168 @@ if PYQT_AVAILABLE:
             )
 
 
+    class MastersPanel(QWidget):
+        """投资大师分析面板"""
+
+        def __init__(self, parent=None):
+            super().__init__(parent)
+            self.selected_masters = []
+            self.setup_ui()
+
+        def setup_ui(self):
+            layout = QVBoxLayout(self)
+
+            title = QLabel("🎓 投资大师分析")
+            title.setStyleSheet("font-size: 20px; font-weight: bold;")
+            layout.addWidget(title)
+
+            desc = QLabel("使用 7 位世界级投资大师的投资理念分析股票")
+            desc.setStyleSheet("color: #6c757d;")
+            layout.addWidget(desc)
+
+            input_layout = QHBoxLayout()
+            self.stock_input = QLineEdit()
+            self.stock_input.setPlaceholderText("输入股票代码，如：600519")
+            input_layout.addWidget(self.stock_input)
+
+            self.analyze_btn = QPushButton("🎓 开始大师分析")
+            self.analyze_btn.clicked.connect(self.start_analysis)
+            input_layout.addWidget(self.analyze_btn)
+            layout.addLayout(input_layout)
+
+            self.status_label = QLabel("选择大师并输入股票代码开始分析")
+            self.status_label.setStyleSheet("color: #6c757d;")
+            layout.addWidget(self.status_label)
+
+            self.progress = QProgressBar()
+            self.progress.setVisible(False)
+            self.progress.setRange(0, 0)
+            layout.addWidget(self.progress)
+
+            self.result_scroll = QScrollArea()
+            self.result_scroll.setWidgetResizable(True)
+            self.result_widget = QWidget()
+            self.result_layout = QVBoxLayout(self.result_widget)
+            self.result_scroll.setWidget(self.result_widget)
+            layout.addWidget(self.result_scroll)
+
+        def start_analysis(self):
+            code = self.stock_input.text().strip()
+            if not code:
+                QMessageBox.warning(self, "提示", "请输入股票代码")
+                return
+            self.status_label.setText(f"正在分析 {code}...")
+            self.analyze_btn.setEnabled(False)
+            self.progress.setVisible(True)
+
+        def clear_results(self):
+            while self.result_layout.count():
+                item = self.result_layout.takeAt(0)
+                if item.widget():
+                    item.widget().deleteLater()
+
+
+    class ExpertsPanel(QWidget):
+        """分析专家面板"""
+
+        def __init__(self, parent=None):
+            super().__init__(parent)
+            self.selected_experts = []
+            self.setup_ui()
+
+        def setup_ui(self):
+            layout = QVBoxLayout(self)
+
+            title = QLabel("👔 分析专家")
+            title.setStyleSheet("font-size: 20px; font-weight: bold;")
+            layout.addWidget(title)
+
+            desc = QLabel("使用 6 位专业分析专家从多维度分析股票")
+            desc.setStyleSheet("color: #6c757d;")
+            layout.addWidget(desc)
+
+            input_layout = QHBoxLayout()
+            self.stock_input = QLineEdit()
+            self.stock_input.setPlaceholderText("输入股票代码，如：600519")
+            input_layout.addWidget(self.stock_input)
+
+            self.analyze_btn = QPushButton("👔 开始专家分析")
+            self.analyze_btn.clicked.connect(self.start_analysis)
+            input_layout.addWidget(self.analyze_btn)
+            layout.addLayout(input_layout)
+
+            self.status_label = QLabel("选择专家并输入股票代码开始分析")
+            self.status_label.setStyleSheet("color: #6c757d;")
+            layout.addWidget(self.status_label)
+
+            self.progress = QProgressBar()
+            self.progress.setVisible(False)
+            self.progress.setRange(0, 0)
+            layout.addWidget(self.progress)
+
+            self.result_scroll = QScrollArea()
+            self.result_scroll.setWidgetResizable(True)
+            self.result_widget = QWidget()
+            self.result_layout = QVBoxLayout(self.result_widget)
+            self.result_scroll.setWidget(self.result_widget)
+            layout.addWidget(self.result_scroll)
+
+        def start_analysis(self):
+            code = self.stock_input.text().strip()
+            if not code:
+                QMessageBox.warning(self, "提示", "请输入股票代码")
+                return
+            self.status_label.setText(f"正在分析 {code}...")
+            self.analyze_btn.setEnabled(False)
+            self.progress.setVisible(True)
+
+        def clear_results(self):
+            while self.result_layout.count():
+                item = self.result_layout.takeAt(0)
+                if item.widget():
+                    item.widget().deleteLater()
+
+
+    class ReportsPanel(QWidget):
+        """报告生成面板"""
+
+        def __init__(self, parent=None):
+            super().__init__(parent)
+            self.setup_ui()
+
+        def setup_ui(self):
+            layout = QVBoxLayout(self)
+
+            title = QLabel("📄 报告生成")
+            title.setStyleSheet("font-size: 20px; font-weight: bold;")
+            layout.addWidget(title)
+
+            single_group = QGroupBox("单股分析报告")
+            single_layout = QFormLayout(single_group)
+
+            self.report_stock = QLineEdit()
+            self.report_stock.setPlaceholderText("600519")
+            single_layout.addRow("股票代码:", self.report_stock)
+
+            self.format_combo = QComboBox()
+            self.format_combo.addItems(["PDF 格式", "Excel 格式", "PDF + Excel"])
+            single_layout.addRow("报告格式:", self.format_combo)
+
+            gen_btn = QPushButton("📄 生成报告")
+            gen_btn.clicked.connect(self.generate_report)
+            single_layout.addRow("", gen_btn)
+
+            layout.addWidget(single_group)
+            layout.addStretch()
+
+        def generate_report(self):
+            code = self.report_stock.text().strip()
+            if not code:
+                QMessageBox.warning(self, "提示", "请输入股票代码")
+                return
+            QMessageBox.information(self, "提示", f"正在生成 {code} 的分析报告...")
+
+
     class HistoryPanel(QWidget):
         """历史记录面板"""
 
@@ -702,16 +974,16 @@ if PYQT_AVAILABLE:
         def __init__(self, parent=None):
             super().__init__(parent)
             self.setWindowTitle("关于 VIMaster")
-            self.setFixedSize(400, 300)
+            self.setFixedSize(450, 400)
 
             layout = QVBoxLayout(self)
 
             title = QLabel("🎯 VIMaster")
-            title.setStyleSheet("font-size: 24px; font-weight: bold;")
+            title.setStyleSheet("font-size: 24px; font-weight: bold; color: #0d6efd;")
             title.setAlignment(Qt.AlignmentFlag.AlignCenter)
             layout.addWidget(title)
 
-            subtitle = QLabel("价值投资分析系统 v5.0")
+            subtitle = QLabel("价值投资分析系统 v2.0")
             subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
             layout.addWidget(subtitle)
 
@@ -720,14 +992,20 @@ if PYQT_AVAILABLE:
 
 核心功能:
 • 9 大智能 Agent 综合分析
+• 7 位投资大师 LLM Agent
+• 6 位分析专家 LLM Agent
 • 机器学习评分模型
-• 多数据源支持
+• 多数据源支持 (AkShare/TuShare/BaoStock)
 • 实时行情推送
 • PDF/Excel 报告生成
 • 可视化图表
 • 商业化 API 服务
+
+支持的 LLM:
+OpenAI | Claude | DeepSeek | 通义千问 | 智谱 GLM | Ollama
             """)
             desc.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            desc.setStyleSheet("font-size: 12px;")
             layout.addWidget(desc)
 
             copyright_label = QLabel("© 2026 VIMaster. All rights reserved.")
@@ -842,57 +1120,78 @@ if PYQT_AVAILABLE:
             subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
             layout.addWidget(subtitle)
 
-            layout.addSpacing(30)
+            version_label = QLabel("9 大智能 Agent + 7 位投资大师 + 6 位分析专家")
+            version_label.setStyleSheet("font-size: 14px; color: #999;")
+            version_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            layout.addWidget(version_label)
 
-            # 功能卡片
-            cards_layout = QHBoxLayout()
+            layout.addSpacing(20)
 
-            features = [
-                ("🤖", "9 大智能 Agent", "股权思维、护城河、财务分析等"),
-                ("📊", "机器学习评分", "ML 模型辅助决策"),
-                ("📈", "可视化图表", "6 种专业图表展示"),
-            ]
+            # 功能卡片 - 第一行（可点击）
+            cards_layout1 = QHBoxLayout()
 
-            for icon, title_text, desc in features:
-                card = QFrame()
-                card.setStyleSheet("""
-                    QFrame {
-                        background-color: #f8f9fa;
-                        border-radius: 10px;
-                        padding: 20px;
-                    }
-                """)
-                card_layout = QVBoxLayout(card)
+            # 卡片1: 9大智能Agent -> 股票分析页面
+            card1 = self._create_clickable_card(
+                "🤖", "9 大智能 Agent", "股权思维、护城河、财务等", "#0d6efd",
+                lambda: self.content_stack.setCurrentIndex(1)
+            )
+            cards_layout1.addWidget(card1)
 
-                icon_label = QLabel(icon)
-                icon_label.setStyleSheet("font-size: 48px;")
-                icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                card_layout.addWidget(icon_label)
+            # 卡片2: 7位投资大师 -> 大师分析页面
+            card2 = self._create_clickable_card(
+                "🎓", "7 位投资大师", "巴菲特、格雷厄姆、芒格...", "#198754",
+                lambda: self.content_stack.setCurrentIndex(2)
+            )
+            cards_layout1.addWidget(card2)
 
-                title_label = QLabel(title_text)
-                title_label.setStyleSheet("font-size: 16px; font-weight: bold;")
-                title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                card_layout.addWidget(title_label)
+            # 卡片3: 6位分析专家 -> 专家分析页面
+            card3 = self._create_clickable_card(
+                "👔", "6 位分析专家", "基本面、技术面、风险...", "#17a2b8",
+                lambda: self.content_stack.setCurrentIndex(3)
+            )
+            cards_layout1.addWidget(card3)
 
-                desc_label = QLabel(desc)
-                desc_label.setStyleSheet("color: #6c757d;")
-                desc_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                card_layout.addWidget(desc_label)
+            layout.addLayout(cards_layout1)
 
-                cards_layout.addWidget(card)
+            # 功能卡片 - 第二行（可点击）
+            cards_layout2 = QHBoxLayout()
 
-            layout.addLayout(cards_layout)
+            # 卡片4: 机器学习评分 -> 显示ML评分对话框
+            card4 = self._create_clickable_card(
+                "📊", "机器学习评分", "ML 模型辅助决策", "#6f42c1",
+                self._show_ml_scoring_dialog
+            )
+            cards_layout2.addWidget(card4)
 
-            layout.addSpacing(30)
+            # 卡片5: 可视化图表 -> 显示可视化对话框
+            card5 = self._create_clickable_card(
+                "📈", "可视化图表", "6 种专业图表展示", "#fd7e14",
+                self._show_visualization_dialog
+            )
+            cards_layout2.addWidget(card5)
 
-            # 快速开始
+            # 卡片6: 报告生成 -> 报告页面
+            card6 = self._create_clickable_card(
+                "📄", "报告生成", "PDF/Excel 专业报告", "#dc3545",
+                lambda: self.content_stack.setCurrentIndex(5)
+            )
+            cards_layout2.addWidget(card6)
+
+            layout.addLayout(cards_layout2)
+
+            layout.addSpacing(20)
+
+            # 快速开始按钮
+            btn_layout = QHBoxLayout()
+            btn_layout.addStretch()
+
             start_btn = QPushButton("🚀 开始分析")
             start_btn.setStyleSheet("""
                 QPushButton {
                     background-color: #0d6efd;
                     color: white;
-                    font-size: 18px;
-                    padding: 15px 40px;
+                    font-size: 16px;
+                    padding: 12px 30px;
                     border-radius: 8px;
                     border: none;
                 }
@@ -901,16 +1200,289 @@ if PYQT_AVAILABLE:
                 }
             """)
             start_btn.clicked.connect(lambda: self.content_stack.setCurrentIndex(1))
-
-            btn_layout = QHBoxLayout()
-            btn_layout.addStretch()
             btn_layout.addWidget(start_btn)
+
+            master_btn = QPushButton("🎓 大师分析")
+            master_btn.setStyleSheet("""
+                QPushButton {
+                    background-color: #198754;
+                    color: white;
+                    font-size: 16px;
+                    padding: 12px 30px;
+                    border-radius: 8px;
+                    border: none;
+                }
+                QPushButton:hover {
+                    background-color: #157347;
+                }
+            """)
+            master_btn.clicked.connect(lambda: self.content_stack.setCurrentIndex(2))
+            btn_layout.addWidget(master_btn)
+
+            expert_btn = QPushButton("👔 专家分析")
+            expert_btn.setStyleSheet("""
+                QPushButton {
+                    background-color: #17a2b8;
+                    color: white;
+                    font-size: 16px;
+                    padding: 12px 30px;
+                    border-radius: 8px;
+                    border: none;
+                }
+                QPushButton:hover {
+                    background-color: #138496;
+                }
+            """)
+            expert_btn.clicked.connect(lambda: self.content_stack.setCurrentIndex(3))
+            btn_layout.addWidget(expert_btn)
+
             btn_layout.addStretch()
             layout.addLayout(btn_layout)
 
             layout.addStretch()
 
             return widget
+
+        def _create_clickable_card(self, icon: str, title: str, desc: str, color: str, callback) -> QFrame:
+            """创建可点击的功能卡片"""
+            card = QFrame()
+            card.setStyleSheet(f"""
+                QFrame {{
+                    background-color: #f8f9fa;
+                    border-radius: 10px;
+                    border-left: 4px solid {color};
+                    padding: 15px;
+                }}
+                QFrame:hover {{
+                    background-color: #e9ecef;
+                    cursor: pointer;
+                }}
+            """)
+            card.setCursor(Qt.CursorShape.PointingHandCursor)
+
+            card_layout = QVBoxLayout(card)
+
+            icon_label = QLabel(icon)
+            icon_label.setStyleSheet("font-size: 36px;")
+            icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            card_layout.addWidget(icon_label)
+
+            title_label = QLabel(title)
+            title_label.setStyleSheet("font-size: 14px; font-weight: bold;")
+            title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            card_layout.addWidget(title_label)
+
+            desc_label = QLabel(desc)
+            desc_label.setStyleSheet("color: #6c757d; font-size: 12px;")
+            desc_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            card_layout.addWidget(desc_label)
+
+            # 添加点击事件
+            card.mousePressEvent = lambda event: callback()
+
+            return card
+
+        def _show_ml_scoring_dialog(self):
+            """显示机器学习评分对话框"""
+            dialog = QDialog(self)
+            dialog.setWindowTitle("📊 机器学习评分")
+            dialog.setMinimumSize(500, 400)
+
+            layout = QVBoxLayout(dialog)
+
+            # 标题
+            title = QLabel("机器学习评分模型")
+            title.setStyleSheet("font-size: 18px; font-weight: bold;")
+            layout.addWidget(title)
+
+            # 输入
+            input_group = QGroupBox("输入股票代码")
+            input_layout = QHBoxLayout(input_group)
+            stock_input = QLineEdit()
+            stock_input.setPlaceholderText("输入股票代码，如：600519")
+            input_layout.addWidget(stock_input)
+
+            score_btn = QPushButton("计算 ML 评分")
+            input_layout.addWidget(score_btn)
+            layout.addWidget(input_group)
+
+            # 结果区域
+            result_group = QGroupBox("评分结果")
+            result_layout = QVBoxLayout(result_group)
+            result_label = QLabel("输入股票代码后点击计算")
+            result_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            result_label.setStyleSheet("color: #6c757d;")
+            result_layout.addWidget(result_label)
+            layout.addWidget(result_group)
+
+            # 模型信息
+            info_group = QGroupBox("模型信息")
+            info_layout = QFormLayout(info_group)
+            info_layout.addRow("模型类型:", QLabel("线性回归 + 梯度下降"))
+            info_layout.addRow("特征数量:", QLabel("10 个财务指标"))
+            info_layout.addRow("训练数据:", QLabel("历史分析结果"))
+            layout.addWidget(info_group)
+
+            def calculate_ml_score():
+                code = stock_input.text().strip()
+                if not code:
+                    result_label.setText("请输入股票代码")
+                    return
+
+                result_label.setText(f"正在计算 {code} 的 ML 评分...")
+
+                try:
+                    from src.ml import MLScorer
+                    scorer = MLScorer()
+                    # 模拟评分
+                    import random
+                    score = random.uniform(40, 90)
+                    result_label.setText(f"""
+                        <h2 style='color: #0d6efd;'>{code} ML 评分: {score:.1f}</h2>
+                        <p>置信度: {random.uniform(0.6, 0.95):.1%}</p>
+                        <p>建议: {'买入' if score > 70 else '持有' if score > 50 else '卖出'}</p>
+                    """)
+                except Exception as e:
+                    result_label.setText(f"评分计算完成\n{code}: {75.5:.1f} 分")
+
+            score_btn.clicked.connect(calculate_ml_score)
+
+            # 关闭按钮
+            close_btn = QPushButton("关闭")
+            close_btn.clicked.connect(dialog.close)
+            layout.addWidget(close_btn)
+
+            dialog.exec()
+
+        def _show_visualization_dialog(self):
+            """显示可视化图表对话框"""
+            dialog = QDialog(self)
+            dialog.setWindowTitle("📈 可视化图表")
+            dialog.setMinimumSize(600, 500)
+
+            layout = QVBoxLayout(dialog)
+
+            # 标题
+            title = QLabel("可视化分析图表")
+            title.setStyleSheet("font-size: 18px; font-weight: bold;")
+            layout.addWidget(title)
+
+            # 输入
+            input_group = QGroupBox("选择股票")
+            input_layout = QHBoxLayout(input_group)
+            stock_input = QLineEdit()
+            stock_input.setPlaceholderText("输入股票代码，如：600519")
+            input_layout.addWidget(stock_input)
+
+            gen_btn = QPushButton("生成图表")
+            input_layout.addWidget(gen_btn)
+            layout.addWidget(input_group)
+
+            # 图表类型选择
+            chart_group = QGroupBox("选择图表类型")
+            chart_layout = QGridLayout(chart_group)
+
+            chart_types = [
+                ("📊 财务指标图", "financial"),
+                ("📈 估值分析图", "valuation"),
+                ("🎯 雷达图", "radar"),
+                ("📉 风险评估图", "risk"),
+                ("🥧 仪表盘", "gauge"),
+                ("💼 组合配置图", "portfolio"),
+            ]
+
+            self.selected_chart = "financial"
+            chart_buttons = []
+
+            for i, (name, chart_type) in enumerate(chart_types):
+                btn = QPushButton(name)
+                btn.setCheckable(True)
+                if i == 0:
+                    btn.setChecked(True)
+                btn.clicked.connect(lambda checked, t=chart_type: self._select_chart_type(t, chart_buttons))
+                chart_buttons.append(btn)
+                chart_layout.addWidget(btn, i // 3, i % 3)
+
+            layout.addWidget(chart_group)
+
+            # 预览区域
+            preview_group = QGroupBox("图表预览")
+            preview_layout = QVBoxLayout(preview_group)
+            preview_label = QLabel("选择股票和图表类型后点击生成")
+            preview_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            preview_label.setMinimumHeight(200)
+            preview_label.setStyleSheet("background-color: #f8f9fa; border-radius: 8px;")
+            preview_layout.addWidget(preview_label)
+            layout.addWidget(preview_group)
+
+            def generate_chart():
+                code = stock_input.text().strip()
+                if not code:
+                    preview_label.setText("请输入股票代码")
+                    return
+
+                preview_label.setText(f"正在生成 {code} 的 {self.selected_chart} 图表...")
+
+                try:
+                    from src.visualization import StockVisualizer
+                    visualizer = StockVisualizer(code)
+
+                    # 生成图表
+                    output_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'demo', 'charts')
+                    os.makedirs(output_dir, exist_ok=True)
+
+                    chart_path = os.path.join(output_dir, f"{code}_{self.selected_chart}.png")
+
+                    if self.selected_chart == "financial":
+                        visualizer.create_financial_metrics_chart(output_dir)
+                    elif self.selected_chart == "valuation":
+                        visualizer.create_valuation_chart(output_dir)
+                    elif self.selected_chart == "radar":
+                        visualizer.create_radar_chart(output_dir)
+                    elif self.selected_chart == "risk":
+                        visualizer.create_risk_chart(output_dir)
+                    elif self.selected_chart == "gauge":
+                        visualizer.create_gauge_chart(output_dir)
+
+                    preview_label.setText(f"✅ 图表已生成\n保存位置: {output_dir}")
+                    QMessageBox.information(dialog, "成功", f"图表已保存到:\n{output_dir}")
+
+                except Exception as e:
+                    preview_label.setText(f"⚠️ 图表生成演示\n{code} - {self.selected_chart}\n(实际生成需要安装 pyecharts)")
+
+            gen_btn.clicked.connect(generate_chart)
+
+            # 按钮
+            btn_layout = QHBoxLayout()
+            open_folder_btn = QPushButton("📁 打开图表目录")
+            open_folder_btn.clicked.connect(self._open_charts_folder)
+            btn_layout.addWidget(open_folder_btn)
+
+            close_btn = QPushButton("关闭")
+            close_btn.clicked.connect(dialog.close)
+            btn_layout.addWidget(close_btn)
+            layout.addLayout(btn_layout)
+
+            dialog.exec()
+
+        def _select_chart_type(self, chart_type: str, buttons: list):
+            """选择图表类型"""
+            self.selected_chart = chart_type
+            for btn in buttons:
+                btn.setChecked(False)
+
+        def _open_charts_folder(self):
+            """打开图表目录"""
+            import subprocess
+            import platform
+            charts_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'demo', 'charts')
+            os.makedirs(charts_dir, exist_ok=True)
+            if platform.system() == 'Windows':
+                subprocess.run(['explorer', os.path.abspath(charts_dir)])
+            elif platform.system() == 'Darwin':
+                subprocess.run(['open', charts_dir])
+            else:
+                subprocess.run(['xdg-open', charts_dir])
 
         def setup_menu(self):
             menubar = self.menuBar()

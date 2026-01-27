@@ -470,18 +470,25 @@ def get_master_agent_by_name(name: str) -> Optional[LLMBaseAgent]:
 
     name_mapping = {
         "bengraham": BenGrahamAgent,
+        "bengrahamagent": BenGrahamAgent,
         "graham": BenGrahamAgent,
         "philipfisher": PhilipFisherAgent,
+        "philipfisheragent": PhilipFisherAgent,
         "fisher": PhilipFisherAgent,
         "charliemunger": CharlieMungerAgent,
+        "charliemungeragent": CharlieMungerAgent,
         "munger": CharlieMungerAgent,
         "warrenbuffett": WarrenBuffettAgent,
+        "warrenbuffettagent": WarrenBuffettAgent,
         "buffett": WarrenBuffettAgent,
         "stanleydruckenmiller": StanleyDruckenmillerAgent,
+        "stanleydruckenmilleragent": StanleyDruckenmillerAgent,
         "druckenmiller": StanleyDruckenmillerAgent,
         "cathiewood": CathieWoodAgent,
+        "cathiewoodagent": CathieWoodAgent,
         "wood": CathieWoodAgent,
         "billackman": BillAckmanAgent,
+        "billackmanagent": BillAckmanAgent,
         "ackman": BillAckmanAgent,
     }
 
