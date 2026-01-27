@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>历史记录 - VIMaster</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-graph-up-arrow"></i> VIMaster
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="bi bi-house"></i> 首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analyze"><i class="bi bi-search"></i> 股票分析</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/portfolio"><i class="bi bi-briefcase"></i> 投资组合</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/history"><i class="bi bi-clock-history"></i> 历史记录</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <div class="container mt-4">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-clock-history"></i> 分析历史记录</h5>
+                <div>
+                    <input type="text" class="form-control form-control-sm" id="searchInput"
+                           placeholder="搜索股票代码..." style="width: 200px;">
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" id="historyTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>股票代码</th>
+                                <th>分析时间</th>
+                                <th>当前价格</th>
+                                <th>综合评分</th>
+                                <th>投资信号</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody">
+                            <tr>
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <div class="spinner-border"></div>
+                                    <p>加载中...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">VIMaster v5.0 - 让价值投资更智能</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let allRecords = [];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadHistory();
+        });
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const keyword = this.value.trim().toLowerCase();
+            filterRecords(keyword);
+        });
+
+        function loadHistory() {
+            fetch('/api/history')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        allRecords = data.data;
+                        renderHistory(allRecords);
+                    } else {
+                        showError(data.error);
+                    }
+                })
+                .catch(err => showError(err));
+        }
+
+        function filterRecords(keyword) {
+            if (!keyword) {
+                renderHistory(allRecords);
+            } else {
+                const filtered = allRecords.filter(r =>
+                    r.stock_code.toLowerCase().includes(keyword)
+                );
+                renderHistory(filtered);
+            }
+        }
+
+        function renderHistory(records) {
+            const tbody = document.getElementById('historyBody');
+
+            if (!records || records.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-5 text-muted">
+                            <i class="bi bi-inbox display-1"></i>
+                            <p class="lead mt-3">暂无分析记录</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            const signalColors = {
+                '强烈买入': 'success',
+                '买入': 'success',
+                '持有': 'warning',
+                '卖出': 'danger',
+                '强烈卖出': 'danger'
+            };
+
+            let html = '';
+            for (const record of records) {
+                const color = signalColors[record.final_signal] || 'secondary';
+                html += `
+                    <tr>
+                        <td><strong>${record.stock_code}</strong></td>
+                        <td>${record.analysis_date || 'N/A'}</td>
+                        <td>¥${record.current_price || 'N/A'}</td>
+                        <td>
+                            <div class="progress" style="height: 20px; width: 100px;">
+                                <div class="progress-bar bg-${color}" style="width: ${record.overall_score || 0}%">
+                                    ${record.overall_score || 0}
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="badge bg-${color}">${record.final_signal || 'N/A'}</span></td>
+                        <td>
+                            <a href="/analyze?code=${record.stock_code}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-arrow-repeat"></i> 重新分析
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            }
+            tbody.innerHTML = html;
+        }
+
+        function showError(error) {
+            document.getElementById('historyBody').innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center py-5">
+                        <div class="alert alert-danger">
+                            <i class="bi bi-exclamation-triangle"></i> ${error}
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }
+    </script>
+</body>
+</html>

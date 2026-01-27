@@ -1,0 +1,201 @@
+/* VIMaster Web UI 样式 */
+
+:root {
+    --primary-color: #0d6efd;
+    --success-color: #198754;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --dark-color: #212529;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* 导航栏 */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* 卡片样式 */
+.card {
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+}
+
+/* 按钮样式 */
+.btn {
+    border-radius: 5px;
+    transition: all 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+/* 进度条 */
+.progress {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    transition: width 0.3s ease;
+}
+
+/* 表格样式 */
+.table th {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* 徽章样式 */
+.badge {
+    font-weight: 500;
+    padding: 0.5em 0.8em;
+}
+
+/* 输入框 */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Hero 区域 */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color), #6610f2);
+    color: white;
+    padding: 60px 0;
+    border-radius: 15px;
+}
+
+/* 统计卡片 */
+.stat-card {
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.stat-card h3 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* 加载动画 */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.loading .spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* 信号颜色 */
+.signal-strong-buy {
+    background-color: #0d6efd !important;
+    color: white !important;
+}
+
+.signal-buy {
+    background-color: #198754 !important;
+    color: white !important;
+}
+
+.signal-hold {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+
+.signal-sell {
+    background-color: #fd7e14 !important;
+    color: white !important;
+}
+
+.signal-strong-sell {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .display-4 {
+        font-size: 2rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+/* 页脚 */
+footer {
+    margin-top: auto;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease;
+}
+
+/* 快速股票按钮 */
+.quick-stock {
+    margin: 2px;
+}
+
+.quick-stock:hover {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* 手风琴样式 */
+.accordion-button:not(.collapsed) {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: var(--primary-color);
+}
+
+/* 列表组样式 */
+.list-group-item.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* 图表区域 */
+.chart-container {
+    position: relative;
+    height: 300px;
+}
+
+/* 工具提示 */
+.tooltip-inner {
+    max-width: 300px;
+}
