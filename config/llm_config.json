@@ -1,5 +1,5 @@
 {
-  "default_provider": "gpt-3.5-turbo",
+  "default_provider": "claude-3-5-sonnet",
   "agent_configs": {
     "BenGrahamAgent": "gpt-4o",
     "PhilipFisherAgent": "gpt-4o",
@@ -18,10 +18,18 @@
   "custom_providers": {
     "local-llama": {
       "provider": "ollama",
+      "api_key": null,
       "api_base": "http://localhost:11434/v1",
       "model_name": "llama3",
       "temperature": 0.7,
-      "max_tokens": 4096
+      "max_tokens": 4096,
+      "top_p": 0.95,
+      "frequency_penalty": 0.0,
+      "presence_penalty": 0.0,
+      "timeout": 60,
+      "retry_count": 3,
+      "retry_delay": 1.0,
+      "extra_params": {}
     }
   },
   "api_keys": {

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>报告生成 - VIMaster</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/"><i class="bi bi-graph-up-arrow"></i> VIMaster</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/"><i class="bi bi-house"></i> 首页</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"><i class="bi bi-search"></i> 分析</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/analyze">基础分析</a></li>
+                            <li><a class="dropdown-item" href="/masters">大师分析</a></li>
+                            <li><a class="dropdown-item" href="/experts">专家分析</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/portfolio">投资组合</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/reports"><i class="bi bi-file-earmark-text"></i> 报告</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2><i class="bi bi-file-earmark-text text-danger"></i> 报告生成</h2>
+                <p class="text-muted">生成专业的 PDF/Excel 分析报告，支持模板自定义和定时发送</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- 生成报告 -->
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> 生成单股报告</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">股票代码</label>
+                            <input type="text" class="form-control" id="reportStockCode" placeholder="600519">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">报告格式</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="formatPdf" checked>
+                                <label class="form-check-label" for="formatPdf">
+                                    <i class="bi bi-file-earmark-pdf text-danger"></i> PDF 报告
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="formatExcel" checked>
+                                <label class="form-check-label" for="formatExcel">
+                                    <i class="bi bi-file-earmark-excel text-success"></i> Excel 报告
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">报告内容</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" checked>
+                                <label class="form-check-label">财务指标分析</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" checked>
+                                <label class="form-check-label">估值分析</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" checked>
+                                <label class="form-check-label">护城河分析</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" checked>
+                                <label class="form-check-label">风险评估</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox">
+                                <label class="form-check-label">大师分析结果</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox">
+                                <label class="form-check-label">专家分析结果</label>
+                            </div>
+                        </div>
+                        <button class="btn btn-danger w-100">
+                            <i class="bi bi-download"></i> 生成报告
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 组合报告 -->
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-collection"></i> 生成组合报告</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">股票列表（每行一个代码）</label>
+                            <textarea class="form-control" id="portfolioStocks" rows="5" placeholder="600519&#10;000858&#10;000651&#10;600036"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">报告格式</label>
+                            <div class="d-flex gap-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" checked>
+                                    <label class="form-check-label">PDF</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" checked>
+                                    <label class="form-check-label">Excel</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary w-100">
+                            <i class="bi bi-download"></i> 生成组合报告
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 定时报告 -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0"><i class="bi bi-clock"></i> 定时报告</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">报告频率</label>
+                                    <select class="form-select">
+                                        <option>每日</option>
+                                        <option>每周</option>
+                                        <option>每月</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">发送时间</label>
+                                    <input type="time" class="form-control" value="09:00">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">接收邮箱</label>
+                                    <input type="email" class="form-control" placeholder="your@email.com">
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-warning">
+                            <i class="bi bi-bell"></i> 设置定时报告
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 报告模板 -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="bi bi-palette"></i> 报告模板</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <div class="card text-center h-100" style="cursor:pointer;">
+                                    <div class="card-body">
+                                        <i class="bi bi-file-text display-4 text-primary"></i>
+                                        <h6 class="mt-2">标准模板</h6>
+                                        <span class="badge bg-success">默认</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card text-center h-100" style="cursor:pointer;">
+                                    <div class="card-body">
+                                        <i class="bi bi-bar-chart display-4 text-success"></i>
+                                        <h6 class="mt-2">图表增强</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card text-center h-100" style="cursor:pointer;">
+                                    <div class="card-body">
+                                        <i class="bi bi-speedometer2 display-4 text-warning"></i>
+                                        <h6 class="mt-2">简洁摘要</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card text-center h-100" style="cursor:pointer;">
+                                    <div class="card-body">
+                                        <i class="bi bi-plus-circle display-4 text-secondary"></i>
+                                        <h6 class="mt-2">自定义模板</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">VIMaster v2.0 - 让价值投资更智能</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

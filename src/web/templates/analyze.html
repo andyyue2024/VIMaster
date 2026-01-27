@@ -312,6 +312,40 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- 更多分析选项 -->
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header">
+                                <h6 class="mb-0"><i class="bi bi-stars"></i> 更多分析</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <a href="/masters?code=${data.stock_code}" class="btn btn-success w-100 py-3">
+                                            <i class="bi bi-mortarboard fs-4 d-block mb-2"></i>
+                                            投资大师分析
+                                            <small class="d-block">巴菲特、格雷厄姆等 7 位大师</small>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a href="/experts?code=${data.stock_code}" class="btn btn-info w-100 py-3 text-white">
+                                            <i class="bi bi-person-workspace fs-4 d-block mb-2"></i>
+                                            分析专家分析
+                                            <small class="d-block">基本面、技术面等 6 位专家</small>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a href="/reports?code=${data.stock_code}" class="btn btn-danger w-100 py-3">
+                                            <i class="bi bi-file-earmark-pdf fs-4 d-block mb-2"></i>
+                                            生成报告
+                                            <small class="d-block">PDF / Excel 专业报告</small>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             `;
 

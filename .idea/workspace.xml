@@ -4,23 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 添加 LLM 大师 Agent 模块，支持多位投资大师分析与配置">
-      <change afterPath="$PROJECT_DIR$/demo/demo_llm_experts.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demo/test_llm_agents.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/experts/master11.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/experts/master12.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/experts/master13.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/experts/master14.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/experts/master15.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/experts/master16.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/llm/expert_agents.py" afterDir="false" />
+    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 添加 LLM 专家 Agent 模块，支持多位分析专家分析与配置">
+      <change afterPath="$PROJECT_DIR$/demo/test_llm_settings_api.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/web/templates/community.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/web/templates/experts.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/web/templates/masters.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/web/templates/reports.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/llm_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/llm_config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/agents/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/agents/llm/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/llm/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/data_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/data_models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/web/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/web/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/web/templates/analyze.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/web/templates/analyze.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/web/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/web/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/web/templates/settings.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/web/templates/settings.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -293,7 +289,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769496020232</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="feat: 添加 LLM 专家 Agent 模块，支持多位分析专家分析与配置">
+      <option name="closed" value="true" />
+      <created>1769496908454</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1769496908454</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -337,7 +341,8 @@
     <MESSAGE value="feat: 添加 Web UI 界面，支持股票分析、投资组合和历史记录功能" />
     <MESSAGE value="feat: 添加 PC 客户端界面，基于 PyQt6 实现股票分析、投资组合和历史记录功能" />
     <MESSAGE value="feat: 添加 LLM 大师 Agent 模块，支持多位投资大师分析与配置" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加 LLM 大师 Agent 模块，支持多位投资大师分析与配置" />
+    <MESSAGE value="feat: 添加 LLM 专家 Agent 模块，支持多位分析专家分析与配置" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加 LLM 专家 Agent 模块，支持多位分析专家分析与配置" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

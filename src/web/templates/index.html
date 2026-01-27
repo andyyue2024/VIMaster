@@ -7,12 +7,56 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+        }
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+        .master-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        .stats-card {
+            border-left: 4px solid;
+        }
+        .quick-action-btn {
+            padding: 20px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        .quick-action-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
     <!-- 导航栏 -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand fw-bold" href="/">
                 <i class="bi bi-graph-up-arrow"></i> VIMaster
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -23,269 +67,459 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="/"><i class="bi bi-house"></i> 首页</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/analyze"><i class="bi bi-search"></i> 股票分析</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-search"></i> 分析
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/analyze"><i class="bi bi-cpu"></i> 基础分析</a></li>
+                            <li><a class="dropdown-item" href="/masters"><i class="bi bi-mortarboard"></i> 大师分析</a></li>
+                            <li><a class="dropdown-item" href="/experts"><i class="bi bi-person-workspace"></i> 专家分析</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/portfolio"><i class="bi bi-briefcase"></i> 投资组合</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/history"><i class="bi bi-clock-history"></i> 历史记录</a>
+                        <a class="nav-link" href="/community"><i class="bi bi-people"></i> 社区</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reports"><i class="bi bi-file-earmark-text"></i> 报告</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/history"><i class="bi bi-clock-history"></i> 历史</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="/settings"><i class="bi bi-gear"></i> 设置</a>
+                        <a class="nav-link" href="/settings"><i class="bi bi-gear"></i></a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- 主内容 -->
-    <div class="container mt-4">
-        <!-- Hero Section -->
-        <div class="row mb-5">
-            <div class="col-12 text-center py-5 bg-light rounded">
-                <h1 class="display-4 text-primary">
-                    <i class="bi bi-graph-up-arrow"></i> VIMaster
-                </h1>
-                <p class="lead text-muted">基于价值投资理论的智能股票分析平台</p>
-                <div class="mt-4">
-                    <a href="/analyze" class="btn btn-primary btn-lg me-2">
-                        <i class="bi bi-search"></i> 开始分析
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-3 fw-bold mb-4">
+                <i class="bi bi-graph-up-arrow"></i> VIMaster
+            </h1>
+            <p class="lead mb-4" style="font-size: 1.5rem;">
+                基于价值投资理论的智能股票分析平台
+            </p>
+            <p class="mb-5 opacity-75">
+                9 大智能 Agent + 7 位投资大师 + 6 位分析专家 = 全方位投资决策支持
+            </p>
+
+            <!-- 快速搜索 -->
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <form id="quickSearchForm" class="input-group input-group-lg">
+                        <input type="text" class="form-control" id="quickStockCode"
+                               placeholder="输入股票代码开始分析，如 600519">
+                        <button class="btn btn-light" type="submit">
+                            <i class="bi bi-search"></i> 分析
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 快速操作 -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <a href="/analyze" class="text-decoration-none">
+                        <div class="quick-action-btn bg-primary text-white text-center h-100">
+                            <i class="bi bi-cpu display-4"></i>
+                            <h5 class="mt-3">基础分析</h5>
+                            <small>9 大 Agent 综合分析</small>
+                        </div>
                     </a>
-                    <a href="/portfolio" class="btn btn-outline-primary btn-lg">
-                        <i class="bi bi-briefcase"></i> 投资组合
+                </div>
+                <div class="col-md-3">
+                    <a href="/masters" class="text-decoration-none">
+                        <div class="quick-action-btn bg-success text-white text-center h-100">
+                            <i class="bi bi-mortarboard display-4"></i>
+                            <h5 class="mt-3">大师分析</h5>
+                            <small>巴菲特、格雷厄姆等</small>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="/experts" class="text-decoration-none">
+                        <div class="quick-action-btn bg-info text-white text-center h-100">
+                            <i class="bi bi-person-workspace display-4"></i>
+                            <h5 class="mt-3">专家分析</h5>
+                            <small>技术、基本面、情绪</small>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="/portfolio" class="text-decoration-none">
+                        <div class="quick-action-btn bg-warning text-dark text-center h-100">
+                            <i class="bi bi-briefcase display-4"></i>
+                            <h5 class="mt-3">投资组合</h5>
+                            <small>批量分析与优化</small>
+                        </div>
                     </a>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- 功能卡片 -->
-        <div class="row mb-5">
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        <div class="display-4 text-primary mb-3">
-                            <i class="bi bi-cpu"></i>
-                        </div>
-                        <h5 class="card-title">9 大智能 Agent</h5>
-                        <p class="card-text text-muted">
-                            股权思维、护城河、财务分析、估值、安全边际、买入点、卖出纪律、风险管理、心理纪律
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        <div class="display-4 text-success mb-3">
-                            <i class="bi bi-robot"></i>
-                        </div>
-                        <h5 class="card-title">机器学习评分</h5>
-                        <p class="card-text text-muted">
-                            基于 ML 模型的综合评分系统，辅助投资决策
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        <div class="display-4 text-info mb-3">
-                            <i class="bi bi-bar-chart"></i>
-                        </div>
-                        <h5 class="card-title">可视化报告</h5>
-                        <p class="card-text text-muted">
-                            雷达图、估值图、财务图、仪表盘等 6 种专业图表
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 快速分析 -->
-        <div class="row mb-5">
-            <div class="col-12">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0"><i class="bi bi-lightning"></i> 快速分析</h5>
-                    </div>
-                    <div class="card-body">
-                        <form id="quickAnalyzeForm">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control form-control-lg"
-                                           id="stockCodeInput" placeholder="输入股票代码，如：600519">
+    <!-- 统计卡片 -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="card stats-card border-0 shadow-sm" style="border-color: #0d6efd !important;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="text-muted">总分析次数</h6>
+                                    <h2 id="statTotal" class="mb-0">-</h2>
                                 </div>
-                                <div class="col-md-4">
-                                    <button type="submit" class="btn btn-primary btn-lg w-100">
-                                        <i class="bi bi-search"></i> 分析
-                                    </button>
+                                <div class="text-primary opacity-50">
+                                    <i class="bi bi-bar-chart display-4"></i>
                                 </div>
                             </div>
-                        </form>
-                        <div id="quickResult" class="mt-4" style="display: none;">
-                            <!-- 分析结果将显示在这里 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card border-0 shadow-sm" style="border-color: #198754 !important;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="text-muted">买入信号</h6>
+                                    <h2 id="statBuy" class="mb-0 text-success">-</h2>
+                                </div>
+                                <div class="text-success opacity-50">
+                                    <i class="bi bi-arrow-up-circle display-4"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card border-0 shadow-sm" style="border-color: #ffc107 !important;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="text-muted">持有信号</h6>
+                                    <h2 id="statHold" class="mb-0 text-warning">-</h2>
+                                </div>
+                                <div class="text-warning opacity-50">
+                                    <i class="bi bi-pause-circle display-4"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card border-0 shadow-sm" style="border-color: #dc3545 !important;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="text-muted">卖出信号</h6>
+                                    <h2 id="statSell" class="mb-0 text-danger">-</h2>
+                                </div>
+                                <div class="text-danger opacity-50">
+                                    <i class="bi bi-arrow-down-circle display-4"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- 统计数据 -->
-        <div class="row mb-5">
-            <div class="col-md-3 mb-3">
-                <div class="card bg-primary text-white text-center">
-                    <div class="card-body">
-                        <h3 id="statTotalAnalysis">-</h3>
-                        <p class="mb-0">总分析次数</p>
+    <!-- 核心功能 -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">
+                <i class="bi bi-stars text-primary"></i> 核心功能
+            </h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm card-hover">
+                        <div class="card-body text-center">
+                            <div class="feature-icon bg-primary text-white mx-auto">
+                                <i class="bi bi-cpu"></i>
+                            </div>
+                            <h5>9 大智能 Agent</h5>
+                            <p class="text-muted small">
+                                股权思维、护城河、财务分析、估值、安全边际、买入点、卖出纪律、风险管理、心理纪律
+                            </p>
+                            <a href="/analyze" class="btn btn-outline-primary btn-sm">立即分析</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="card bg-success text-white text-center">
-                    <div class="card-body">
-                        <h3 id="statBuySignals">-</h3>
-                        <p class="mb-0">买入信号</p>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm card-hover">
+                        <div class="card-body text-center">
+                            <div class="feature-icon bg-success text-white mx-auto">
+                                <i class="bi bi-mortarboard"></i>
+                            </div>
+                            <h5>7 位投资大师</h5>
+                            <p class="text-muted small">
+                                巴菲特、格雷厄姆、芒格、费雪、德鲁肯米勒、凯西·伍德、阿克曼
+                            </p>
+                            <a href="/masters" class="btn btn-outline-success btn-sm">大师分析</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="card bg-warning text-white text-center">
-                    <div class="card-body">
-                        <h3 id="statHoldSignals">-</h3>
-                        <p class="mb-0">持有信号</p>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm card-hover">
+                        <div class="card-body text-center">
+                            <div class="feature-icon bg-info text-white mx-auto">
+                                <i class="bi bi-person-workspace"></i>
+                            </div>
+                            <h5>6 位分析专家</h5>
+                            <p class="text-muted small">
+                                基本面、市场情绪、估值、技术分析、风险管理、投资组合
+                            </p>
+                            <a href="/experts" class="btn btn-outline-info btn-sm">专家分析</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="card bg-danger text-white text-center">
-                    <div class="card-body">
-                        <h3 id="statSellSignals">-</h3>
-                        <p class="mb-0">卖出信号</p>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm card-hover">
+                        <div class="card-body text-center">
+                            <div class="feature-icon text-white mx-auto" style="background: #6f42c1;">
+                                <i class="bi bi-robot"></i>
+                            </div>
+                            <h5>机器学习评分</h5>
+                            <p class="text-muted small">
+                                sklearn 模型训练、交叉验证、模型持久化、版本管理
+                            </p>
+                            <span class="badge bg-secondary">自动集成</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm card-hover">
+                        <div class="card-body text-center">
+                            <div class="feature-icon bg-warning text-dark mx-auto">
+                                <i class="bi bi-bar-chart-line"></i>
+                            </div>
+                            <h5>可视化分析</h5>
+                            <p class="text-muted small">
+                                雷达图、估值图、财务图、仪表盘、组合配置、风险分析
+                            </p>
+                            <span class="badge bg-secondary">6 种图表</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm card-hover">
+                        <div class="card-body text-center">
+                            <div class="feature-icon bg-danger text-white mx-auto">
+                                <i class="bi bi-file-earmark-pdf"></i>
+                            </div>
+                            <h5>报告生成</h5>
+                            <p class="text-muted small">
+                                PDF/Excel 专业报告、模板自定义、定时发送
+                            </p>
+                            <a href="/reports" class="btn btn-outline-danger btn-sm">生成报告</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- 投资大师介绍 -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">
+                <i class="bi bi-mortarboard text-success"></i> 投资大师 AI
+            </h2>
+            <div class="row g-3" id="mastersList">
+                <div class="text-center"><div class="spinner-border"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 更多功能 -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">
+                <i class="bi bi-grid text-info"></i> 更多功能
+            </h2>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="card text-center h-100 shadow-sm">
+                        <div class="card-body">
+                            <i class="bi bi-broadcast text-primary display-4"></i>
+                            <h6 class="mt-3">实时行情</h6>
+                            <small class="text-muted">WebSocket 推送</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center h-100 shadow-sm">
+                        <div class="card-body">
+                            <i class="bi bi-people text-success display-4"></i>
+                            <h6 class="mt-3">社区分享</h6>
+                            <small class="text-muted">分析结果互动</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center h-100 shadow-sm">
+                        <div class="card-body">
+                            <i class="bi bi-clock text-warning display-4"></i>
+                            <h6 class="mt-3">定时任务</h6>
+                            <small class="text-muted">自动分析推送</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center h-100 shadow-sm">
+                        <div class="card-body">
+                            <i class="bi bi-cloud text-info display-4"></i>
+                            <h6 class="mt-3">API 服务</h6>
+                            <small class="text-muted">RESTful 接口</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center h-100 shadow-sm">
+                        <div class="card-body">
+                            <i class="bi bi-database text-secondary display-4"></i>
+                            <h6 class="mt-3">多数据源</h6>
+                            <small class="text-muted">AkShare/TuShare/BaoStock</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center h-100 shadow-sm">
+                        <div class="card-body">
+                            <i class="bi bi-arrow-repeat text-danger display-4"></i>
+                            <h6 class="mt-3">重试机制</h6>
+                            <small class="text-muted">断路器/限流器</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center h-100 shadow-sm">
+                        <div class="card-body">
+                            <i class="bi bi-speedometer2 text-primary display-4"></i>
+                            <h6 class="mt-3">性能监控</h6>
+                            <small class="text-muted">增强日志</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center h-100 shadow-sm">
+                        <div class="card-body">
+                            <i class="bi bi-hdd text-success display-4"></i>
+                            <h6 class="mt-3">数据缓存</h6>
+                            <small class="text-muted">智能缓存机制</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- 页脚 -->
-    <footer class="bg-dark text-white py-4 mt-5">
-        <div class="container text-center">
-            <p class="mb-0">VIMaster v5.0 - 让价值投资更智能</p>
-            <small class="text-muted">© 2026 VIMaster. All rights reserved.</small>
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5><i class="bi bi-graph-up-arrow"></i> VIMaster</h5>
+                    <p class="text-muted">基于价值投资理论的智能股票分析平台</p>
+                </div>
+                <div class="col-md-4">
+                    <h6>快速链接</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="/analyze" class="text-muted">基础分析</a></li>
+                        <li><a href="/masters" class="text-muted">大师分析</a></li>
+                        <li><a href="/experts" class="text-muted">专家分析</a></li>
+                        <li><a href="/portfolio" class="text-muted">投资组合</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6>技术支持</h6>
+                    <p class="text-muted small">
+                        支持的 LLM: OpenAI, Claude, DeepSeek, Qwen, GLM, Ollama
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p class="mb-0">VIMaster v2.0 - 让价值投资更智能</p>
+                <small class="text-muted">© 2026 VIMaster. All rights reserved.</small>
+            </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>
-        // 加载统计数据
         document.addEventListener('DOMContentLoaded', function() {
             loadStats();
+            loadMasters();
         });
 
-        // 快速分析表单
-        document.getElementById('quickAnalyzeForm').addEventListener('submit', function(e) {
+        document.getElementById('quickSearchForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const stockCode = document.getElementById('stockCodeInput').value.trim();
-            if (stockCode) {
-                analyzeStock(stockCode);
+            const code = document.getElementById('quickStockCode').value.trim();
+            if (code) {
+                window.location.href = '/analyze?code=' + code;
             }
         });
 
         function loadStats() {
             fetch('/api/stats')
-                .then(response => response.json())
+                .then(r => r.json())
                 .then(data => {
                     if (data.success) {
-                        document.getElementById('statTotalAnalysis').textContent = data.data.total_records || 0;
+                        document.getElementById('statTotal').textContent = data.data.total_records || 0;
                         const dist = data.data.signal_distribution || {};
-                        document.getElementById('statBuySignals').textContent = (dist['买入'] || 0) + (dist['强烈买入'] || 0);
-                        document.getElementById('statHoldSignals').textContent = dist['持有'] || 0;
-                        document.getElementById('statSellSignals').textContent = (dist['卖出'] || 0) + (dist['强烈卖出'] || 0);
+                        document.getElementById('statBuy').textContent = (dist['买入'] || 0) + (dist['强烈买入'] || 0);
+                        document.getElementById('statHold').textContent = dist['持有'] || 0;
+                        document.getElementById('statSell').textContent = (dist['卖出'] || 0) + (dist['强烈卖出'] || 0);
                     }
                 })
-                .catch(err => console.error('加载统计失败:', err));
+                .catch(console.error);
         }
 
-        function analyzeStock(stockCode) {
-            const resultDiv = document.getElementById('quickResult');
-            resultDiv.style.display = 'block';
-            resultDiv.innerHTML = '<div class="text-center"><div class="spinner-border text-primary"></div><p>正在分析...</p></div>';
-
-            fetch('/api/analyze', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({stock_code: stockCode})
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showAnalysisResult(data.data);
-                } else {
-                    resultDiv.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
-                }
-            })
-            .catch(err => {
-                resultDiv.innerHTML = `<div class="alert alert-danger">分析失败: ${err}</div>`;
-            });
-        }
-
-        function showAnalysisResult(data) {
-            const signalClass = {
-                '强烈买入': 'success',
-                '买入': 'success',
-                '持有': 'warning',
-                '卖出': 'danger',
-                '强烈卖出': 'danger'
-            };
-            const cls = signalClass[data.final_signal] || 'secondary';
-
-            let html = `
-                <div class="card border-${cls}">
-                    <div class="card-header bg-${cls} text-white">
-                        <h5 class="mb-0">${data.stock_code} 分析结果</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h2 class="text-${cls}">${data.final_signal}</h2>
-                                <p class="lead">综合评分: <strong>${data.overall_score}/100</strong></p>
-                            </div>
-                            <div class="col-md-6">
-            `;
-
-            if (data.financial) {
-                html += `
-                    <p><strong>当前价格:</strong> ¥${data.financial.current_price || 'N/A'}</p>
-                    <p><strong>PE:</strong> ${data.financial.pe_ratio || 'N/A'} | <strong>PB:</strong> ${data.financial.pb_ratio || 'N/A'}</p>
-                    <p><strong>ROE:</strong> ${data.financial.roe || 'N/A'}%</p>
-                `;
-            }
-
-            if (data.valuation) {
-                html += `
-                    <p><strong>合理价格:</strong> ¥${data.valuation.fair_price || 'N/A'}</p>
-                    <p><strong>安全边际:</strong> ${data.valuation.margin_of_safety || 'N/A'}%</p>
-                `;
-            }
-
-            html += `
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <a href="/analyze?code=${data.stock_code}" class="btn btn-outline-${cls}">
-                                查看详细报告 <i class="bi bi-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('quickResult').innerHTML = html;
+        function loadMasters() {
+            fetch('/api/agents/masters')
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        const container = document.getElementById('mastersList');
+                        const colors = ['primary', 'success', 'info', 'warning', 'danger', 'secondary', 'dark'];
+                        let html = '';
+                        data.data.forEach((master, i) => {
+                            const color = colors[i % colors.length];
+                            const initials = master.name.replace('Agent', '').substring(0, 2);
+                            html += `
+                                <div class="col-md-3 col-6">
+                                    <div class="card shadow-sm h-100">
+                                        <div class="card-body text-center py-3">
+                                            <div class="master-avatar mx-auto mb-2" style="background: var(--bs-${color});">
+                                                ${initials}
+                                            </div>
+                                            <h6 class="mb-1">${master.name.replace('Agent', '')}</h6>
+                                            <small class="text-muted">${master.description.substring(0, 30)}...</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        container.innerHTML = html;
+                    }
+                })
+                .catch(console.error);
         }
     </script>
 </body>
