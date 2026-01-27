@@ -299,19 +299,20 @@ class PortfolioOptimizer:
         selected_stocks: List[Dict[str, Any]]
     ) -> None:
         """计算投资组合指标"""
-        # 预期收益率
+        # 预期收益率（结合 ML 分作为额外信号）
         weighted_returns = []
         for stock in selected_stocks:
-            score = stock.get("overall_score", 5.0)
-            # 估算：综合评分越高，预期收益越高
-            estimated_return = (score - 5.0) * 0.05  # 基数5分，每高1分增加5%收益
+            base_score = stock.get("overall_score", 5.0)
+            ml_score = stock.get("ml_score", 5.0)  # 新增：ML 信号（0-10）
+            combined = (base_score / 10.0) * 0.6 + (ml_score / 10.0) * 0.4  # 60% 基础、40% ML
+            estimated_return = (combined - 0.5) * 0.2  # 基线 0.5，范围约 -10%~+10%
             weight = next((p.weight for p in recommendation.positions
                          if p.stock_code == stock.get("stock_code")), 0.1)
             weighted_returns.append(weight * estimated_return)
 
         recommendation.expected_return = sum(weighted_returns) if weighted_returns else 0.0
 
-        # 风险评分
+        # 风险评分（保持原逻辑）
         risk_scores = [
             next((p.weight for p in recommendation.positions
                  if p.stock_code == stock.get("stock_code")), 0.1) *

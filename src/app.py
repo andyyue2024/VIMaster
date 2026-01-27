@@ -6,6 +6,7 @@ import sys
 from typing import List, Optional
 from src.schedulers.workflow_scheduler import AnalysisManager
 from src.models.data_models import InvestmentSignal
+from src.ml import StockMLScorer
 import json
 
 # 配置日志
@@ -21,6 +22,7 @@ class ValueInvestingApp:
 
     def __init__(self):
         self.manager = AnalysisManager()
+        self.ml_scorer = StockMLScorer()
         logger.info("价值投资分析应用已初始化")
 
     def analyze_single_stock(self, stock_code: str) -> None:
@@ -30,6 +32,23 @@ class ValueInvestingApp:
         context = self.manager.analyze_single_stock(stock_code)
         if context:
             self._print_stock_report(context)
+            # ML 评分（如果能获取财务指标）
+            try:
+                fm = context.financial_metrics
+                if fm:
+                    ml_result = self.ml_scorer.score_stock(stock_code, {
+                        "pe_ratio": fm.pe_ratio,
+                        "pb_ratio": fm.pb_ratio,
+                        "roe": fm.roe,
+                        "gross_margin": fm.gross_margin,
+                        "free_cash_flow": fm.free_cash_flow,
+                        "debt_ratio": fm.debt_ratio,
+                    })
+                    print("\n[ML评分] 综合机器学习分数 (0-10):", ml_result["ml_score"])
+                else:
+                    logger.info("缺少财务指标，跳过 ML 评分")
+            except Exception as e:
+                logger.warning(f"ML 评分失败: {e}")
         else:
             print(f"[!] 无法分析股票 {stock_code}，请检查代码是否正确")
 
@@ -180,6 +199,11 @@ class ValueInvestingApp:
 
             if stock.financial_metrics:
                 print(f"  当前价: {stock.financial_metrics.current_price}")
+
+            # 打印 ML 分（如果已计算并存在字段）
+            ml_score = getattr(stock, "ml_score", None) if hasattr(stock, "ml_score") else stock.__dict__.get("ml_score") if hasattr(stock, "__dict__") else None
+            if ml_score is not None:
+                print(f"  ML评分: {ml_score:.2f} / 10")
 
             if stock.valuation:
                 print(f"  合理价: {stock.valuation.fair_price:.2f}, 安全边际: {stock.valuation.margin_of_safety:.2f}%")

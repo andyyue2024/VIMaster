@@ -4,18 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 添加实时数据缓存机制，支持TTL、自动刷新和线程安全">
-      <change afterPath="$PROJECT_DIR$/API_RETRY_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RETRY_COMPLETION_CHECKLIST.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RETRY_QUICK_REFERENCE.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demo_retry_mechanism.py" afterDir="false" />
+    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 实现API重试机制，支持多种重试策略、断路器和速率限制">
+      <change afterPath="$PROJECT_DIR$/demo_ml_integration.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/features.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/advanced_retry.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/retry_mechanism.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_retry_mechanism.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ml/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ml/datasets.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ml/labeling.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ml/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_ml_models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/akshare_provider.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/akshare_provider.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QUICK_REFERENCE_V2.py" beforeDir="false" afterPath="$PROJECT_DIR$/demo/QUICK_REFERENCE_V2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QUICK_START.py" beforeDir="false" afterPath="$PROJECT_DIR$/demo/QUICK_START.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/analysis/portfolio_optimizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/analysis/portfolio_optimizer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,7 +151,23 @@
       <option name="project" value="LOCAL" />
       <updated>1769431088928</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="feat: 实现API重试机制，支持多种重试策略、断路器和速率限制">
+      <option name="closed" value="true" />
+      <created>1769477796268</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1769477796268</updated>
+    </task>
+    <task id="LOCAL-00006" summary="feat: 实现API重试机制，支持多种重试策略、断路器和速率限制">
+      <option name="closed" value="true" />
+      <created>1769477848713</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1769477848713</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -181,7 +198,8 @@
     <MESSAGE value="feat: 添加股票分析脚本和多个Agent模块，优化数据获取和分析流程" />
     <MESSAGE value="feat: 添加多源数据集成，支持TuShare和BaoStock，优化数据获取流程" />
     <MESSAGE value="feat: 添加实时数据缓存机制，支持TTL、自动刷新和线程安全" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加实时数据缓存机制，支持TTL、自动刷新和线程安全" />
+    <MESSAGE value="feat: 实现API重试机制，支持多种重试策略、断路器和速率限制" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 实现API重试机制，支持多种重试策略、断路器和速率限制" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
