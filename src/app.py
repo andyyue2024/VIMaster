@@ -9,6 +9,8 @@ from src.models.data_models import InvestmentSignal
 from src.ml import StockMLScorer
 from src.agents.agent_config import AgentConfigManager, load_agent_config
 from src.reports import ReportManager, StockReportData, PortfolioReportData, ReportTemplate
+from src.storage import AnalysisRepository
+from src.community import create_community_service, CommunityService
 import os
 import json
 from datetime import datetime
