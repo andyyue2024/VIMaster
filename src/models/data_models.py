@@ -164,6 +164,8 @@ class StockAnalysisContext:
     # LLM 大师分析结果
     master_signals: Dict[str, Any] = field(default_factory=dict)
     llm_responses: Dict[str, Any] = field(default_factory=dict)
+    # LLM 专家分析结果
+    expert_signals: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         """转换为字典格式"""

@@ -7,7 +7,13 @@
     "WarrenBuffettAgent": "gpt-4o",
     "StanleyDruckenmillerAgent": "gpt-4o",
     "CathieWoodAgent": "gpt-4o",
-    "BillAckmanAgent": "gpt-4o"
+    "BillAckmanAgent": "gpt-4o",
+    "FundamentalsAgent": "gpt-4o",
+    "SentimentAgent": "gpt-4o",
+    "ValuationExpertAgent": "gpt-4o",
+    "TechnicalAgent": "gpt-4o",
+    "RiskManagerAgent": "gpt-4o",
+    "PortfolioManagerAgent": "gpt-4o"
   },
   "custom_providers": {
     "local-llama": {

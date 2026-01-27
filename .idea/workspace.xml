@@ -4,26 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 添加 PC 客户端界面，基于 PyQt6 实现股票分析、投资组合和历史记录功能">
-      <change afterPath="$PROJECT_DIR$/config/llm_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demo/demo_llm_masters.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/llm/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/llm/llm_base_agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/llm/llm_config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/llm/master_agents.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/masters/master2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/masters/master3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/masters/master4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/masters/master5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/masters/master6.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/masters/master7.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/masters/master8.txt" afterDir="false" />
+    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 添加 LLM 大师 Agent 模块，支持多位投资大师分析与配置">
+      <change afterPath="$PROJECT_DIR$/demo/demo_llm_experts.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/test_llm_agents.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/experts/master11.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/experts/master12.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/experts/master13.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/experts/master14.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/experts/master15.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/experts/master16.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/llm/expert_agents.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/llm_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/llm_config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/agents/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agents/llm/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/llm/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/data_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/data_models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/reports/report_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/reports/report_generator.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,26 +86,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.conftest.executor&quot;: &quot;Run&quot;,
-    &quot;Python.demo.executor&quot;: &quot;Run&quot;,
-    &quot;Python.demo_analyze.executor&quot;: &quot;Run&quot;,
-    &quot;Python.demo_visualization.executor&quot;: &quot;Run&quot;,
-    &quot;Python.run.executor&quot;: &quot;Run&quot;,
-    &quot;Python.run_desktop.executor&quot;: &quot;Run&quot;,
-    &quot;Python.run_web.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.conftest.executor": "Run",
+    "Python.demo.executor": "Run",
+    "Python.demo_analyze.executor": "Run",
+    "Python.demo_visualization.executor": "Run",
+    "Python.run.executor": "Run",
+    "Python.run_desktop.executor": "Run",
+    "Python.run_web.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "E:/Workplace-Pycharm/VIMaster/src/agents/experts",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Workplace-Pycharm\VIMaster\src\agents\experts" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\Workplace-Pycharm\VIMaster\src\agents\masters" />
       <recent name="E:\Workplace-Pycharm\VIMaster\src\agents\master1" />
@@ -284,7 +285,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769485528730</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="feat: 添加 LLM 大师 Agent 模块，支持多位投资大师分析与配置">
+      <option name="closed" value="true" />
+      <created>1769496020232</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1769496020232</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -327,7 +336,8 @@
     <MESSAGE value="docs: 更新 README，增加项目简介、功能矩阵和 API 服务说明" />
     <MESSAGE value="feat: 添加 Web UI 界面，支持股票分析、投资组合和历史记录功能" />
     <MESSAGE value="feat: 添加 PC 客户端界面，基于 PyQt6 实现股票分析、投资组合和历史记录功能" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加 PC 客户端界面，基于 PyQt6 实现股票分析、投资组合和历史记录功能" />
+    <MESSAGE value="feat: 添加 LLM 大师 Agent 模块，支持多位投资大师分析与配置" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加 LLM 大师 Agent 模块，支持多位投资大师分析与配置" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

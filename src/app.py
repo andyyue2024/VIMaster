@@ -12,6 +12,20 @@ from src.reports import ReportManager, StockReportData, PortfolioReportData, Rep
 from src.storage import AnalysisRepository
 from src.community import create_community_service, CommunityService
 from src.visualization import create_visualizer, StockVisualizer, check_visualization_available
+# LLM 大师 Agents
+from src.agents.llm import (
+    LLMConfigManager,
+    get_all_master_agents,
+    get_master_agent_by_name,
+)
+from src.agents.llm.master_agents import run_all_masters_analysis, get_master_consensus
+# LLM 专家 Agents
+from src.agents.llm.expert_agents import (
+    get_all_expert_agents,
+    get_expert_agent_by_name,
+    run_all_experts_analysis,
+    get_expert_consensus,
+)
 import os
 import json
 from datetime import datetime
@@ -65,6 +79,127 @@ class ValueInvestingApp:
                 logger.warning(f"ML 评分失败: {e}")
         else:
             print(f"[!] 无法分析股票 {stock_code}，请检查代码是否正确")
+
+    def analyze_with_masters(self, stock_code: str, master_names: List[str] = None) -> None:
+        """
+        使用 LLM 大师 Agent 分析股票
+
+        Args:
+            stock_code: 股票代码
+            master_names: 指定的大师名称列表，为空则使用所有大师
+        """
+        logger.info(f"使用 LLM 大师分析股票: {stock_code}")
+
+        # 首先获取基础分析数据
+        context = self.manager.analyze_single_stock(stock_code)
+        if not context:
+            print(f"[!] 无法获取股票 {stock_code} 的基础数据")
+            return
+
+        # 运行大师分析
+        if master_names:
+            for name in master_names:
+                agent = get_master_agent_by_name(name)
+                if agent:
+                    try:
+                        logger.info(f"运行 {agent.name} 分析...")
+                        context = agent.execute(context)
+                    except Exception as e:
+                        logger.error(f"{agent.name} 分析失败: {e}")
+                        print(f"⚠ {agent.name} 分析失败: {e}")
+                else:
+                    print(f"⚠ 未找到大师: {name}")
+        else:
+            try:
+                context = run_all_masters_analysis(context)
+            except Exception as e:
+                logger.error(f"大师分析失败: {e}")
+                print(f"⚠ 大师分析失败: {e}")
+                return
+
+        # 打印大师分析结果
+        self._print_llm_analysis(context, "master")
+
+    def analyze_with_experts(self, stock_code: str, expert_names: List[str] = None) -> None:
+        """
+        使用 LLM 专家 Agent 分析股票
+
+        Args:
+            stock_code: 股票代码
+            expert_names: 指定的专家名称列表，为空则使用所有专家
+        """
+        logger.info(f"使用 LLM 专家分析股票: {stock_code}")
+
+        # 首先获取基础分析数据
+        context = self.manager.analyze_single_stock(stock_code)
+        if not context:
+            print(f"[!] 无法获取股票 {stock_code} 的基础数据")
+            return
+
+        # 运行专家分析
+        if expert_names:
+            for name in expert_names:
+                agent = get_expert_agent_by_name(name)
+                if agent:
+                    try:
+                        logger.info(f"运行 {agent.name} 分析...")
+                        context = agent.execute(context)
+                    except Exception as e:
+                        logger.error(f"{agent.name} 分析失败: {e}")
+                        print(f"⚠ {agent.name} 分析失败: {e}")
+                else:
+                    print(f"⚠ 未找到专家: {name}")
+        else:
+            try:
+                context = run_all_experts_analysis(context)
+            except Exception as e:
+                logger.error(f"专家分析失败: {e}")
+                print(f"⚠ 专家分析失败: {e}")
+                return
+
+        # 打印专家分析结果
+        self._print_llm_analysis(context, "expert")
+
+    def _print_llm_analysis(self, context, analysis_type: str = "master") -> None:
+        """打印 LLM 分析结果"""
+        if analysis_type == "master":
+            title = "投资大师"
+            signals = getattr(context, 'master_signals', {})
+            get_consensus = get_master_consensus
+        else:
+            title = "分析专家"
+            signals = getattr(context, 'expert_signals', {})
+            get_consensus = get_expert_consensus
+
+        print("\n" + "="*80)
+        print(f"{title}分析报告 - {context.stock_code}")
+        print("="*80)
+
+        if not signals:
+            print(f"\n⚠ 没有{title}分析数据")
+            return
+
+        # 打印每位大师/专家的分析
+        for key, signal in signals.items():
+            signal_emoji = {
+                "bullish": "🟢",
+                "bearish": "🔴",
+                "neutral": "🟡",
+            }.get(signal.signal, "⚪")
+
+            print(f"\n【{signal.agent_name}】 {signal_emoji} {signal.signal.upper()}")
+            print(f"  信心度: {signal.confidence:.1f}%")
+            reasoning = signal.reasoning if isinstance(signal.reasoning, str) else str(signal.reasoning)
+            print(f"  分析理由: {reasoning[:300]}...")
+
+        # 打印共识
+        consensus = get_consensus(context)
+        print("\n" + "-"*80)
+        print(f"【{title}共识】")
+        print(f"  共识信号: {consensus['consensus'].upper()}")
+        print(f"  看涨: {consensus['bullish_count']} | 中性: {consensus['neutral_count']} | 看跌: {consensus['bearish_count']}")
+        print(f"  平均信心度: {consensus['average_confidence']:.1f}%")
+        print("="*80)
 
     def analyze_multiple_stocks(self, stock_codes: List[str]) -> None:
         """分析多只股票并生成报告"""
@@ -398,10 +533,12 @@ class ValueInvestingApp:
         print("="*60)
         print("命令:")
         print("  1. analyze <股票代码>     - 分析单只股票")
-        print("  2. portfolio <股票1> <股票2> ... - 分析股票组合")
-        print("  3. buy <股票1> <股票2> ... - 获取买入推荐")
-        print("  4. help              - 显示帮助")
-        print("  5. exit              - 退出程序")
+        print("  2. masters <股票代码>     - 使用投资大师 LLM 分析")
+        print("  3. experts <股票代码>     - 使用分析专家 LLM 分析")
+        print("  4. portfolio <股票1> <股票2> ... - 分析股票组合")
+        print("  5. buy <股票1> <股票2> ... - 获取买入推荐")
+        print("  6. help              - 显示帮助")
+        print("  7. exit              - 退出程序")
         print("="*60)
 
         while True:
@@ -417,6 +554,16 @@ class ValueInvestingApp:
                 if command == "analyze" and len(parts) > 1:
                     stock_code = parts[1]
                     self.analyze_single_stock(stock_code)
+
+                elif command == "masters" and len(parts) > 1:
+                    stock_code = parts[1]
+                    master_names = parts[2:] if len(parts) > 2 else None
+                    self.analyze_with_masters(stock_code, master_names)
+
+                elif command == "experts" and len(parts) > 1:
+                    stock_code = parts[1]
+                    expert_names = parts[2:] if len(parts) > 2 else None
+                    self.analyze_with_experts(stock_code, expert_names)
 
                 elif command == "portfolio" and len(parts) > 1:
                     stock_codes = parts[1:]
@@ -471,6 +618,14 @@ LLM 投资大师 Agent（基于大语言模型）:
   • Cathie Wood Agent         - 凯西·伍德（创新投资女王）
   • Bill Ackman Agent         - 比尔·阿克曼（激进投资家）
 
+LLM 分析专家 Agent（基于大语言模型）:
+  • Fundamentals Agent        - 基本面分析（盈利、增长、财务健康、估值比率）
+  • Sentiment Agent           - 市场情绪分析（内部交易、新闻情绪）
+  • Valuation Expert Agent    - 估值专家（DCF、所有者收益估值）
+  • Technical Agent           - 技术分析（趋势、动量、均值回归、波动率）
+  • Risk Manager Agent        - 风险管理（头寸限制、风险指标）
+  • Portfolio Manager Agent   - 投资组合经理（综合决策、订单生成）
+
 推荐信号说明:
   🟢🟢 强烈买入 - 强烈推荐买入
   🟢  买入    - 推荐买入
@@ -482,6 +637,8 @@ LLM 投资大师 Agent（基于大语言模型）:
   analyze 600519               - 分析贵州茅台
   masters 600519               - 使用所有投资大师分析贵州茅台
   masters 600519 buffett munger - 只使用巴菲特和芒格分析
+  experts 600519               - 使用所有分析专家分析
+  experts 600519 technical sentiment - 只使用技术分析和情绪分析
   portfolio 600519 000858      - 分析多只股票
   buy 600519 000858            - 查找买入推荐
   exit                         - 退出程序
@@ -503,6 +660,11 @@ def main():
             master_names = sys.argv[3:] if len(sys.argv) > 3 else None
             app.analyze_with_masters(stock_code, master_names)
 
+        elif command == "experts" and len(sys.argv) > 2:
+            stock_code = sys.argv[2]
+            expert_names = sys.argv[3:] if len(sys.argv) > 3 else None
+            app.analyze_with_experts(stock_code, expert_names)
+
         elif command == "portfolio" and len(sys.argv) > 2:
             app.analyze_multiple_stocks(sys.argv[2:])
 
@@ -517,6 +679,7 @@ def main():
             print("用法: python main.py <command> [arguments]")
             print("  analyze <股票代码>")
             print("  masters <股票代码> [大师名称...]")
+            print("  experts <股票代码> [专家名称...]")
             print("  portfolio <股票1> <股票2> ...")
             print("  buy <股票1> <股票2> ...")
             print("  help")

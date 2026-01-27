@@ -25,6 +25,15 @@ from src.agents.llm import (
     BillAckmanAgent,
     get_all_master_agents,
     get_master_agent_by_name,
+    # 专家 Agents
+    FundamentalsAgent,
+    SentimentAgent,
+    ValuationExpertAgent,
+    TechnicalAgent,
+    RiskManagerAgent,
+    PortfolioManagerAgent,
+    get_all_expert_agents,
+    get_expert_agent_by_name,
 )
 
 __all__ = [
@@ -39,4 +48,8 @@ __all__ = [
     "BenGrahamAgent", "PhilipFisherAgent", "CharlieMungerAgent",
     "WarrenBuffettAgent", "StanleyDruckenmillerAgent", "CathieWoodAgent",
     "BillAckmanAgent", "get_all_master_agents", "get_master_agent_by_name",
+    # 专家 Agents
+    "FundamentalsAgent", "SentimentAgent", "ValuationExpertAgent",
+    "TechnicalAgent", "RiskManagerAgent", "PortfolioManagerAgent",
+    "get_all_expert_agents", "get_expert_agent_by_name",
 ]
