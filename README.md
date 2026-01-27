@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-5.0-blue.svg" alt="Version">
+  <img src="https://img.shields.io/badge/version-1.9-blue.svg" alt="Version">
   <img src="https://img.shields.io/badge/python-3.8+-green.svg" alt="Python">
   <img src="https://img.shields.io/badge/license-MIT-yellow.svg" alt="License">
   <img src="https://img.shields.io/badge/status-production--ready-brightgreen.svg" alt="Status">
@@ -20,11 +20,13 @@
 - [系统架构](#-系统架构)
 - [快速开始](#-快速开始)
 - [功能详解](#-功能详解)
+- [界面使用](#-界面使用)
 - [API 服务](#-api-服务)
 - [项目结构](#-项目结构)
 - [配置说明](#-配置说明)
 - [扩展开发](#-扩展开发)
 - [常见问题](#-常见问题)
+- [版本历史](#-版本历史)
 
 ---
 
@@ -34,15 +36,18 @@
 
 ### ✨ 特色亮点
 
-- 🤖 **9 大智能 Agent** - 全方位价值分析
-- 📊 **机器学习评分** - ML 模型辅助决策
-- 📈 **实时行情推送** - WebSocket 实时数据
-- 📝 **多格式报告** - PDF/Excel 专业报告
-- 🌐 **商业化 API** - RESTful 接口服务
-- 👥 **社区分享** - 分析结果互动分享
-- 📊 **可视化图表** - 6 种专业图表
-- ⏰ **定时任务** - 自动分析与邮件推送
-- 💾 **数据存储** - SQLite 持久化
+| 特色 | 说明 |
+|------|------|
+| 🤖 **9 大智能 Agent** | 股权思维、护城河、财务分析、估值、安全边际、买入点、卖出纪律、风险管理、心理纪律 |
+| 📊 **机器学习评分** | 基于 sklearn 的 ML 模型，支持训练、评估、持久化 |
+| 📈 **实时行情推送** | WebSocket 实时数据推送，支持价格提醒 |
+| 📝 **多格式报告** | PDF/Excel 专业报告，支持模板自定义 |
+| 🌐 **商业化 API** | RESTful 接口，4 级订阅计划，限流和计费 |
+| 👥 **社区分享** | 分析结果分享、评论、点赞互动 |
+| 📊 **可视化图表** | 雷达图、估值图、财务图、仪表盘等 6 种图表 |
+| ⏰ **定时任务** | 自动分析与邮件推送，支持 cron 表达式 |
+| 💾 **数据存储** | SQLite 持久化，历史记录查询 |
+| 🖥️ **双端界面** | Web UI (Flask) + PC 客户端 (PyQt6) |
 
 ---
 
@@ -50,19 +55,23 @@
 
 ### 功能矩阵
 
-| 模块 | 功能 | 状态 |
-|------|------|:----:|
-| **股票分析** | 9 大 Agent 综合分析 | ✅ |
-| **机器学习** | ML 评分模型 | ✅ |
-| **数据源** | AkShare/TuShare/BaoStock | ✅ |
-| **实时行情** | WebSocket 推送 | ✅ |
-| **报告生成** | PDF/Excel 导出 | ✅ |
-| **可视化** | 6 种专业图表 | ✅ |
-| **定时任务** | 自动分析+邮件 | ✅ |
-| **数据存储** | SQLite 持久化 | ✅ |
-| **社区分享** | 分析结果分享 | ✅ |
-| **API 服务** | RESTful 接口 | ✅ |
-| **性能监控** | 日志+监控 | ✅ |
+| 模块 | 功能 | 状态 | 详情 |
+|------|------|:----:|------|
+| **股票分析** | 9 大 Agent 综合分析 | ✅ | 股权思维、护城河、财务、估值、安全边际、买入点、卖出纪律、风险管理、心理纪律 |
+| **机器学习** | ML 评分模型 | ✅ | sklearn 回归/分类模型，支持训练、交叉验证、模型持久化 |
+| **数据源** | 多数据源支持 | ✅ | AkShare (主)、TuShare、BaoStock，自动切换和缓存 |
+| **实时行情** | WebSocket 推送 | ✅ | 实时订阅、价格提醒、多订阅者支持 |
+| **报告生成** | PDF/Excel 导出 | ✅ | ReportLab PDF、OpenPyXL Excel，模板自定义 |
+| **可视化** | 6 种专业图表 | ✅ | 雷达图、估值对比、财务指标、信号仪表盘、组合配置、风险分析 |
+| **定时任务** | 自动分析+邮件 | ✅ | schedule 库，支持每日/每周/每月，邮件推送 |
+| **数据存储** | SQLite 持久化 | ✅ | 分析历史、统计查询、信号筛选 |
+| **社区分享** | 分析结果分享 | ✅ | 用户注册、分享、评论、点赞、搜索、热门 |
+| **API 服务** | RESTful 接口 | ✅ | Flask API，密钥认证，4 级订阅，限流计费 |
+| **Web UI** | 浏览器界面 | ✅ | Flask + Bootstrap 5，5 个页面，响应式设计 |
+| **PC 客户端** | 桌面应用 | ✅ | PyQt6 原生应用，多线程分析，离线使用 |
+| **性能监控** | 日志+监控 | ✅ | 增强日志、性能追踪、错误统计 |
+| **重试机制** | API 容错 | ✅ | 指数退避、断路器、限流器 |
+| **缓存机制** | 数据缓存 | ✅ | 内存缓存 + 文件缓存，TTL 过期 |
 
 ---
 
@@ -73,9 +82,9 @@
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    应用层 (Application Layer)                    │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐            │
-│  │   CLI    │ │ API服务  │ │ 报告生成 │ │ 可视化   │            │
-│  └──────────┘ └──────────┘ └──────────┘ └──────────┘            │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────┐ │
+│  │   CLI    │ │ Web UI   │ │ PC客户端 │ │ API服务  │ │ 报告   │ │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └────────┘ │
 └─────────────────────────────────────────────────────────────────┘
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
@@ -88,9 +97,9 @@
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                   数据模型层 (Data Model Layer)                  │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐            │
-│  │ 数据模型 │ │ 数据源   │ │ ML模型   │ │ 数据存储 │            │
-│  └──────────┘ └──────────┘ └──────────┘ └──────────┘            │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────┐ │
+│  │ 数据模型 │ │ 数据源   │ │ ML模型   │ │ 数据存储 │ │ 缓存   │ │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └────────┘ │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -99,14 +108,14 @@
 | # | Agent 名称 | 功能描述 | 输出 |
 |:-:|-----------|----------|------|
 | 1 | **股权思维 Agent** | 评估企业盈利能力和长期增长潜力 | 股权价值评分 |
-| 2 | **护城河 Agent** | 分析企业竞争优势（品牌、成本、网络效应） | 护城河评分 |
-| 3 | **财务分析 Agent** | 评估 ROE、毛利率、现金流、负债率 | 财务健康度 |
-| 4 | **估值 Agent** | DCF、PE、PB 综合估值计算 | 内在价值 |
-| 5 | **安全边际 Agent** | 分析价格与价值差异 | 安全边际% |
-| 6 | **买入点 Agent** | 识别买入时机（悲观、困难、误解） | 买入信号 |
-| 7 | **卖出纪律 Agent** | 识别卖出信号（基本面、高估） | 卖出信号 |
-| 8 | **风险管理 Agent** | 评估投资风险（能力圈、杠杆、行业） | 风险等级 |
-| 9 | **心理纪律 Agent** | 生成投资决策和仓位建议 | 最终决策 |
+| 2 | **护城河 Agent** | 分析企业竞争优势（品牌、成本、网络效应、转换成本） | 护城河评分 (0-10) |
+| 3 | **财务分析 Agent** | 评估 ROE、毛利率、现金流、负债率等核心指标 | 财务健康度 |
+| 4 | **估值 Agent** | DCF、PE、PB 综合估值计算 | 内在价值、合理价格 |
+| 5 | **安全边际 Agent** | 分析价格与价值差异，计算安全边际 | 安全边际 % |
+| 6 | **买入点 Agent** | 识别买入时机（市场悲观、暂时困难、市场误解） | 买入信号 |
+| 7 | **卖出纪律 Agent** | 识别卖出信号（基本面恶化、严重高估） | 卖出信号 |
+| 8 | **风险管理 Agent** | 评估投资风险（能力圈、杠杆、行业、公司） | 风险等级 |
+| 9 | **心理纪律 Agent** | 生成投资决策和仓位建议 | 最终决策、仓位、止损止盈 |
 
 ---
 
@@ -140,8 +149,11 @@ pip install reportlab openpyxl
 # 可视化
 pip install matplotlib
 
-# API 服务
+# API 服务 / Web UI
 pip install flask flask-cors
+
+# PC 客户端
+pip install PyQt6
 
 # WebSocket
 pip install websockets
@@ -151,11 +163,14 @@ pip install psutil
 
 # 定时任务
 pip install schedule
+
+# 机器学习
+pip install scikit-learn
 ```
 
 ### 3. 运行程序
 
-#### 交互模式（推荐）
+#### 方式 1: 命令行交互模式（推荐新手）
 
 ```bash
 python run.py
@@ -175,17 +190,26 @@ python run.py
 请输入命令: analyze 600519
 ```
 
-#### 命令行模式
+#### 方式 2: Web UI（推荐日常使用）
 
 ```bash
-# 分析单只股票
-python run.py analyze 600519
+pip install flask flask-cors
+python run_web.py --port 8080
+# 访问 http://localhost:8080
+```
 
-# 分析多只股票
-python run.py portfolio 600519 000858 000651
+#### 方式 3: PC 客户端（推荐离线使用）
 
-# 查找买入推荐
-python run.py buy 600519 000858
+```bash
+pip install PyQt6
+python run_desktop.py
+```
+
+#### 方式 4: API 服务（推荐集成开发）
+
+```bash
+pip install flask flask-cors
+python run_api.py --port 5000
 ```
 
 ### 4. 运行测试
@@ -217,6 +241,9 @@ app.analyze_single_stock("600519")
 
 # 分析多只股票
 app.analyze_multiple_stocks(["600519", "000858", "000651"])
+
+# 生成可视化图表
+app.visualize_stock("600519")
 ```
 
 **输出示例:**
@@ -281,6 +308,9 @@ app = ValueInvestingApp()
 
 # 生成 PDF 和 Excel 报告
 app.generate_stock_report("600519", output_dir="reports", formats=["pdf", "excel"])
+
+# 生成投资组合报告
+app.generate_portfolio_report(["600519", "000858"], output_dir="reports")
 ```
 
 ### 4. 可视化图表
@@ -290,17 +320,26 @@ from src.visualization import create_visualizer
 
 visualizer = create_visualizer()
 
-# 生成完整可视化报告
+# 雷达图
+visualizer.plot_score_radar("600519", {"财务": 8, "估值": 7, "护城河": 9})
+
+# 估值对比图
+visualizer.plot_valuation_comparison("600519", 1800, 2000, 2200)
+
+# 完整分析报告
 app.visualize_stock("600519")
 ```
 
 **支持的图表类型:**
-- 📊 评分雷达图
-- 📈 估值对比图
-- 💹 财务指标图
-- 🎯 信号仪表盘
-- 🥧 组合配置图
-- ⚠️ 风险分析图
+
+| 图表 | 用途 | 输出文件 |
+|------|------|----------|
+| 📊 评分雷达图 | 多维度评分可视化 | `{code}_radar.png` |
+| 📈 估值对比图 | 当前价/合理价/内在价值 | `{code}_valuation.png` |
+| 💹 财务指标图 | ROE、毛利率、PE、负债率 | `{code}_financial.png` |
+| 🎯 信号仪表盘 | 综合评分和信号 | `{code}_gauge.png` |
+| 🥧 组合配置图 | 仓位分布和评分对比 | `portfolio_allocation.png` |
+| ⚠️ 风险分析图 | 多维度风险条形图 | `{code}_risk.png` |
 
 ### 5. 实时行情
 
@@ -311,7 +350,7 @@ service = create_quote_service()
 service.start()
 
 def on_quote(quote):
-    print(f"{quote.stock_code}: {quote.price}")
+    print(f"{quote.stock_code}: {quote.price} ({quote.change_percent:+.2f}%)")
 
 service.subscribe("my_sub", ["600519", "000858"], on_quote)
 ```
@@ -372,9 +411,56 @@ share = community.share_analysis(
     tags=["白酒", "价值投资"],
 )
 
-# 评论
+# 评论和点赞
 community.add_comment(share.share_id, "分析很专业！")
+community.like(share.share_id)
+
+# 搜索和热门
+results = community.search_shares("茅台")
+trending = community.get_trending_shares(limit=10)
 ```
+
+---
+
+## 🖥️ 界面使用
+
+### Web UI
+
+```bash
+python run_web.py --port 8080
+```
+
+| 页面 | 地址 | 功能 |
+|------|------|------|
+| 首页 | `/` | 快速分析、统计概览 |
+| 分析 | `/analyze` | 单股详细分析 |
+| 组合 | `/portfolio` | 批量分析 |
+| 历史 | `/history` | 分析记录 |
+| 设置 | `/settings` | 系统配置 |
+
+### PC 客户端
+
+```bash
+python run_desktop.py
+```
+
+| 功能 | 说明 |
+|------|------|
+| 首页 | 功能入口、特色展示 |
+| 股票分析 | 输入代码分析，热门股票快捷按钮 |
+| 投资组合 | 批量输入，预设组合 |
+| 历史记录 | 搜索过滤、重新分析 |
+| 设置 | 数据源、Agent 配置 |
+
+### 对比
+
+| 特性 | Web UI | PC 客户端 |
+|------|:------:|:--------:|
+| 技术栈 | Flask + Bootstrap | PyQt6 |
+| 运行方式 | 浏览器 | 原生应用 |
+| 离线使用 | ❌ | ✅ |
+| 多线程 | - | ✅ |
+| 打包发布 | Docker | PyInstaller |
 
 ---
 
@@ -389,15 +475,16 @@ python run_api.py --port 5000
 
 ### API 接口
 
-| 接口 | 方法 | 说明 |
-|------|------|------|
-| `/api/v1/health` | GET | 健康检查 |
-| `/api/v1/plans` | GET | 订阅计划 |
-| `/api/v1/keys` | POST | 创建密钥 |
-| `/api/v1/keys/info` | GET | 密钥信息 |
-| `/api/v1/analyze/{code}` | GET | 分析股票 |
-| `/api/v1/analyze/batch` | POST | 批量分析 |
-| `/api/v1/quote/{code}` | GET | 获取行情 |
+| 接口 | 方法 | 说明 | 认证 |
+|------|------|------|:----:|
+| `/api/v1/health` | GET | 健康检查 | ❌ |
+| `/api/v1/plans` | GET | 订阅计划列表 | ❌ |
+| `/api/v1/keys` | POST | 创建 API 密钥 | ❌ |
+| `/api/v1/keys/info` | GET | 获取密钥信息 | ✅ |
+| `/api/v1/keys/usage` | GET | 使用统计 | ✅ |
+| `/api/v1/analyze/{code}` | GET | 分析单只股票 | ✅ |
+| `/api/v1/analyze/batch` | POST | 批量分析 | ✅ |
+| `/api/v1/quote/{code}` | GET | 获取行情 | ✅ |
 
 ### 使用示例
 
@@ -410,16 +497,22 @@ curl -X POST http://localhost:5000/api/v1/keys \
 # 分析股票
 curl http://localhost:5000/api/v1/analyze/600519 \
   -H "X-API-Key: vk_your_api_key"
+
+# 批量分析
+curl -X POST http://localhost:5000/api/v1/analyze/batch \
+  -H "X-API-Key: vk_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{"stock_codes": ["600519", "000858"]}'
 ```
 
 ### 订阅计划
 
-| 计划 | 日配额 | 限流 | 月费 |
-|------|--------|------|------|
-| 免费版 | 100 | 10/分钟 | ¥0 |
-| 基础版 | 1,000 | 60/分钟 | ¥99 |
-| 专业版 | 10,000 | 300/分钟 | ¥299 |
-| 企业版 | 100,000 | 1,000/分钟 | ¥999 |
+| 计划 | 日配额 | 限流 | 单次最大股票 | 月费 |
+|------|--------|------|-------------|------|
+| 免费版 | 100 | 10/分钟 | 5 | ¥0 |
+| 基础版 | 1,000 | 60/分钟 | 20 | ¥99 |
+| 专业版 | 10,000 | 300/分钟 | 50 | ¥299 |
+| 企业版 | 100,000 | 1,000/分钟 | 200 | ¥999 |
 
 ---
 
@@ -431,7 +524,7 @@ VIMaster/
 │   ├── __init__.py
 │   ├── app.py                        # 应用层主入口
 │   │
-│   ├── agents/                       # Agent 模块
+│   ├── agents/                       # Agent 模块 (9 个)
 │   │   ├── base_agent.py            # Agent 基类
 │   │   ├── value_investing_agents.py # 9 大 Agent 实现
 │   │   └── agent_config.py          # Agent 配置管理
@@ -440,7 +533,7 @@ VIMaster/
 │   │   └── data_models.py           # 核心数据结构
 │   │
 │   ├── data/                         # 数据层
-│   │   └── akshare_provider.py      # AkShare 数据源
+│   │   └── akshare_provider.py      # AkShare/TuShare/BaoStock
 │   │
 │   ├── schedulers/                   # 调度层
 │   │   ├── workflow_scheduler.py    # 工作流调度
@@ -453,19 +546,27 @@ VIMaster/
 │   │   └── report_generator.py      # PDF/Excel 生成
 │   │
 │   ├── visualization/                # 可视化
-│   │   └── charts.py                # 图表生成
+│   │   └── charts.py                # 6 种图表
 │   │
 │   ├── realtime/                     # 实时行情
-│   │   └── quote_service.py         # 行情推送服务
+│   │   └── quote_service.py         # WebSocket 推送
 │   │
 │   ├── storage/                      # 数据存储
-│   │   └── database.py              # SQLite 存储
+│   │   └── database.py              # SQLite 持久化
 │   │
 │   ├── community/                    # 社区功能
 │   │   └── community_service.py     # 分享/评论/点赞
 │   │
 │   ├── api/                          # API 服务
 │   │   └── api_service.py           # RESTful API
+│   │
+│   ├── web/                          # Web UI
+│   │   ├── app.py                   # Flask 应用
+│   │   ├── templates/               # HTML 模板
+│   │   └── static/                  # CSS/JS
+│   │
+│   ├── desktop/                      # PC 客户端
+│   │   └── app.py                   # PyQt6 应用
 │   │
 │   ├── notifications/                # 通知
 │   │   └── email_sender.py          # 邮件发送
@@ -484,35 +585,18 @@ VIMaster/
 │   └── integration/                 # 集成测试
 │
 ├── config/                           # 配置文件
-│   ├── agent_config.json            # Agent 配置
-│   ├── email_config.json            # 邮件配置
-│   └── report_template.json         # 报告模板
-│
 ├── demo/                             # 演示脚本
-│   ├── demo_visualization.py
-│   ├── demo_community.py
-│   ├── demo_realtime_quote.py
-│   └── ...
-│
 ├── docs/                             # 文档
-│   ├── API_SERVICE_GUIDE.md
-│   ├── VISUALIZATION_GUIDE.md
-│   ├── COMMUNITY_GUIDE.md
-│   └── ...
-│
 ├── data/                             # 数据目录
-│   ├── api/                         # API 密钥
-│   ├── community/                   # 社区数据
-│   └── vimaster.db                  # SQLite 数据库
-│
 ├── logs/                             # 日志目录
 ├── charts/                           # 图表输出
 ├── reports/                          # 报告输出
 │
-├── run.py                            # 主程序入口
+├── run.py                            # CLI 入口
 ├── run_api.py                        # API 服务入口
+├── run_web.py                        # Web UI 入口
+├── run_desktop.py                    # PC 客户端入口
 ├── requirements.txt                  # 依赖列表
-├── pytest.ini                        # 测试配置
 └── README.md                         # 本文件
 ```
 
@@ -530,6 +614,11 @@ VIMaster/
       "dcf_weight": 0.4,
       "pe_weight": 0.3,
       "pb_weight": 0.3
+    },
+    "risk_agent": {
+      "enabled": true,
+      "max_position": 0.2,
+      "stop_loss_ratio": 0.1
     }
   }
 }
@@ -553,6 +642,7 @@ VIMaster/
 |------|------|--------|
 | `LOG_LEVEL` | 日志级别 | INFO |
 | `SHOW_SYSTEM_INFO` | 显示系统信息 | false |
+| `CACHE_TTL` | 缓存过期时间(秒) | 1800 |
 
 ---
 
@@ -569,6 +659,7 @@ class MyCustomAgent(BaseAgent):
     
     def analyze(self, context):
         # 实现分析逻辑
+        context.my_result = self.do_analysis(context)
         return context
 ```
 
@@ -590,9 +681,11 @@ class MyDataProvider(AkshareDataProvider):
 from src.visualization import StockVisualizer
 
 class MyVisualizer(StockVisualizer):
-    def plot_custom_chart(self, data):
+    def plot_custom_chart(self, data, save_path=None):
         # 实现图表绘制
-        pass
+        fig, ax = plt.subplots()
+        # ...
+        plt.savefig(save_path)
 ```
 
 ---
@@ -609,13 +702,13 @@ A: 系统使用 akshare 库自动获取，需要网络连接。
 
 ### Q: 投资信号的含义？
 
-| 信号 | 含义 | 建议 |
-|------|------|------|
-| 🟢🟢 强烈买入 | 评分≥80 | 较高仓位 |
-| 🟢 买入 | 评分≥70 | 中等仓位 |
-| 🟡 持有 | 评分50-70 | 观望 |
-| 🔴 卖出 | 评分<50 | 分次卖出 |
-| 🔴🔴 强烈卖出 | 严重恶化 | 快速清仓 |
+| 信号 | 含义 | 评分范围 | 建议 |
+|------|------|----------|------|
+| 🟢🟢 强烈买入 | 极具投资价值 | ≥80 | 较高仓位 |
+| 🟢 买入 | 值得投资 | 70-79 | 中等仓位 |
+| 🟡 持有 | 观望等待 | 50-69 | 观望 |
+| 🔴 卖出 | 应该卖出 | 30-49 | 分次卖出 |
+| 🔴🔴 强烈卖出 | 立即卖出 | <30 | 快速清仓 |
 
 ### Q: 如何部署 API 服务？
 
@@ -628,6 +721,13 @@ pip install gunicorn
 gunicorn -w 4 -b 0.0.0.0:5000 "src.api:create_api_app()"
 ```
 
+### Q: 如何打包 PC 客户端？
+
+```bash
+pip install pyinstaller
+pyinstaller --onefile --windowed --name VIMaster run_desktop.py
+```
+
 ### Q: 数据存储在哪里？
 
 A: 分析结果存储在 `data/vimaster.db` (SQLite)。
@@ -638,11 +738,16 @@ A: 分析结果存储在 `data/vimaster.db` (SQLite)。
 
 | 版本 | 日期 | 更新内容 |
 |------|------|----------|
-| v5.0 | 2026-01-27 | 商业化 API、可视化、社区分享 |
-| v4.0 | 2026-01-26 | 定时任务、报告生成、数据存储 |
-| v3.0 | 2026-01-25 | ML 评分、实时行情、性能监控 |
-| v2.0 | 2026-01-24 | 多数据源、API 重试、缓存 |
-| v1.0 | 2026-01-20 | 核心 Agent、基础分析 |
+| v1.9 | 2026-01-27 | PC 客户端界面 (PyQt6)，与 Web 版功能一致 |
+| v1.8 | 2026-01-27 | Web UI 界面 (Flask + Bootstrap)，5 个页面 |
+| v1.7 | 2026-01-27 | 商业化 API 服务，4 级订阅计划，限流计费 |
+| v1.6 | 2026-01-27 | 可视化分析结果，6 种专业图表 |
+| v1.5 | 2026-01-27 | 社区分享功能，评论点赞互动 |
+| v1.4 | 2026-01-27 | 实时行情推送 (WebSocket) |
+| v1.3 | 2026-01-26 | 定时任务、报告生成、数据存储 |
+| v1.2 | 2026-01-25 | ML 评分模型、性能监控 |
+| v1.1 | 2026-01-24 | 多数据源支持、API 重试、缓存 |
+| v1.0 | 2026-01-20 | 核心 9 大 Agent、基础分析功能 |
 
 ---
 
@@ -663,5 +768,5 @@ MIT License
 </p>
 
 <p align="center">
-  <b>VIMaster v5.0 - 让价值投资更智能</b>
+  <b>VIMaster v1.9 - 让价值投资更智能</b>
 </p>
