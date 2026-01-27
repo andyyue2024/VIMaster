@@ -5,32 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 集成机器学习评分模型，支持股票评分与投资组合排序">
-      <change afterPath="$PROJECT_DIR$/SCHEDULED_REPORTS_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/agent_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/email_config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/report_template.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demo/demo_report_generation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demo/demo_scheduled_reports.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/AGENT_CONFIG_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/REPORT_GENERATION_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/features.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/agent_config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/notifications/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/notifications/email_sender.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/reports/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/reports/report_generator.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/schedulers/task_scheduler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/scheduled_report_service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_agent_config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_report_generator.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_scheduled_reports.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/storage/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/storage/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/agents/financial_analysis_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/financial_analysis_agent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/agents/risk_management_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/risk_management_agent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/agents/valuation_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/valuation_agent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/agents/value_investing_agents.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/value_investing_agents.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/features.txt" beforeDir="false" afterPath="$PROJECT_DIR$/features.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,7 +167,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769478574620</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="feat: 集成机器学习评分模型，支持股票评分与投资组合排序">
+      <option name="closed" value="true" />
+      <created>1769479959216</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1769479959216</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
