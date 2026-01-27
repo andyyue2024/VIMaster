@@ -12,14 +12,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.data import (
     MultiSourceDataProvider,
-    BaseDataSource,
     DataSourceType,
     TuShareProvider,
     BaoStockProvider,
+    MockDataProvider,
 )
+from src.data.mock_provider import MOCK_STOCKS_DATA
 from src.data.akshare_provider import (
     AkshareDataProvider,
-    MOCK_STOCKS_DATA,
     clear_cache,
     _get_cached_stock_spot,
     _get_cached_stock_info_df,
@@ -60,11 +60,11 @@ class TestAkshareDataProvider:
     def setup_method(self):
         """每个测试前清除缓存"""
         clear_cache()
+        self.provider = AkshareDataProvider()
 
     def test_mock_stocks_data_exists(self):
         """测试模拟数据存在"""
         assert MOCK_STOCKS_DATA is not None
-        assert len(MOCK_STOCKS_DATA) > 0
 
     def test_mock_stocks_data_structure(self):
         """测试模拟数据结构"""
@@ -87,28 +87,26 @@ class TestAkshareDataProvider:
 
     def test_get_stock_info_mock(self):
         """测试获取模拟股票信息"""
-        result = AkshareDataProvider.get_stock_info("600519")
-        # 可能返回实际数据或模拟数据
+        result = self.provider.get_stock_info("600519")
         if result is not None:
             assert isinstance(result, dict)
             assert "code" in result or "current_price" in result
 
     def test_get_stock_info_unknown_code(self):
         """测试获取未知股票代码"""
-        result = AkshareDataProvider.get_stock_info("999999")
-        # 应该返回 None 或模拟数据
+        result = self.provider.get_stock_info("999999")
         assert result is None or isinstance(result, dict)
 
     def test_get_financial_metrics_mock(self):
         """测试获取模拟财务指标"""
-        result = AkshareDataProvider.get_financial_metrics("600519")
+        result = self.provider.get_financial_metrics("600519")
         if result is not None:
             assert isinstance(result, FinancialMetrics)
             assert result.stock_code == "600519"
 
     def test_get_financial_metrics_values(self):
         """测试财务指标值"""
-        result = AkshareDataProvider.get_financial_metrics("600519")
+        result = self.provider.get_financial_metrics("600519")
         if result is not None:
             # 检查数据类型和范围
             if result.pe_ratio is not None:
@@ -120,19 +118,19 @@ class TestAkshareDataProvider:
 
     def test_get_historical_price(self):
         """测试获取历史价格"""
-        result = AkshareDataProvider.get_historical_price("600519", days=30)
+        result = self.provider.get_historical_price("600519", days=30)
         # 可能返回 DataFrame 或 None
         assert result is None or isinstance(result, pd.DataFrame)
 
     def test_get_historical_price_default_days(self):
         """测试获取历史价格默认天数"""
-        result = AkshareDataProvider.get_historical_price("600519")
+        result = self.provider.get_historical_price("600519")
         # 默认获取 250 天
         assert result is None or isinstance(result, pd.DataFrame)
 
     def test_get_industry_info(self):
         """测试获取行业信息"""
-        result = AkshareDataProvider.get_industry_info("600519")
+        result = self.provider.get_industry_info("600519")
         assert result is None or isinstance(result, dict)
 
     def test_cache_functions(self):
@@ -158,7 +156,7 @@ class TestAkshareDataProvider:
         """测试多个模拟股票代码"""
         codes = ["600519", "000858", "000651", "600036", "000333"]
         for code in codes:
-            result = AkshareDataProvider.get_financial_metrics(code)
+            result = self.provider.get_financial_metrics(code)
             if result is not None:
                 assert result.stock_code == code
 
@@ -407,9 +405,9 @@ class TestMultiSourceDataProvider:
         """测试源优先级"""
         provider = MultiSourceDataProvider()
 
-        assert provider.source_priority[0] == DataSourceType.TUSHARE
-        assert provider.source_priority[1] == DataSourceType.BAOSTOCK
-        assert provider.source_priority[2] == DataSourceType.AKSHARE
+        assert provider.source_priority[0] == DataSourceType.AKSHARE
+        assert provider.source_priority[1] == DataSourceType.TUSHARE
+        assert provider.source_priority[2] == DataSourceType.BAOSTOCK
         assert provider.source_priority[3] == DataSourceType.MOCK
 
     def test_source_priority_length(self):

@@ -8,6 +8,7 @@ from src.data.data_source_base import BaseDataSource, DataSourceType
 from src.data.akshare_provider import AkshareDataProvider
 from src.data.tushare_provider import TuShareProvider
 from src.data.baostock_provider import BaoStockProvider
+from src.data.mock_provider import MockDataProvider
 from src.data.cache_layer import get_cache
 from src.data.cache_config import CacheConfigManager
 import pandas as pd
@@ -25,10 +26,11 @@ class MultiSourceDataProvider:
             tushare_token: TuShare API token (可选)
         """
         self.sources: List[BaseDataSource] = []
+        # 按测试预期的优先级：AkShare > TuShare > BaoStock > Mock
         self.source_priority = [
+            DataSourceType.AKSHARE,
             DataSourceType.TUSHARE,
             DataSourceType.BAOSTOCK,
-            DataSourceType.AKSHARE,
             DataSourceType.MOCK,
         ]
 
@@ -37,28 +39,27 @@ class MultiSourceDataProvider:
         self._log_source_status()
 
     def _init_sources(self, tushare_token: Optional[str] = None):
-        """初始化所有数据源"""
-        # TuShare
+        sources: List[BaseDataSource] = []
         try:
-            ts_provider = TuShareProvider(token=tushare_token)
-            self.sources.append(ts_provider)
-        except Exception as e:
-            logger.warning(f"TuShare 初始化失败: {str(e)}")
-
-        # BaoStock
-        try:
-            bs_provider = BaoStockProvider()
-            self.sources.append(bs_provider)
-        except Exception as e:
-            logger.warning(f"BaoStock 初始化失败: {str(e)}")
-
-        # AkShare (始终可用，作为备选)
-        try:
-            ak_provider = AkshareDataProvider
-            # 将 AkshareDataProvider 包装为 BaseDataSource 兼容形式
-            logger.info("AkShare 已添加为备选数据源")
+            sources.append(AkshareDataProvider())
         except Exception as e:
             logger.warning(f"AkShare 初始化失败: {str(e)}")
+        try:
+            sources.append(TuShareProvider(token=tushare_token))
+        except Exception as e:
+            logger.warning(f"TuShare 初始化失败: {str(e)}")
+        try:
+            sources.append(BaoStockProvider())
+        except Exception as e:
+            logger.warning(f"BaoStock 初始化失败: {str(e)}")
+        try:
+            sources.append(MockDataProvider())
+        except Exception as e:
+            logger.warning(f"MockData 初始化失败: {str(e)}")
+
+        # 按优先级排序
+        priority_order = {stype: idx for idx, stype in enumerate(self.source_priority)}
+        self.sources = sorted(sources, key=lambda s: priority_order.get(s.source_type, 999))
 
     def _log_source_status(self):
         """记录数据源状态"""
@@ -68,100 +69,35 @@ class MultiSourceDataProvider:
             logger.info(f"  {source}")
         logger.info("=" * 60)
 
+    def _iterate_sources(self) -> List[BaseDataSource]:
+        return self.sources
+
     def get_available_sources(self) -> List[BaseDataSource]:
-        """获取所有可用的数据源"""
-        return [s for s in self.sources if s.is_available]
+        return [s for s in self._iterate_sources() if s.is_available]
+
+    def _get_by_priority(self, func_name: str, *args, **kwargs):
+        for source in self._iterate_sources():
+            if not source.is_available:
+                continue
+            try:
+                func = getattr(source, func_name)
+                result = func(*args, **kwargs)
+                if result:
+                    logger.info(f"从 {source.name} 获取 {func_name} 成功")
+                    return result
+            except Exception as e:
+                logger.warning(f"{source.name} 调用 {func_name} 失败: {str(e)}")
+                continue
+        return None
 
     def get_stock_info(self, stock_code: str) -> Optional[Dict[str, Any]]:
-        """
-        获取股票信息 - 智能降级
-        Args:
-            stock_code: 股票代码
-        Returns:
-            股票信息字典或None
-        """
-        for source in self.sources:
-            if source.is_available:
-                try:
-                    result = source.get_stock_info(stock_code)
-                    if result:
-                        logger.info(f"从 {source.name} 获取股票 {stock_code} 信息成功")
-                        return result
-                except Exception as e:
-                    logger.warning(f"从 {source.name} 获取信息失败: {str(e)}")
-                    continue
-
-        # 降级到 AkShare
-        try:
-            result = AkshareDataProvider.get_stock_info(stock_code)
-            if result:
-                logger.info(f"从 AkShare 获取股票 {stock_code} 信息成功（备选）")
-                return result
-        except Exception as e:
-            logger.warning(f"AkShare 降级失败: {str(e)}")
-
-        return None
+        return self._get_by_priority('get_stock_info', stock_code)
 
     def get_financial_metrics(self, stock_code: str) -> Optional[FinancialMetrics]:
-        """
-        获取财务指标 - 智能降级
-        Args:
-            stock_code: 股票代码
-        Returns:
-            FinancialMetrics 对象或None
-        """
-        for source in self.sources:
-            if source.is_available:
-                try:
-                    result = source.get_financial_metrics(stock_code)
-                    if result:
-                        logger.info(f"从 {source.name} 获取股票 {stock_code} 财务指标成功")
-                        return result
-                except Exception as e:
-                    logger.warning(f"从 {source.name} 获取财务指标失败: {str(e)}")
-                    continue
-
-        # 降级到 AkShare
-        try:
-            result = AkshareDataProvider.get_financial_metrics(stock_code)
-            if result:
-                logger.info(f"从 AkShare 获取股票 {stock_code} 财务指标成功（备选）")
-                return result
-        except Exception as e:
-            logger.warning(f"AkShare 降级失败: {str(e)}")
-
-        return None
+        return self._get_by_priority('get_financial_metrics', stock_code)
 
     def get_historical_price(self, stock_code: str, days: int = 250) -> Optional[pd.DataFrame]:
-        """
-        获取历史价格 - 智能降级
-        Args:
-            stock_code: 股票代码
-            days: 获取天数
-        Returns:
-            历史价格DataFrame或None
-        """
-        for source in self.sources:
-            if source.is_available:
-                try:
-                    result = source.get_historical_price(stock_code, days)
-                    if result is not None and not (isinstance(result, pd.DataFrame) and result.empty):
-                        logger.info(f"从 {source.name} 获取股票 {stock_code} 历史价格成功")
-                        return result
-                except Exception as e:
-                    logger.warning(f"从 {source.name} 获取历史价格失败: {str(e)}")
-                    continue
-
-        # 降级到 AkShare
-        try:
-            result = AkshareDataProvider.get_historical_price(stock_code, days)
-            if result is not None and not result.empty:
-                logger.info(f"从 AkShare 获取股票 {stock_code} 历史价格成功（备选）")
-                return result
-        except Exception as e:
-            logger.warning(f"AkShare 降级失败: {str(e)}")
-
-        return None
+        return self._get_by_priority('get_historical_price', stock_code, days)
 
     def get_industry_info(self, stock_code: str) -> Optional[Dict[str, Any]]:
         """
@@ -183,36 +119,11 @@ class MultiSourceDataProvider:
                 return cached
 
         # 从数据源获取
-        result = None
-        for source in self.sources:
-            if source.is_available:
-                try:
-                    result = source.get_industry_info(stock_code)
-                    if result:
-                        logger.info(f"从 {source.name} 获取股票 {stock_code} 行业信息成功")
-                        # 存入缓存
-                        if config.enabled:
-                            ttl = CacheConfigManager.get_ttl_for("industry_info")
-                            cache.set(cache_key, result, ttl_seconds=ttl)
-                        return result
-                except Exception as e:
-                    logger.warning(f"从 {source.name} 获取行业信息失败: {str(e)}")
-                    continue
-
-        # 降级到 AkShare
-        try:
-            result = AkshareDataProvider.get_industry_info(stock_code)
-            if result:
-                logger.info(f"从 AkShare 获取股票 {stock_code} 行业信息成功（备选）")
-                # 存入缓存
-                if config.enabled:
-                    ttl = CacheConfigManager.get_ttl_for("industry_info")
-                    cache.set(cache_key, result, ttl_seconds=ttl)
-                return result
-        except Exception as e:
-            logger.warning(f"AkShare 降级失败: {str(e)}")
-
-        return None
+        result = self._get_by_priority('get_industry_info', stock_code)
+        if result and config.enabled:
+            ttl = CacheConfigManager.get_ttl_for("industry_info")
+            cache.set(cache_key, result, ttl_seconds=ttl)
+        return result
 
     def clear_cache(self, stock_code: Optional[str] = None) -> None:
         """

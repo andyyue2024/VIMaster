@@ -6,15 +6,17 @@ from src.data.baostock_provider import BaoStockProvider
 from src.data.multi_source_provider import MultiSourceDataProvider
 from src.data.cache_layer import RealTimeCache, CacheEntry, get_cache, init_cache
 from src.data.cache_config import CacheConfig, CacheConfigManager, get_cache_config, set_cache_config
+from src.data.mock_provider import MockDataProvider, MOCK_STOCKS_DATA
 
 __all__ = [
     "AkshareDataProvider",
-    "DataValidator",
-    "BaseDataSource",
-    "DataSourceType",
     "TuShareProvider",
     "BaoStockProvider",
+    "MockDataProvider",
+    "MOCK_STOCKS_DATA",
     "MultiSourceDataProvider",
+    "BaseDataSource",
+    "DataSourceType",
     # Cache layer
     "RealTimeCache",
     "CacheEntry",
