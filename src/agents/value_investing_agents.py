@@ -12,9 +12,44 @@ from src.agents.buy_signal_agent import BuySignalAgent
 from src.agents.sell_signal_agent import SellSignalAgent
 from src.agents.risk_management_agent import RiskManagementAgent
 from src.agents.behavioral_discipline_agent import BehavioralDisciplineAgent
+from src.agents.agent_config import (
+    AgentConfig,
+    AgentConfigManager,
+    get_agent_config,
+    set_agent_config,
+    load_agent_config,
+    save_agent_config,
+    reset_agent_config,
+    FinancialAnalysisConfig,
+    MoatAnalysisConfig,
+    ValuationConfig,
+    SafetyMarginConfig,
+    BuySignalConfig,
+    SellSignalConfig,
+    RiskManagementConfig,
+    PsychologyDisciplineConfig,
+    MLScoringConfig,
+)
 
 __all__ = [
     "EquityThinkingAgent", "MoatAgent", "FinancialAnalysisAgent",
     "ValuationAgent", "SafetyMarginAgent", "BuySignalAgent",
     "SellSignalAgent", "RiskManagementAgent", "BehavioralDisciplineAgent",
+    # Agent 配置
+    "AgentConfig",
+    "AgentConfigManager",
+    "get_agent_config",
+    "set_agent_config",
+    "load_agent_config",
+    "save_agent_config",
+    "reset_agent_config",
+    "FinancialAnalysisConfig",
+    "MoatAnalysisConfig",
+    "ValuationConfig",
+    "SafetyMarginConfig",
+    "BuySignalConfig",
+    "SellSignalConfig",
+    "RiskManagementConfig",
+    "PsychologyDisciplineConfig",
+    "MLScoringConfig",
 ]

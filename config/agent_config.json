@@ -1,0 +1,111 @@
+{
+  "financial": {
+    "roe_excellent": 0.20,
+    "roe_good": 0.15,
+    "roe_minimum": 0.10,
+    "gross_margin_excellent": 0.40,
+    "gross_margin_good": 0.25,
+    "gross_margin_minimum": 0.15,
+    "debt_ratio_safe": 0.40,
+    "debt_ratio_warning": 0.60,
+    "debt_ratio_danger": 0.80,
+    "require_positive_fcf": true,
+    "fcf_growth_weight": 0.3,
+    "weight_roe": 0.30,
+    "weight_gross_margin": 0.20,
+    "weight_debt_ratio": 0.20,
+    "weight_fcf": 0.30
+  },
+  "moat": {
+    "weight_brand": 0.25,
+    "weight_cost_advantage": 0.20,
+    "weight_network_effect": 0.20,
+    "weight_switching_cost": 0.20,
+    "weight_scale": 0.15,
+    "strong_moat_threshold": 7.0,
+    "moderate_moat_threshold": 5.0,
+    "weak_moat_threshold": 3.0,
+    "industry_adjustment_enabled": true,
+    "tech_industry_network_boost": 1.2,
+    "consumer_industry_brand_boost": 1.3
+  },
+  "valuation": {
+    "discount_rate": 0.10,
+    "terminal_growth_rate": 0.03,
+    "projection_years": 10,
+    "pe_ratio_low": 10.0,
+    "pe_ratio_fair": 15.0,
+    "pe_ratio_high": 25.0,
+    "pb_ratio_low": 1.0,
+    "pb_ratio_fair": 2.0,
+    "pb_ratio_high": 5.0,
+    "weight_dcf": 0.40,
+    "weight_pe": 0.30,
+    "weight_pb": 0.30
+  },
+  "safety_margin": {
+    "excellent_margin": 0.40,
+    "good_margin": 0.25,
+    "minimum_margin": 0.15,
+    "high_risk_extra_margin": 0.10,
+    "low_risk_reduce_margin": 0.05,
+    "weight_margin_size": 0.60,
+    "weight_margin_stability": 0.40
+  },
+  "buy_signal": {
+    "pessimism_threshold": 0.7,
+    "price_drop_trigger": 0.20,
+    "volume_spike_ratio": 2.0,
+    "strong_buy_score": 8.0,
+    "buy_score": 6.0,
+    "hold_score": 4.0,
+    "require_valuation_support": true,
+    "require_moat_support": true,
+    "min_financial_score": 5.0
+  },
+  "sell_signal": {
+    "roe_decline_trigger": 0.30,
+    "margin_decline_trigger": 0.25,
+    "debt_increase_trigger": 0.50,
+    "overvalued_pe_ratio": 40.0,
+    "overvalued_pb_ratio": 8.0,
+    "overvalued_margin": -0.30,
+    "strong_sell_score": 8.0,
+    "sell_score": 6.0
+  },
+  "risk_management": {
+    "max_single_position": 0.20,
+    "max_industry_exposure": 0.40,
+    "min_cash_reserve": 0.10,
+    "low_risk_threshold": 3.0,
+    "medium_risk_threshold": 6.0,
+    "high_risk_threshold": 8.0,
+    "default_stop_loss": 0.15,
+    "default_take_profit": 0.50,
+    "trailing_stop_enabled": true,
+    "trailing_stop_distance": 0.10
+  },
+  "psychology": {
+    "cooling_off_period_days": 3,
+    "require_checklist": true,
+    "high_conviction_threshold": 0.8,
+    "medium_conviction_threshold": 0.5,
+    "check_diversification": true,
+    "check_position_sizing": true,
+    "check_emotional_state": true
+  },
+  "ml_scoring": {
+    "enabled": true,
+    "model_path": null,
+    "weight_in_decision": 0.2,
+    "weight_pe": -0.25,
+    "weight_pb": -0.15,
+    "weight_roe": 0.35,
+    "weight_gross_margin": 0.20,
+    "weight_fcf": 0.30,
+    "weight_debt": -0.25
+  },
+  "debug_mode": false,
+  "log_level": "INFO",
+  "version": "1.0"
+}

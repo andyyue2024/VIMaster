@@ -4,18 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 实现API重试机制，支持多种重试策略、断路器和速率限制">
-      <change afterPath="$PROJECT_DIR$/demo_ml_integration.py" afterDir="false" />
+    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 集成机器学习评分模型，支持股票评分与投资组合排序">
+      <change afterPath="$PROJECT_DIR$/SCHEDULED_REPORTS_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/agent_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/email_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/report_template.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/demo_report_generation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/demo_scheduled_reports.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/AGENT_CONFIG_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/REPORT_GENERATION_GUIDE.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/features.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ml/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ml/datasets.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ml/labeling.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ml/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_ml_models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/agent_config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/notifications/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/notifications/email_sender.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/reports/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/reports/report_generator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/schedulers/task_scheduler.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/scheduled_report_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_agent_config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_report_generator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_scheduled_reports.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUICK_REFERENCE_V2.py" beforeDir="false" afterPath="$PROJECT_DIR$/demo/QUICK_REFERENCE_V2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUICK_START.py" beforeDir="false" afterPath="$PROJECT_DIR$/demo/QUICK_START.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/analysis/portfolio_optimizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/analysis/portfolio_optimizer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agents/financial_analysis_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/financial_analysis_agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agents/risk_management_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/risk_management_agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agents/valuation_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/valuation_agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agents/value_investing_agents.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/value_investing_agents.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -167,7 +181,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769477848713</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="feat: 集成机器学习评分模型，支持股票评分与投资组合排序">
+      <option name="closed" value="true" />
+      <created>1769478574620</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1769478574620</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -199,7 +221,8 @@
     <MESSAGE value="feat: 添加多源数据集成，支持TuShare和BaoStock，优化数据获取流程" />
     <MESSAGE value="feat: 添加实时数据缓存机制，支持TTL、自动刷新和线程安全" />
     <MESSAGE value="feat: 实现API重试机制，支持多种重试策略、断路器和速率限制" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 实现API重试机制，支持多种重试策略、断路器和速率限制" />
+    <MESSAGE value="feat: 集成机器学习评分模型，支持股票评分与投资组合排序" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 集成机器学习评分模型，支持股票评分与投资组合排序" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

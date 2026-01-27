@@ -3,11 +3,15 @@
 """
 import logging
 import sys
-from typing import List, Optional
+from typing import List, Optional, Dict
 from src.schedulers.workflow_scheduler import AnalysisManager
 from src.models.data_models import InvestmentSignal
 from src.ml import StockMLScorer
+from src.agents.agent_config import AgentConfigManager, load_agent_config
+from src.reports import ReportManager, StockReportData, PortfolioReportData, ReportTemplate
+import os
 import json
+from datetime import datetime
 
 # 配置日志
 logging.basicConfig(
@@ -20,9 +24,15 @@ logger = logging.getLogger(__name__)
 class ValueInvestingApp:
     """价值投资分析应用"""
 
-    def __init__(self):
+    def __init__(self, config_path: str = None):
+        # 加载 Agent 配置（如果指定）
+        if config_path and os.path.exists(config_path):
+            load_agent_config(config_path)
+            logger.info(f"已加载 Agent 配置: {config_path}")
+
         self.manager = AnalysisManager()
         self.ml_scorer = StockMLScorer()
+        self.report_manager = ReportManager()
         logger.info("价值投资分析应用已初始化")
 
     def analyze_single_stock(self, stock_code: str) -> None:
@@ -78,6 +88,136 @@ class ValueInvestingApp:
                 print()
         else:
             print("没有强烈买入推荐")
+
+    def generate_stock_report(self, stock_code: str, output_dir: str = "reports", formats: List[str] = None) -> Dict[str, bool]:
+        """生成单只股票的分析报告"""
+        if formats is None:
+            formats = ["pdf", "excel"]
+
+        logger.info(f"生成股票 {stock_code} 报告...")
+
+        # 获取分析结果
+        context = self.manager.analyze_single_stock(stock_code)
+        if not context:
+            logger.error(f"无法获取股票 {stock_code} 的分析数据")
+            return {}
+
+        # 构建报告数据
+        report_data = self._context_to_report_data(context)
+
+        # 生成报告
+        results = {}
+        os.makedirs(output_dir, exist_ok=True)
+
+        if "pdf" in formats:
+            pdf_path = os.path.join(output_dir, f"{stock_code}_report.pdf")
+            results["pdf"] = self.report_manager.generate_pdf(report_data, pdf_path)
+            if results["pdf"]:
+                print(f"✓ PDF 报告已生成: {pdf_path}")
+
+        if "excel" in formats:
+            excel_path = os.path.join(output_dir, f"{stock_code}_report.xlsx")
+            results["excel"] = self.report_manager.generate_excel(report_data, excel_path)
+            if results["excel"]:
+                print(f"✓ Excel 报告已生成: {excel_path}")
+
+        return results
+
+    def generate_portfolio_report(self, stock_codes: List[str], output_dir: str = "reports", formats: List[str] = None) -> Dict[str, bool]:
+        """生成投资组合报告"""
+        if formats is None:
+            formats = ["pdf", "excel"]
+
+        logger.info(f"生成投资组合报告，包含 {len(stock_codes)} 只股票...")
+
+        # 获取分析结果
+        report = self.manager.analyze_portfolio(stock_codes)
+        if not report:
+            logger.error("无法获取组合分析数据")
+            return {}
+
+        # 构建报告数据
+        portfolio_data = PortfolioReportData(
+            report_id=report.report_id,
+            generated_at=datetime.now().strftime("%Y-%m-%d %H:%M"),
+            total_stocks=report.total_stocks_analyzed,
+            strong_buy_count=report.strong_buy_count,
+            buy_count=report.buy_count,
+            hold_count=report.hold_count,
+            sell_count=report.sell_count,
+            strong_sell_count=report.strong_sell_count,
+        )
+
+        for stock in report.stocks:
+            portfolio_data.stocks.append(self._context_to_report_data(stock))
+
+        # 生成报告
+        results = {}
+        os.makedirs(output_dir, exist_ok=True)
+
+        if "pdf" in formats:
+            pdf_path = os.path.join(output_dir, "portfolio_report.pdf")
+            results["pdf"] = self.report_manager.generate_portfolio_pdf(portfolio_data, pdf_path)
+            if results["pdf"]:
+                print(f"✓ PDF 组合报告已生成: {pdf_path}")
+
+        if "excel" in formats:
+            excel_path = os.path.join(output_dir, "portfolio_report.xlsx")
+            results["excel"] = self.report_manager.generate_portfolio_excel(portfolio_data, excel_path)
+            if results["excel"]:
+                print(f"✓ Excel 组合报告已生成: {excel_path}")
+
+        return results
+
+    def _context_to_report_data(self, context) -> StockReportData:
+        """将分析上下文转换为报告数据"""
+        data = StockReportData(stock_code=context.stock_code)
+
+        if context.financial_metrics:
+            fm = context.financial_metrics
+            data.current_price = fm.current_price
+            data.pe_ratio = fm.pe_ratio
+            data.pb_ratio = fm.pb_ratio
+            data.roe = fm.roe
+            data.gross_margin = fm.gross_margin
+            data.debt_ratio = fm.debt_ratio
+            data.free_cash_flow = fm.free_cash_flow
+
+        if context.valuation:
+            val = context.valuation
+            data.intrinsic_value = val.intrinsic_value
+            data.fair_price = val.fair_price
+            data.margin_of_safety = val.margin_of_safety
+            data.valuation_score = val.valuation_score
+
+        if context.competitive_moat:
+            moat = context.competitive_moat
+            data.moat_score = moat.overall_score
+            data.brand_strength = moat.brand_strength
+            data.cost_advantage = moat.cost_advantage
+
+        if context.risk_assessment:
+            risk = context.risk_assessment
+            data.risk_level = risk.overall_risk_level.value if risk.overall_risk_level else ""
+            data.leverage_risk = risk.leverage_risk
+
+        if context.buy_signal:
+            data.buy_signal = context.buy_signal.buy_signal.value if context.buy_signal.buy_signal else ""
+
+        if context.sell_signal:
+            data.sell_signal = context.sell_signal.sell_signal.value if context.sell_signal.sell_signal else ""
+
+        data.final_signal = context.final_signal.value if context.final_signal else ""
+        data.overall_score = context.overall_score
+
+        if context.investment_decision:
+            dec = context.investment_decision
+            data.decision = dec.decision.value if dec.decision else ""
+            data.position_size = dec.position_size
+            data.stop_loss = dec.stop_loss_price
+            data.take_profit = dec.take_profit_price
+
+        return data
 
     def _print_stock_report(self, context) -> None:
         """打印单只股票的详细报告"""
