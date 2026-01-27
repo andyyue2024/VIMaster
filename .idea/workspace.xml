@@ -4,21 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 添加 LLM 分析工作线程和分析面板，支持投资大师与专家分析功能">
+    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 更新 ApiKey 和 User 数据类的字段验证，确保只使用有效字段">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/llm_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/llm_config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/api_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/api_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/community/community_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/community/community_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/multi_source_provider.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/multi_source_provider.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/enhanced_logging.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/enhanced_logging.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/conftest.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/quick_test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_industry_comparator.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_industry_comparator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_logging_monitoring.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_logging_monitoring.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/unit/test_multi_source_provider.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_multi_source_provider.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_retry_mechanism.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_retry_mechanism.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/unit/test_risk_management_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_risk_management_agent.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -320,7 +308,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769500627782</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="feat: 更新 ApiKey 和 User 数据类的字段验证，确保只使用有效字段">
+      <option name="closed" value="true" />
+      <created>1769503271542</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1769503271542</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -367,7 +363,8 @@
     <MESSAGE value="feat: 添加 LLM 专家 Agent 模块，支持多位分析专家分析与配置" />
     <MESSAGE value="feat: 添加社区和报告页面，增强用户交互与分析报告功能" />
     <MESSAGE value="feat: 添加 LLM 分析工作线程和分析面板，支持投资大师与专家分析功能" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加 LLM 分析工作线程和分析面板，支持投资大师与专家分析功能" />
+    <MESSAGE value="feat: 更新 ApiKey 和 User 数据类的字段验证，确保只使用有效字段" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 更新 ApiKey 和 User 数据类的字段验证，确保只使用有效字段" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
