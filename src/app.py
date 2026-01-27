@@ -462,6 +462,15 @@ class ValueInvestingApp:
   8. 风险管理 Agent    - 评估投资风险
   9. 心理纪律 Agent    - 生成投资决策和仓位建议
 
+LLM 投资大师 Agent（基于大语言模型）:
+  • Ben Graham Agent          - 本杰明·格雷厄姆（价值投资之父）
+  • Philip Fisher Agent       - 菲利普·费雪（成长型投资大师）
+  • Charlie Munger Agent      - 查理·芒格（多元思维模型）
+  • Warren Buffett Agent      - 沃伦·巴菲特（股神）
+  • Stanley Druckenmiller Agent - 斯坦利·德鲁肯米勒（宏观对冲大师）
+  • Cathie Wood Agent         - 凯西·伍德（创新投资女王）
+  • Bill Ackman Agent         - 比尔·阿克曼（激进投资家）
+
 推荐信号说明:
   🟢🟢 强烈买入 - 强烈推荐买入
   🟢  买入    - 推荐买入
@@ -470,10 +479,12 @@ class ValueInvestingApp:
   🔴🔴 强烈卖出 - 强烈建议卖出
 
 示例用法:
-  analyze 600519          - 分析贵州茅台
-  portfolio 600519 000858 - 分析多只股票
-  buy 600519 000858       - 查找买入推荐
-  exit                    - 退出程序
+  analyze 600519               - 分析贵州茅台
+  masters 600519               - 使用所有投资大师分析贵州茅台
+  masters 600519 buffett munger - 只使用巴菲特和芒格分析
+  portfolio 600519 000858      - 分析多只股票
+  buy 600519 000858            - 查找买入推荐
+  exit                         - 退出程序
 """
 
 
@@ -486,6 +497,11 @@ def main():
 
         if command == "analyze" and len(sys.argv) > 2:
             app.analyze_single_stock(sys.argv[2])
+
+        elif command == "masters" and len(sys.argv) > 2:
+            stock_code = sys.argv[2]
+            master_names = sys.argv[3:] if len(sys.argv) > 3 else None
+            app.analyze_with_masters(stock_code, master_names)
 
         elif command == "portfolio" and len(sys.argv) > 2:
             app.analyze_multiple_stocks(sys.argv[2:])
@@ -500,6 +516,7 @@ def main():
         else:
             print("用法: python main.py <command> [arguments]")
             print("  analyze <股票代码>")
+            print("  masters <股票代码> [大师名称...]")
             print("  portfolio <股票1> <股票2> ...")
             print("  buy <股票1> <股票2> ...")
             print("  help")

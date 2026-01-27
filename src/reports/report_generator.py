@@ -1,9 +1,10 @@
 """
 报告生成模块 - 支持 PDF、Excel 格式和自定义模板
 """
+from __future__ import annotations
 import logging
 import os
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, TYPE_CHECKING
 from dataclasses import dataclass, field
 from datetime import datetime
 from abc import ABC, abstractmethod
@@ -23,6 +24,8 @@ try:
     REPORTLAB_AVAILABLE = True
 except ImportError:
     REPORTLAB_AVAILABLE = False
+    # 创建占位符
+    Table = None
     logger.warning("reportlab 不可用，PDF 生成功能将被禁用。请运行: pip install reportlab")
 
 try:

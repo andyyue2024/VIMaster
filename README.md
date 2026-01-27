@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.9-blue.svg" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.0-blue.svg" alt="Version">
   <img src="https://img.shields.io/badge/python-3.8+-green.svg" alt="Python">
   <img src="https://img.shields.io/badge/license-MIT-yellow.svg" alt="License">
   <img src="https://img.shields.io/badge/status-production--ready-brightgreen.svg" alt="Status">
@@ -39,6 +39,7 @@
 | 特色 | 说明 |
 |------|------|
 | 🤖 **9 大智能 Agent** | 股权思维、护城河、财务分析、估值、安全边际、买入点、卖出纪律、风险管理、心理纪律 |
+| 🎯 **7 位 LLM 大师 Agent** | 基于大语言模型的投资大师分析：巴菲特、格雷厄姆、芒格、费雪等 7 位投资大师 |
 | 📊 **机器学习评分** | 基于 sklearn 的 ML 模型，支持训练、评估、持久化 |
 | 📈 **实时行情推送** | WebSocket 实时数据推送，支持价格提醒 |
 | 📝 **多格式报告** | PDF/Excel 专业报告，支持模板自定义 |
@@ -58,6 +59,7 @@
 | 模块 | 功能 | 状态 | 详情 |
 |------|------|:----:|------|
 | **股票分析** | 9 大 Agent 综合分析 | ✅ | 股权思维、护城河、财务、估值、安全边际、买入点、卖出纪律、风险管理、心理纪律 |
+| **LLM 大师** | 7 位投资大师分析 | ✅ | 支持 OpenAI/Claude/DeepSeek/Qwen/GLM 等多种大模型，模拟巴菲特、格雷厄姆等大师投资风格 |
 | **机器学习** | ML 评分模型 | ✅ | sklearn 回归/分类模型，支持训练、交叉验证、模型持久化 |
 | **数据源** | 多数据源支持 | ✅ | AkShare (主)、TuShare、BaoStock，自动切换和缓存 |
 | **实时行情** | WebSocket 推送 | ✅ | 实时订阅、价格提醒、多订阅者支持 |
@@ -116,6 +118,28 @@
 | 7 | **卖出纪律 Agent** | 识别卖出信号（基本面恶化、严重高估） | 卖出信号 |
 | 8 | **风险管理 Agent** | 评估投资风险（能力圈、杠杆、行业、公司） | 风险等级 |
 | 9 | **心理纪律 Agent** | 生成投资决策和仓位建议 | 最终决策、仓位、止损止盈 |
+
+### 7 位 LLM 投资大师 Agent
+
+基于大语言模型，模拟世界级投资大师的分析风格：
+
+| # | 大师 Agent | 投资理念 | 提示词文件 |
+|:-:|-----------|----------|------------|
+| 1 | **Ben Graham Agent** | 价值投资之父，强调安全边际与财务稳健 | `master2.txt` |
+| 2 | **Philip Fisher Agent** | 成长型投资大师，注重优质企业长期持有 | `master3.txt` |
+| 3 | **Charlie Munger Agent** | 多元思维模型，关注卓越企业与护城河 | `master4.txt` |
+| 4 | **Warren Buffett Agent** | 股神，能力圈原则与经济护城河 | `master5.txt` |
+| 5 | **Stanley Druckenmiller Agent** | 宏观对冲大师，不对称风险回报 | `master6.txt` |
+| 6 | **Cathie Wood Agent** | 创新投资女王，颠覆性技术与指数增长 | `master7.txt` |
+| 7 | **Bill Ackman Agent** | 激进投资家，价值释放与积极行动 | `master8.txt` |
+
+**支持的 LLM 提供商：**
+- OpenAI (GPT-4o, GPT-4, GPT-3.5-turbo)
+- Anthropic Claude (Claude 3.5 Sonnet, Claude 3 Opus)
+- DeepSeek (DeepSeek Chat, DeepSeek Coder)
+- 阿里通义千问 (Qwen-turbo, Qwen-plus, Qwen-max)
+- 智谱 GLM (GLM-4, GLM-4-flash)
+- Ollama (本地部署任意模型)
 
 ---
 
@@ -181,10 +205,11 @@ python run.py
 ============================================================
 命令:
   1. analyze <股票代码>     - 分析单只股票
-  2. portfolio <股票1> <股票2> ... - 分析股票组合
-  3. buy <股票1> <股票2> ... - 获取买入推荐
-  4. help              - 显示帮助
-  5. exit              - 退出程序
+  2. masters <股票代码>     - 使用投资大师 LLM 分析
+  3. portfolio <股票1> <股票2> ... - 分析股票组合
+  4. buy <股票1> <股票2> ... - 获取买入推荐
+  5. help              - 显示帮助
+  6. exit              - 退出程序
 ============================================================
 
 请输入命令: analyze 600519
@@ -604,6 +629,45 @@ VIMaster/
 
 ## ⚙️ 配置说明
 
+### LLM 大师配置 (config/llm_config.json)
+
+```json
+{
+  "default_provider": "gpt-3.5-turbo",
+  "agent_configs": {
+    "WarrenBuffettAgent": "gpt-4o",
+    "BenGrahamAgent": "claude-3-5-sonnet"
+  },
+  "api_keys": {
+    "openai": "sk-xxx",
+    "anthropic": "sk-ant-xxx",
+    "deepseek": "sk-xxx",
+    "qwen": "sk-xxx",
+    "zhipu": "xxx"
+  },
+  "enable_cache": true,
+  "cache_ttl": 3600
+}
+```
+
+**支持的提供商配置名：**
+- OpenAI: `gpt-4o`, `gpt-4o-mini`, `gpt-4-turbo`, `gpt-3.5-turbo`
+- Anthropic: `claude-3-5-sonnet`, `claude-3-opus`
+- DeepSeek: `deepseek-chat`, `deepseek-coder`
+- 阿里: `qwen-turbo`, `qwen-plus`, `qwen-max`
+- 智谱: `glm-4`, `glm-4-flash`
+- Ollama: `ollama-llama3`, `ollama-qwen2`
+
+**环境变量方式配置 API 密钥：**
+```bash
+# Windows PowerShell
+$env:OPENAI_API_KEY = "sk-xxx"
+$env:ANTHROPIC_API_KEY = "sk-ant-xxx"
+
+# Linux/Mac
+export OPENAI_API_KEY="sk-xxx"
+```
+
 ### Agent 配置 (config/agent_config.json)
 
 ```json
@@ -738,6 +802,7 @@ A: 分析结果存储在 `data/vimaster.db` (SQLite)。
 
 | 版本 | 日期 | 更新内容 |
 |------|------|----------|
+| v2.0 | 2026-01-27 | **LLM 大师 Agent**：基于大语言模型的 7 位投资大师分析，支持多种 LLM 提供商 |
 | v1.9 | 2026-01-27 | PC 客户端界面 (PyQt6)，与 Web 版功能一致 |
 | v1.8 | 2026-01-27 | Web UI 界面 (Flask + Bootstrap)，5 个页面 |
 | v1.7 | 2026-01-27 | 商业化 API 服务，4 级订阅计划，限流计费 |
@@ -768,5 +833,5 @@ MIT License
 </p>
 
 <p align="center">
-  <b>VIMaster v1.9 - 让价值投资更智能</b>
+  <b>VIMaster v2.0 - 让价值投资更智能</b>
 </p>

@@ -1,0 +1,31 @@
+{
+  "default_provider": "gpt-3.5-turbo",
+  "agent_configs": {
+    "BenGrahamAgent": "gpt-4o",
+    "PhilipFisherAgent": "gpt-4o",
+    "CharlieMungerAgent": "gpt-4o",
+    "WarrenBuffettAgent": "gpt-4o",
+    "StanleyDruckenmillerAgent": "gpt-4o",
+    "CathieWoodAgent": "gpt-4o",
+    "BillAckmanAgent": "gpt-4o"
+  },
+  "custom_providers": {
+    "local-llama": {
+      "provider": "ollama",
+      "api_base": "http://localhost:11434/v1",
+      "model_name": "llama3",
+      "temperature": 0.7,
+      "max_tokens": 4096
+    }
+  },
+  "api_keys": {
+    "openai": null,
+    "anthropic": null,
+    "deepseek": null,
+    "qwen": null,
+    "zhipu": null
+  },
+  "enable_cache": true,
+  "cache_ttl": 3600,
+  "log_requests": true
+}

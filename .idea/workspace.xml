@@ -4,13 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 添加 Web UI 界面，支持股票分析、投资组合和历史记录功能">
-      <change afterPath="$PROJECT_DIR$/docs/DESKTOP_APP_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/run_desktop.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/desktop/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/desktop/app.py" afterDir="false" />
+    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 添加 PC 客户端界面，基于 PyQt6 实现股票分析、投资组合和历史记录功能">
+      <change afterPath="$PROJECT_DIR$/config/llm_config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/demo_llm_masters.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/llm/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/llm/llm_base_agent.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/llm/llm_config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/llm/master_agents.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/masters/master2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/masters/master3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/masters/master4.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/masters/master5.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/masters/master6.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/masters/master7.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/masters/master8.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agents/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/data_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/data_models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/reports/report_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/reports/report_generator.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,27 +50,27 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {}
-}]]></component>
-  <component name="GitHubPullRequestState"><![CDATA[{
-  "prStates": [
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {}
+}</component>
+  <component name="GitHubPullRequestState">{
+  &quot;prStates&quot;: [
     {
-      "id": {
-        "id": "PR_kwDOQ9fxe86_R85d",
-        "number": 2
+      &quot;id&quot;: {
+        &quot;id&quot;: &quot;PR_kwDOQ9fxe86_R85d&quot;,
+        &quot;number&quot;: 2
       },
-      "lastSeen": 1769426144266
+      &quot;lastSeen&quot;: 1769426144266
     },
     {
-      "id": {
-        "id": "PR_kwDOQ9fxe86_R3cI",
-        "number": 1
+      &quot;id&quot;: {
+        &quot;id&quot;: &quot;PR_kwDOQ9fxe86_R3cI&quot;,
+        &quot;number&quot;: 1
       },
-      "lastSeen": 1769426197312
+      &quot;lastSeen&quot;: 1769426197312
     }
   ]
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/andyyue2024/VIMaster.git&quot;,
@@ -76,30 +89,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.conftest.executor": "Run",
-    "Python.demo.executor": "Run",
-    "Python.demo_analyze.executor": "Run",
-    "Python.demo_visualization.executor": "Run",
-    "Python.run.executor": "Run",
-    "Python.run_desktop.executor": "Run",
-    "Python.run_web.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.conftest.executor&quot;: &quot;Run&quot;,
+    &quot;Python.demo.executor&quot;: &quot;Run&quot;,
+    &quot;Python.demo_analyze.executor&quot;: &quot;Run&quot;,
+    &quot;Python.demo_visualization.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run_desktop.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run_web.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Workplace-Pycharm\VIMaster\src\agents\masters" />
+      <recent name="E:\Workplace-Pycharm\VIMaster\src\agents\master1" />
+      <recent name="E:\Workplace-Pycharm\VIMaster\src\agents" />
       <recent name="E:\Workplace-Pycharm\VIMaster\demo" />
       <recent name="E:\Workplace-Pycharm\VIMaster\tests" />
-      <recent name="E:\Workplace-Pycharm\VIMaster\docs" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -261,7 +276,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769483662956</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="feat: 添加 PC 客户端界面，基于 PyQt6 实现股票分析、投资组合和历史记录功能">
+      <option name="closed" value="true" />
+      <created>1769485528730</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1769485528730</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -303,7 +326,8 @@
     <MESSAGE value="feat: 添加商业化 API 服务，支持 API 密钥认证、订阅计划、限流控制和使用量追踪" />
     <MESSAGE value="docs: 更新 README，增加项目简介、功能矩阵和 API 服务说明" />
     <MESSAGE value="feat: 添加 Web UI 界面，支持股票分析、投资组合和历史记录功能" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加 Web UI 界面，支持股票分析、投资组合和历史记录功能" />
+    <MESSAGE value="feat: 添加 PC 客户端界面，基于 PyQt6 实现股票分析、投资组合和历史记录功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加 PC 客户端界面，基于 PyQt6 实现股票分析、投资组合和历史记录功能" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
