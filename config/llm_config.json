@@ -1,5 +1,5 @@
 {
-  "default_provider": "claude-3-5-sonnet",
+  "default_provider": "gpt-4o",
   "agent_configs": {
     "BenGrahamAgent": "gpt-4o",
     "PhilipFisherAgent": "gpt-4o",

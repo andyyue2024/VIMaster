@@ -8,6 +8,8 @@ from src.data.data_source_base import BaseDataSource, DataSourceType
 from src.data.akshare_provider import AkshareDataProvider
 from src.data.tushare_provider import TuShareProvider
 from src.data.baostock_provider import BaoStockProvider
+from src.data.cache_layer import get_cache
+from src.data.cache_config import CacheConfigManager
 import pandas as pd
 
 logger = logging.getLogger(__name__)

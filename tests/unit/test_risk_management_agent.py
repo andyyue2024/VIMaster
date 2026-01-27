@@ -220,15 +220,20 @@ class TestRiskManagementAgent:
 
     def test_overall_risk_level_very_high(self):
         """测试极高风险等级"""
-        self.context.overall_score = 1.0
+        self.context.overall_score = 0.0  # 最低评分，使 company_risk = 1.0
         self.context.financial_metrics = FinancialMetrics(
             stock_code="600519",
             current_price=1000.0,
-            debt_ratio=0.80
+            debt_ratio=1.0  # 极高负债，使 leverage_risk = 0.8
+        )
+        # 添加弱护城河，使 industry_risk 也很高
+        self.context.competitive_moat = CompetitiveModality(
+            overall_score=0.0  # 无护城河，使 industry_risk = 1.0
         )
 
         result = self.agent.analyze(self.context)
 
+        # 综合风险 = 0.8*0.3 + 1.0*0.3 + 1.0*0.4 = 0.24 + 0.3 + 0.4 = 0.94 -> 9.4分 > 8.0
         assert result.risk_assessment.overall_risk_level == RiskLevel.VERY_HIGH
 
     def test_risk_mitigation_strategies_ability_circle(self):

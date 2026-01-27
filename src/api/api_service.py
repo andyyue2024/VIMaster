@@ -8,7 +8,7 @@ import uuid
 import hashlib
 import hmac
 from typing import Dict, Any, Optional, List, Callable
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field, asdict, fields
 from datetime import datetime, timedelta
 from enum import Enum
 from functools import wraps
@@ -72,7 +72,9 @@ class ApiKey:
         data = data.copy()
         if "plan" in data:
             data["plan"] = PlanType(data["plan"])
-        return ApiKey(**{k: v for k, v in data.items() if hasattr(ApiKey, k)})
+        # 获取 ApiKey 的所有字段名
+        valid_fields = {f.name for f in fields(ApiKey)}
+        return ApiKey(**{k: v for k, v in data.items() if k in valid_fields})
 
 
 @dataclass

@@ -183,8 +183,8 @@ def log_exception(logger: Optional[logging.Logger] = None):
                     exc_info=True,
                     extra={
                         "function": func.__name__,
-                        "args": str(args)[:200],
-                        "kwargs": str(kwargs)[:200],
+                        "func_args": str(args)[:200],  # 避免与 LogRecord.args 冲突
+                        "func_kwargs": str(kwargs)[:200],
                     }
                 )
                 raise

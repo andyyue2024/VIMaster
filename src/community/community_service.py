@@ -6,7 +6,7 @@ import os
 import json
 import uuid
 from typing import List, Dict, Any, Optional
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field, asdict, fields
 from datetime import datetime
 from enum import Enum
 import threading
@@ -48,7 +48,8 @@ class User:
 
     @staticmethod
     def from_dict(data: Dict[str, Any]) -> "User":
-        return User(**{k: v for k, v in data.items() if hasattr(User, k)})
+        valid_fields = {f.name for f in fields(User)}
+        return User(**{k: v for k, v in data.items() if k in valid_fields})
 
 
 @dataclass
@@ -96,7 +97,8 @@ class SharedContent:
             data["content_type"] = ContentType(data["content_type"])
         if "visibility" in data:
             data["visibility"] = ShareVisibility(data["visibility"])
-        return SharedContent(**{k: v for k, v in data.items() if hasattr(SharedContent, k)})
+        valid_fields = {f.name for f in fields(SharedContent)}
+        return SharedContent(**{k: v for k, v in data.items() if k in valid_fields})
 
 
 @dataclass
@@ -116,7 +118,8 @@ class Comment:
 
     @staticmethod
     def from_dict(data: Dict[str, Any]) -> "Comment":
-        return Comment(**{k: v for k, v in data.items() if hasattr(Comment, k)})
+        valid_fields = {f.name for f in fields(Comment)}
+        return Comment(**{k: v for k, v in data.items() if k in valid_fields})
 
 
 @dataclass
