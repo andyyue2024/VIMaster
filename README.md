@@ -1,123 +1,116 @@
-# 价值投资分析系统 (VIMaster)
+# 🎯 VIMaster - 价值投资分析系统
 
-## 项目简介
+<p align="center">
+  <b>基于价值投资理论的智能股票分析平台</b>
+</p>
 
-基于 akshare 数据源和价值投资理论设计的多层次股票分析系统。系统采用**应用层、调度层、数据模型层**三层分层架构，通过 **9 个独立 Agent** 进行综合分析，为投资者提供结构化的投资决策支持。
+<p align="center">
+  <img src="https://img.shields.io/badge/version-5.0-blue.svg" alt="Version">
+  <img src="https://img.shields.io/badge/python-3.8+-green.svg" alt="Python">
+  <img src="https://img.shields.io/badge/license-MIT-yellow.svg" alt="License">
+  <img src="https://img.shields.io/badge/status-production--ready-brightgreen.svg" alt="Status">
+</p>
 
-## 核心架构
+---
+
+## 📋 目录
+
+- [项目简介](#-项目简介)
+- [核心功能](#-核心功能)
+- [系统架构](#-系统架构)
+- [快速开始](#-快速开始)
+- [功能详解](#-功能详解)
+- [API 服务](#-api-服务)
+- [项目结构](#-项目结构)
+- [配置说明](#-配置说明)
+- [扩展开发](#-扩展开发)
+- [常见问题](#-常见问题)
+
+---
+
+## 📖 项目简介
+
+**VIMaster** 是一个基于 akshare 数据源和价值投资理论设计的多层次股票分析系统。系统采用**应用层、调度层、数据模型层**三层分层架构，通过 **9 个独立 Agent** 进行综合分析，为投资者提供结构化的投资决策支持。
+
+### ✨ 特色亮点
+
+- 🤖 **9 大智能 Agent** - 全方位价值分析
+- 📊 **机器学习评分** - ML 模型辅助决策
+- 📈 **实时行情推送** - WebSocket 实时数据
+- 📝 **多格式报告** - PDF/Excel 专业报告
+- 🌐 **商业化 API** - RESTful 接口服务
+- 👥 **社区分享** - 分析结果互动分享
+- 📊 **可视化图表** - 6 种专业图表
+- ⏰ **定时任务** - 自动分析与邮件推送
+- 💾 **数据存储** - SQLite 持久化
+
+---
+
+## 🚀 核心功能
+
+### 功能矩阵
+
+| 模块 | 功能 | 状态 |
+|------|------|:----:|
+| **股票分析** | 9 大 Agent 综合分析 | ✅ |
+| **机器学习** | ML 评分模型 | ✅ |
+| **数据源** | AkShare/TuShare/BaoStock | ✅ |
+| **实时行情** | WebSocket 推送 | ✅ |
+| **报告生成** | PDF/Excel 导出 | ✅ |
+| **可视化** | 6 种专业图表 | ✅ |
+| **定时任务** | 自动分析+邮件 | ✅ |
+| **数据存储** | SQLite 持久化 | ✅ |
+| **社区分享** | 分析结果分享 | ✅ |
+| **API 服务** | RESTful 接口 | ✅ |
+| **性能监控** | 日志+监控 | ✅ |
+
+---
+
+## 🏗 系统架构
 
 ### 三层分层设计
 
 ```
-┌─────────────────────────────────────────┐
-│         应用层 (Application Layer)       │
-│    CLI接口 / 报告生成 / 用户交互         │
-└─────────────────────────────────────────┘
-                    ▼
-┌─────────────────────────────────────────┐
-│         调度层 (Scheduler Layer)         │
-│  WorkflowScheduler / AnalysisManager    │
-│    Agent编排 / 依赖管理 / 结果聚合      │
-└─────────────────────────────────────────┘
-                    ▼
-┌─────────────────────────────────────────┐
-│      数据模型层 (Data Model Layer)       │
-│   DataModels / AkshareDataProvider     │
-│    股票分析上下文 / 财务数据获取        │
-└─────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                    应用层 (Application Layer)                    │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐            │
+│  │   CLI    │ │ API服务  │ │ 报告生成 │ │ 可视化   │            │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘            │
+└─────────────────────────────────────────────────────────────────┘
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    调度层 (Scheduler Layer)                      │
+│  ┌────────────────────┐  ┌────────────────────┐                 │
+│  │ WorkflowScheduler  │  │  TaskScheduler     │                 │
+│  │ Agent编排/依赖管理  │  │  定时任务调度       │                 │
+│  └────────────────────┘  └────────────────────┘                 │
+└─────────────────────────────────────────────────────────────────┘
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                   数据模型层 (Data Model Layer)                  │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐            │
+│  │ 数据模型 │ │ 数据源   │ │ ML模型   │ │ 数据存储 │            │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘            │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-### 9 个核心 Agent
+### 9 大核心 Agent
 
-| # | Agent 名称 | 功能描述 |
-|---|-----------|--------|
-| 1 | **股权思维 Agent** | 评估企业盈利能力和长期增长潜力 |
-| 2 | **护城河 Agent** | 分析企业竞争优势（品牌、成本、网络效应等） |
-| 3 | **财务分析 Agent** | 评估财务指标（ROE、毛利率、现金流、负债率） |
-| 4 | **估值 Agent** | 计算内在价值（DCF、PE、PB综合估值） |
-| 5 | **安全边际 Agent** | 分析价格与价值的差异，确保投资安全 |
-| 6 | **买入点 Agent** | 识别买入时机（悲观、困难、误解） |
-| 7 | **卖出纪律 Agent** | 识别卖出信号（基本面、高估、机会） |
-| 8 | **风险管理 Agent** | 评估投资风险（能力圈、杠杆、行业、公司） |
-| 9 | **心理纪律 Agent** | 生成投资决策和行为纪律建议 |
+| # | Agent 名称 | 功能描述 | 输出 |
+|:-:|-----------|----------|------|
+| 1 | **股权思维 Agent** | 评估企业盈利能力和长期增长潜力 | 股权价值评分 |
+| 2 | **护城河 Agent** | 分析企业竞争优势（品牌、成本、网络效应） | 护城河评分 |
+| 3 | **财务分析 Agent** | 评估 ROE、毛利率、现金流、负债率 | 财务健康度 |
+| 4 | **估值 Agent** | DCF、PE、PB 综合估值计算 | 内在价值 |
+| 5 | **安全边际 Agent** | 分析价格与价值差异 | 安全边际% |
+| 6 | **买入点 Agent** | 识别买入时机（悲观、困难、误解） | 买入信号 |
+| 7 | **卖出纪律 Agent** | 识别卖出信号（基本面、高估） | 卖出信号 |
+| 8 | **风险管理 Agent** | 评估投资风险（能力圈、杠杆、行业） | 风险等级 |
+| 9 | **心理纪律 Agent** | 生成投资决策和仓位建议 | 最终决策 |
 
-## 项目结构
+---
 
-```
-VIMaster/
-├── src/
-│   ├── __init__.py
-│   ├── app.py                           # 应用层 - CLI接口
-│   ├── agents/
-│   │   ├── __init__.py
-│   │   ├── base_agent.py               # Agent基类
-│   │   └── value_investing_agents.py   # 9个具体Agent实现
-│   ├── models/
-│   │   ├── __init__.py
-│   │   └── data_models.py              # 数据模型定义
-│   ├── data/
-│   │   ├── __init__.py
-│   │   └── akshare_provider.py         # akshare数据提供者
-│   └── schedulers/
-│       ├── __init__.py
-│       └── workflow_scheduler.py       # 调度层 - 工作流引擎
-├── tests/
-│   ├── __init__.py
-│   ├── conftest.py                     # pytest配置和fixtures
-│   ├── unit/
-│   │   ├── __init__.py
-│   │   └── test_models_agents.py      # 单元测试
-│   └── integration/
-│       ├── __init__.py
-│       └── test_workflow.py            # 集成测试
-├── requirements.txt                    # 项目依赖
-├── pytest.ini                         # pytest配置
-├── run.py                             # 主程序入口
-└── README.md                          # 本文件
-```
-
-## 数据流程
-
-```
-┌──────────────────┐
-│  输入股票代码     │
-└────────┬─────────┘
-         ▼
-┌──────────────────────────────┐
-│  步骤1: 数据准备              │
-│  AkshareDataProvider获取数据  │
-└────────┬─────────────────────┘
-         ▼
-┌──────────────────────────────────────┐
-│  步骤2-3: 基础分析（可并行）          │
-│  - 股权思维Agent                     │
-│  - 护城河Agent                       │
-│  - 财务分析Agent                     │
-└────────┬───────────────────────────┘
-         ▼
-┌──────────────────────────────────┐
-│  步骤4-7: 估值与交易分析          │
-│  - 估值Agent                      │
-│  - 安全边际Agent                  │
-│  - 买入点Agent                    │
-│  - 卖出点Agent                    │
-└────────┬──────────────────────────┘
-         ▼
-┌──────────────────────────────────┐
-│  步骤8-9: 风险与决策             │
-│  - 风险管理Agent                 │
-│  - 心理纪律Agent                 │
-└────────┬──────────────────────────┘
-         ▼
-┌──────────────────────────────────┐
-│  最终化: 生成综合报告              │
-│  - 综合评分 (0-100)              │
-│  - 投资信号                       │
-│  - 分析摘要                       │
-└──────────────────────────────────┘
-```
-
-## 安装和运行
+## 🚀 快速开始
 
 ### 1. 环境准备
 
@@ -125,15 +118,42 @@ VIMaster/
 # Python 3.8+
 python --version
 
-# 创建虚拟环境（推荐）
+# 创建虚拟环境
 python -m venv .venv
-.venv\Scripts\activate  # Windows
 
-# 安装依赖
+# 激活虚拟环境
+# Windows
+.venv\Scripts\activate
+# Linux/Mac
+source .venv/bin/activate
+
+# 安装基础依赖
 pip install -r requirements.txt
 ```
 
-### 2. 使用方式
+### 2. 安装可选依赖
+
+```bash
+# 报告生成
+pip install reportlab openpyxl
+
+# 可视化
+pip install matplotlib
+
+# API 服务
+pip install flask flask-cors
+
+# WebSocket
+pip install websockets
+
+# 性能监控
+pip install psutil
+
+# 定时任务
+pip install schedule
+```
+
+### 3. 运行程序
 
 #### 交互模式（推荐）
 
@@ -141,13 +161,18 @@ pip install -r requirements.txt
 python run.py
 ```
 
-然后输入命令：
 ```
-analyze 600519                    # 分析单只股票（贵州茅台）
-portfolio 600519 000858           # 分析多只股票
-buy 600519 000858                 # 查找买入推荐
-help                              # 显示帮助
-exit                              # 退出
+价值投资分析系统 (交互模式)
+============================================================
+命令:
+  1. analyze <股票代码>     - 分析单只股票
+  2. portfolio <股票1> <股票2> ... - 分析股票组合
+  3. buy <股票1> <股票2> ... - 获取买入推荐
+  4. help              - 显示帮助
+  5. exit              - 退出程序
+============================================================
+
+请输入命令: analyze 600519
 ```
 
 #### 命令行模式
@@ -157,16 +182,13 @@ exit                              # 退出
 python run.py analyze 600519
 
 # 分析多只股票
-python run.py portfolio 600519 000858 000001
+python run.py portfolio 600519 000858 000651
 
 # 查找买入推荐
 python run.py buy 600519 000858
-
-# 显示帮助
-python run.py help
 ```
 
-### 3. 运行测试
+### 4. 运行测试
 
 ```bash
 # 运行全部测试
@@ -175,76 +197,29 @@ pytest
 # 运行单元测试
 pytest tests/unit -v
 
-# 运行集成测试
-pytest tests/integration -v
-
 # 查看测试覆盖率
 pytest --cov=src tests/
-
-# 运行特定测试
-pytest tests/unit/test_models_agents.py::TestDataModels::test_financial_metrics_creation -v
 ```
 
-## 投资信号说明
+---
 
-系统的投资建议包含5个级别：
+## 📊 功能详解
 
-| 信号 | 含义 | 推荐行动 |
-|------|------|---------|
-| 🟢🟢 **强烈买入** | 综合评分 ≥80，多项指标优秀 | 适量建仓，较高仓位 |
-| 🟢 **买入** | 综合评分 ≥70，安全边际充足 | 适量建仓，中等仓位 |
-| 🟡 **持有** | 综合评分 50-70，中等风险 | 观望，等待更好机会 |
-| 🔴 **卖出** | 综合评分 <50，或基本面恶化 | 分次卖出，降低风险 |
-| 🔴🔴 **强烈卖出** | 基本面严重恶化，严重高估 | 快速清仓，规避风险 |
+### 1. 股票分析
 
-## 关键数据模型
+```python
+from src.app import ValueInvestingApp
 
-### StockAnalysisContext（分析上下文）
+app = ValueInvestingApp()
 
-贯穿整个分析流程的核心数据结构，包含：
+# 分析单只股票
+app.analyze_single_stock("600519")
 
-- `financial_metrics` - 财务指标
-- `competitive_moat` - 竞争优势
-- `valuation` - 估值分析结果
-- `buy_signal` / `sell_signal` - 买卖信号
-- `risk_assessment` - 风险评估
-- `investment_decision` - 投资决策
-- `overall_score` - 综合评分 (0-100)
-- `final_signal` - 最终投资信号
+# 分析多只股票
+app.analyze_multiple_stocks(["600519", "000858", "000651"])
+```
 
-### AnalysisReport（分析报告）
-
-多股票分析的汇总报告，包含：
-
-- 总分析股票数
-- 各信号级别的股票统计
-- 详细的股票分析列表
-
-## 价值投资理论依据
-
-本系统基于 `topic.txt` 中的价值投资哲学，包括：
-
-1. **股权思维** - 将股票视为企业所有权
-2. **安全边际** - 仅在价格显著低于内在价值时买入
-3. **市场先生** - 利用市场错误报价
-4. **能力圈** - 坚守自己深刻理解的行业
-5. **护城河** - 寻找具有竞争优势的企业
-6. **基本面分析** - 注重企业财务状况
-7. **逆向思维** - 在市场极度悲观时买入
-8. **风险管理** - 规避无知、避免高价、拒绝杠杆
-9. **心理纪律** - 克服人性弱点，遵循投资纪律
-
-## 扩展性
-
-系统设计支持以下扩展：
-
-1. **新 Agent 增加** - 继承 BaseAgent，实现 analyze() 方法
-2. **新数据源** - 扩展 AkshareDataProvider
-3. **新估值模型** - 在 ValuationAgent 中增加模型
-4. **更复杂的工作流** - 配置 WorkflowScheduler 的执行策略
-5. **Web UI** - 在应用层添加 Flask/FastAPI 接口
-
-## 示例输出
+**输出示例:**
 
 ```
 ================================================================================
@@ -252,58 +227,441 @@ pytest tests/unit/test_models_agents.py::TestDataModels::test_financial_metrics_
 ================================================================================
 
 【财务指标】
-  当前价格:     1000.0
-  PE比率:       25.0
-  PB比率:       10.0
-  ROE:          0.2
-  毛利率:       0.6
+  当前价格:     1800.0
+  PE比率:       35.5
+  PB比率:       12.3
+  ROE:          0.32
+  毛利率:       0.92
 
 【竞争优势（护城河）】
   护城河强度:   9.0/10
-  品牌强度:     0.8/1.0
-  成本优势:     0.7/1.0
+  品牌强度:     0.95/1.0
+  成本优势:     0.70/1.0
 
 【估值分析】
-  内在价值:     1200.00
-  合理价格:     1200.00
-  安全边际:     20.00%
+  内在价值:     2200.00
+  合理价格:     2000.00
+  安全边际:     11.11%
 
 【投资决策】
-  最终建议:     buy
-  信念强度:     0.70
-  止损价:       900.00
-  止盈价:       1200.00
+  最终建议:     买入
+  建议仓位:     10.00%
+  止损价:       1620.00
+  止盈价:       2200.00
 
 【综合评估】
-  综合评分:     76.50/100
-  最终信号:     buy
+  综合评分:     78.50/100
+  最终信号:     买入
 ================================================================================
 ```
 
-## 常见问题
+### 2. 机器学习评分
 
-### Q: 系统的准确率是多少？
-A: 系统提供结构化的分析框架，结果仅供参考，投资决策需结合个人判断和风险承受能力。
+```python
+from src.ml import StockMLScorer
 
-### Q: 如何获取最新的股票数据？
-A: 系统使用 akshare 库，自动从实时数据源获取，需要网络连接。
+scorer = StockMLScorer()
 
-### Q: 系统支持哪些股票代码格式？
-A: 支持标准的 6 位数字代码（如：600519、000858）。
+# 评分
+result = scorer.score_stock("600519", {
+    "pe_ratio": 35.5,
+    "pb_ratio": 12.3,
+    "roe": 0.32,
+})
 
-### Q: 可以自定义分析指标吗？
-A: 可以，通过继承 BaseAgent 创建自定义 Agent，或修改现有 Agent 的逻辑。
+print(f"ML评分: {result['ml_score']}/10")
+```
 
-## 许可证
+### 3. 报告生成
 
-MIT License
+```python
+from src.app import ValueInvestingApp
 
-## 联系方式
+app = ValueInvestingApp()
 
-如有问题或建议，欢迎提交 Issue 或 Pull Request。
+# 生成 PDF 和 Excel 报告
+app.generate_stock_report("600519", output_dir="reports", formats=["pdf", "excel"])
+```
+
+### 4. 可视化图表
+
+```python
+from src.visualization import create_visualizer
+
+visualizer = create_visualizer()
+
+# 生成完整可视化报告
+app.visualize_stock("600519")
+```
+
+**支持的图表类型:**
+- 📊 评分雷达图
+- 📈 估值对比图
+- 💹 财务指标图
+- 🎯 信号仪表盘
+- 🥧 组合配置图
+- ⚠️ 风险分析图
+
+### 5. 实时行情
+
+```python
+from src.realtime import create_quote_service
+
+service = create_quote_service()
+service.start()
+
+def on_quote(quote):
+    print(f"{quote.stock_code}: {quote.price}")
+
+service.subscribe("my_sub", ["600519", "000858"], on_quote)
+```
+
+### 6. 定时任务
+
+```python
+from src.services import ScheduledReportService, ReportJobConfig
+
+service = ScheduledReportService()
+
+job = ReportJobConfig(
+    job_id="daily_report",
+    name="每日分析报告",
+    stock_codes=["600519", "000858"],
+    frequency="daily",
+    time_of_day="09:00",
+    send_email=True,
+    email_recipients=["investor@example.com"],
+)
+
+service.add_stock_report_job(job)
+service.start()
+```
+
+### 7. 数据存储
+
+```python
+from src.storage import AnalysisRepository
+
+repo = AnalysisRepository()
+
+# 查询历史分析
+history = repo.get_history("600519", limit=30)
+
+# 按信号筛选
+buy_stocks = repo.get_by_signal("买入")
+
+# 统计信息
+stats = repo.get_stats()
+```
+
+### 8. 社区分享
+
+```python
+from src.community import create_community_service
+
+community = create_community_service()
+
+# 注册用户
+user = community.register_user("investor1", "password", "价值投资者")
+
+# 分享分析
+share = community.share_analysis(
+    title="贵州茅台深度分析",
+    stock_codes=["600519"],
+    analysis_data={"score": 78.5, "signal": "买入"},
+    tags=["白酒", "价值投资"],
+)
+
+# 评论
+community.add_comment(share.share_id, "分析很专业！")
+```
 
 ---
 
-**项目状态**: ✅ 完成核心功能 | 🔄 持续改进中
+## 🌐 API 服务
 
-**最后更新**: 2026-01-20
+### 启动服务
+
+```bash
+pip install flask flask-cors
+python run_api.py --port 5000
+```
+
+### API 接口
+
+| 接口 | 方法 | 说明 |
+|------|------|------|
+| `/api/v1/health` | GET | 健康检查 |
+| `/api/v1/plans` | GET | 订阅计划 |
+| `/api/v1/keys` | POST | 创建密钥 |
+| `/api/v1/keys/info` | GET | 密钥信息 |
+| `/api/v1/analyze/{code}` | GET | 分析股票 |
+| `/api/v1/analyze/batch` | POST | 批量分析 |
+| `/api/v1/quote/{code}` | GET | 获取行情 |
+
+### 使用示例
+
+```bash
+# 创建 API 密钥
+curl -X POST http://localhost:5000/api/v1/keys \
+  -H "Content-Type: application/json" \
+  -d '{"user_id": "user1", "plan": "basic"}'
+
+# 分析股票
+curl http://localhost:5000/api/v1/analyze/600519 \
+  -H "X-API-Key: vk_your_api_key"
+```
+
+### 订阅计划
+
+| 计划 | 日配额 | 限流 | 月费 |
+|------|--------|------|------|
+| 免费版 | 100 | 10/分钟 | ¥0 |
+| 基础版 | 1,000 | 60/分钟 | ¥99 |
+| 专业版 | 10,000 | 300/分钟 | ¥299 |
+| 企业版 | 100,000 | 1,000/分钟 | ¥999 |
+
+---
+
+## 📁 项目结构
+
+```
+VIMaster/
+├── src/                              # 源代码
+│   ├── __init__.py
+│   ├── app.py                        # 应用层主入口
+│   │
+│   ├── agents/                       # Agent 模块
+│   │   ├── base_agent.py            # Agent 基类
+│   │   ├── value_investing_agents.py # 9 大 Agent 实现
+│   │   └── agent_config.py          # Agent 配置管理
+│   │
+│   ├── models/                       # 数据模型
+│   │   └── data_models.py           # 核心数据结构
+│   │
+│   ├── data/                         # 数据层
+│   │   └── akshare_provider.py      # AkShare 数据源
+│   │
+│   ├── schedulers/                   # 调度层
+│   │   ├── workflow_scheduler.py    # 工作流调度
+│   │   └── task_scheduler.py        # 定时任务
+│   │
+│   ├── ml/                           # 机器学习
+│   │   └── stock_scorer.py          # ML 评分模型
+│   │
+│   ├── reports/                      # 报告生成
+│   │   └── report_generator.py      # PDF/Excel 生成
+│   │
+│   ├── visualization/                # 可视化
+│   │   └── charts.py                # 图表生成
+│   │
+│   ├── realtime/                     # 实时行情
+│   │   └── quote_service.py         # 行情推送服务
+│   │
+│   ├── storage/                      # 数据存储
+│   │   └── database.py              # SQLite 存储
+│   │
+│   ├── community/                    # 社区功能
+│   │   └── community_service.py     # 分享/评论/点赞
+│   │
+│   ├── api/                          # API 服务
+│   │   └── api_service.py           # RESTful API
+│   │
+│   ├── notifications/                # 通知
+│   │   └── email_sender.py          # 邮件发送
+│   │
+│   ├── services/                     # 服务层
+│   │   └── scheduled_report_service.py
+│   │
+│   └── utils/                        # 工具
+│       ├── enhanced_logging.py      # 增强日志
+│       ├── performance_monitor.py   # 性能监控
+│       ├── retry_mechanism.py       # 重试机制
+│       └── advanced_retry.py        # 断路器/限流
+│
+├── tests/                            # 测试
+│   ├── unit/                        # 单元测试
+│   └── integration/                 # 集成测试
+│
+├── config/                           # 配置文件
+│   ├── agent_config.json            # Agent 配置
+│   ├── email_config.json            # 邮件配置
+│   └── report_template.json         # 报告模板
+│
+├── demo/                             # 演示脚本
+│   ├── demo_visualization.py
+│   ├── demo_community.py
+│   ├── demo_realtime_quote.py
+│   └── ...
+│
+├── docs/                             # 文档
+│   ├── API_SERVICE_GUIDE.md
+│   ├── VISUALIZATION_GUIDE.md
+│   ├── COMMUNITY_GUIDE.md
+│   └── ...
+│
+├── data/                             # 数据目录
+│   ├── api/                         # API 密钥
+│   ├── community/                   # 社区数据
+│   └── vimaster.db                  # SQLite 数据库
+│
+├── logs/                             # 日志目录
+├── charts/                           # 图表输出
+├── reports/                          # 报告输出
+│
+├── run.py                            # 主程序入口
+├── run_api.py                        # API 服务入口
+├── requirements.txt                  # 依赖列表
+├── pytest.ini                        # 测试配置
+└── README.md                         # 本文件
+```
+
+---
+
+## ⚙️ 配置说明
+
+### Agent 配置 (config/agent_config.json)
+
+```json
+{
+  "agents": {
+    "valuation_agent": {
+      "enabled": true,
+      "dcf_weight": 0.4,
+      "pe_weight": 0.3,
+      "pb_weight": 0.3
+    }
+  }
+}
+```
+
+### 邮件配置 (config/email_config.json)
+
+```json
+{
+  "smtp_server": "smtp.qq.com",
+  "smtp_port": 465,
+  "use_ssl": true,
+  "sender_email": "your@qq.com",
+  "sender_password": "授权码"
+}
+```
+
+### 环境变量
+
+| 变量 | 说明 | 默认值 |
+|------|------|--------|
+| `LOG_LEVEL` | 日志级别 | INFO |
+| `SHOW_SYSTEM_INFO` | 显示系统信息 | false |
+
+---
+
+## 🔧 扩展开发
+
+### 添加新 Agent
+
+```python
+from src.agents.base_agent import BaseAgent
+
+class MyCustomAgent(BaseAgent):
+    def __init__(self):
+        super().__init__("自定义Agent", "我的自定义分析")
+    
+    def analyze(self, context):
+        # 实现分析逻辑
+        return context
+```
+
+### 添加新数据源
+
+```python
+from src.data.akshare_provider import AkshareDataProvider
+
+class MyDataProvider(AkshareDataProvider):
+    @staticmethod
+    def get_custom_data(stock_code: str):
+        # 实现数据获取
+        pass
+```
+
+### 添加新图表
+
+```python
+from src.visualization import StockVisualizer
+
+class MyVisualizer(StockVisualizer):
+    def plot_custom_chart(self, data):
+        # 实现图表绘制
+        pass
+```
+
+---
+
+## ❓ 常见问题
+
+### Q: 系统支持哪些股票代码格式？
+
+A: 支持标准 6 位数字代码（如：600519、000858）。
+
+### Q: 如何获取实时数据？
+
+A: 系统使用 akshare 库自动获取，需要网络连接。
+
+### Q: 投资信号的含义？
+
+| 信号 | 含义 | 建议 |
+|------|------|------|
+| 🟢🟢 强烈买入 | 评分≥80 | 较高仓位 |
+| 🟢 买入 | 评分≥70 | 中等仓位 |
+| 🟡 持有 | 评分50-70 | 观望 |
+| 🔴 卖出 | 评分<50 | 分次卖出 |
+| 🔴🔴 强烈卖出 | 严重恶化 | 快速清仓 |
+
+### Q: 如何部署 API 服务？
+
+```bash
+# 开发环境
+python run_api.py --debug
+
+# 生产环境 (Gunicorn)
+pip install gunicorn
+gunicorn -w 4 -b 0.0.0.0:5000 "src.api:create_api_app()"
+```
+
+### Q: 数据存储在哪里？
+
+A: 分析结果存储在 `data/vimaster.db` (SQLite)。
+
+---
+
+## 📈 版本历史
+
+| 版本 | 日期 | 更新内容 |
+|------|------|----------|
+| v5.0 | 2026-01-27 | 商业化 API、可视化、社区分享 |
+| v4.0 | 2026-01-26 | 定时任务、报告生成、数据存储 |
+| v3.0 | 2026-01-25 | ML 评分、实时行情、性能监控 |
+| v2.0 | 2026-01-24 | 多数据源、API 重试、缓存 |
+| v1.0 | 2026-01-20 | 核心 Agent、基础分析 |
+
+---
+
+## 📄 许可证
+
+MIT License
+
+---
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+---
+
+<p align="center">
+  <b>⭐ 如果这个项目对你有帮助，请给一个 Star！ ⭐</b>
+</p>
+
+<p align="center">
+  <b>VIMaster v5.0 - 让价值投资更智能</b>
+</p>
