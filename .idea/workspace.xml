@@ -4,15 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 添加社区分享功能，支持用户注册、分享分析、评论和点赞">
-      <change afterPath="$PROJECT_DIR$/demo/demo_visualization.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/VISUALIZATION_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/visualization/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/visualization/charts.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_visualization.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 添加可视化分析功能，支持生成评分雷达图、估值对比图、财务指标图、信号仪表盘、组合配置图和风险分析图">
+      <change afterPath="$PROJECT_DIR$/docs/API_SERVICE_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run_api.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/api_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_api_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/features.txt" beforeDir="false" afterPath="$PROJECT_DIR$/features.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,7 +211,23 @@
       <option name="project" value="LOCAL" />
       <updated>1769481736963</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="feat: 添加可视化分析功能，支持生成评分雷达图、估值对比图、财务指标图、信号仪表盘、组合配置图和风险分析图">
+      <option name="closed" value="true" />
+      <created>1769482417687</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1769482417687</updated>
+    </task>
+    <task id="LOCAL-00014" summary="feat: 添加可视化分析功能，支持生成评分雷达图、估值对比图、财务指标图、信号仪表盘、组合配置图和风险分析图">
+      <option name="closed" value="true" />
+      <created>1769482554177</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1769482554177</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -251,7 +265,8 @@
     <MESSAGE value="feat: 添加实时行情推送模块，支持数据订阅、价格提醒和WebSocket推送" />
     <MESSAGE value="feat: 添加实时行情推送功能，支持数据订阅、价格提醒和WebSocket推送" />
     <MESSAGE value="feat: 添加社区分享功能，支持用户注册、分享分析、评论和点赞" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加社区分享功能，支持用户注册、分享分析、评论和点赞" />
+    <MESSAGE value="feat: 添加可视化分析功能，支持生成评分雷达图、估值对比图、财务指标图、信号仪表盘、组合配置图和风险分析图" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加可视化分析功能，支持生成评分雷达图、估值对比图、财务指标图、信号仪表盘、组合配置图和风险分析图" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
