@@ -10,6 +10,7 @@ from functools import lru_cache
 import time
 import logging
 import random
+from src.utils.retry_mechanism import retry, register_retry_config, RetryConfig
 
 logger = logging.getLogger(__name__)
 
