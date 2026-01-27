@@ -11,6 +11,7 @@ from src.agents.agent_config import AgentConfigManager, load_agent_config
 from src.reports import ReportManager, StockReportData, PortfolioReportData, ReportTemplate
 from src.storage import AnalysisRepository
 from src.community import create_community_service, CommunityService
+from src.visualization import create_visualizer, StockVisualizer, check_visualization_available
 import os
 import json
 from datetime import datetime
@@ -35,6 +36,7 @@ class ValueInvestingApp:
         self.manager = AnalysisManager()
         self.ml_scorer = StockMLScorer()
         self.report_manager = ReportManager()
+        self.visualizer = create_visualizer() if check_visualization_available() else None
         logger.info("价值投资分析应用已初始化")
 
     def analyze_single_stock(self, stock_code: str) -> None:
@@ -90,6 +92,41 @@ class ValueInvestingApp:
                 print()
         else:
             print("没有强烈买入推荐")
+
+    def visualize_stock(self, stock_code: str, output_dir: str = "charts") -> Dict[str, str]:
+        """
+        生成股票分析可视化图表
+
+        Args:
+            stock_code: 股票代码
+            output_dir: 输出目录
+
+        Returns:
+            生成的图表路径字典
+        """
+        if not self.visualizer:
+            print("⚠ 可视化功能不可用，请安装 matplotlib: pip install matplotlib")
+            return {}
+
+        logger.info(f"生成 {stock_code} 可视化图表...")
+
+        # 获取分析结果
+        context = self.manager.analyze_single_stock(stock_code)
+        if not context:
+            print(f"[!] 无法获取 {stock_code} 的分析数据")
+            return {}
+
+        # 生成图表
+        charts = self.visualizer.generate_analysis_report(context, output_dir=output_dir)
+
+        if charts:
+            print(f"\n✓ 已生成 {len(charts)} 张图表:")
+            for name, path in charts.items():
+                print(f"  {name}: {path}")
+        else:
+            print("未能生成图表")
+
+        return charts
 
     def generate_stock_report(self, stock_code: str, output_dir: str = "reports", formats: List[str] = None) -> Dict[str, bool]:
         """生成单只股票的分析报告"""

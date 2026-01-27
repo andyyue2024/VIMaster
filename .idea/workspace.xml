@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 添加实时行情推送功能，支持数据订阅、价格提醒和WebSocket推送">
-      <change afterPath="$PROJECT_DIR$/demo/demo_community.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/community/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/community/community_service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/unit/test_community.py" afterDir="false" />
+    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 添加社区分享功能，支持用户注册、分享分析、评论和点赞">
+      <change afterPath="$PROJECT_DIR$/demo/demo_visualization.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/VISUALIZATION_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/visualization/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/visualization/charts.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit/test_visualization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/features.txt" beforeDir="false" afterPath="$PROJECT_DIR$/features.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
     </list>
@@ -84,12 +86,13 @@
     "Python.conftest.executor": "Run",
     "Python.demo.executor": "Run",
     "Python.demo_analyze.executor": "Run",
+    "Python.demo_visualization.executor": "Run",
     "Python.run.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -202,7 +205,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769481403302</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="feat: 添加社区分享功能，支持用户注册、分享分析、评论和点赞">
+      <option name="closed" value="true" />
+      <created>1769481736963</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1769481736963</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -239,7 +250,8 @@
     <MESSAGE value="feat: 添加增强日志和性能监控模块，支持详细错误日志和性能报告" />
     <MESSAGE value="feat: 添加实时行情推送模块，支持数据订阅、价格提醒和WebSocket推送" />
     <MESSAGE value="feat: 添加实时行情推送功能，支持数据订阅、价格提醒和WebSocket推送" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加实时行情推送功能，支持数据订阅、价格提醒和WebSocket推送" />
+    <MESSAGE value="feat: 添加社区分享功能，支持用户注册、分享分析、评论和点赞" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 添加社区分享功能，支持用户注册、分享分析、评论和点赞" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
