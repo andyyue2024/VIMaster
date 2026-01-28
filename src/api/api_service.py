@@ -615,9 +615,10 @@ def create_api_app(debug: bool = False) -> Optional["Flask"]:
     def get_quote(stock_code: str):
         """获取股票行情"""
         try:
-            from src.data.akshare_provider import AkshareDataProvider
+            from src.data import MultiSourceDataProvider
 
-            metrics = AkshareDataProvider.get_financial_metrics(stock_code)
+            data_provider = MultiSourceDataProvider()
+            metrics = data_provider.get_financial_metrics(stock_code)
 
             if not metrics:
                 return jsonify({"error": f"无法获取 {stock_code} 行情"}), 404

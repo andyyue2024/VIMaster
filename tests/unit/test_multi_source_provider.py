@@ -389,17 +389,19 @@ class TestMultiSourceDataProvider:
         result = provider.get_industry_info("600519")
         assert result is None or isinstance(result, dict)
 
-    @patch('src.data.multi_source_provider.AkshareDataProvider.get_stock_info')
-    def test_fallback_to_akshare(self, mock_akshare):
-        """测试降级到 AkShare"""
-        expected_data = {"code": "600519", "current_price": 1800.5}
-        mock_akshare.return_value = expected_data
-
+    def test_fallback_to_mock(self):
+        """测试降级到 Mock 数据源"""
         provider = MultiSourceDataProvider()
-        provider.sources = []
 
+        # Mock 数据源应该始终可用
+        mock_provider = provider.get_mock_provider()
+        assert mock_provider is not None
+        assert mock_provider.is_available
+
+        # 对于 Mock 数据支持的股票，应该能获取到数据
         result = provider.get_stock_info("600519")
-        mock_akshare.assert_called_once()
+        assert result is not None
+        assert isinstance(result, dict)
 
     def test_source_priority_order(self):
         """测试源优先级"""

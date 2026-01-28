@@ -4,7 +4,7 @@
 import logging
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass, field
-from src.data import MultiSourceDataProvider, AkshareDataProvider
+from src.data import MultiSourceDataProvider
 from src.models.data_models import FinancialMetrics
 import statistics
 
@@ -105,9 +105,9 @@ class IndustryComparator:
         """
         初始化行业对比分析器
         Args:
-            data_provider: 数据提供者，如果为None则使用AkshareDataProvider
+            data_provider: 数据提供者，如果为None则创建新的 MultiSourceDataProvider
         """
-        self.data_provider = data_provider or AkshareDataProvider
+        self.data_provider = data_provider or MultiSourceDataProvider()
         self.industry_cache: Dict[str, IndustryMetrics] = {}
 
     def get_industry_stocks(self, industry: str) -> List[str]:
@@ -259,10 +259,7 @@ class IndustryComparator:
     def _get_financial_metrics(self, stock_code: str) -> Optional[FinancialMetrics]:
         """获取股票财务指标"""
         try:
-            if isinstance(self.data_provider, MultiSourceDataProvider):
-                return self.data_provider.get_financial_metrics(stock_code)
-            else:
-                return AkshareDataProvider.get_financial_metrics(stock_code)
+            return self.data_provider.get_financial_metrics(stock_code)
         except Exception as e:
             logger.warning(f"获取 {stock_code} 财务指标失败: {str(e)}")
             return None

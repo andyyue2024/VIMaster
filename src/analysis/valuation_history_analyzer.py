@@ -5,7 +5,7 @@ import logging
 from typing import List, Dict, Any, Optional, Tuple
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from src.data import MultiSourceDataProvider, AkshareDataProvider
+from src.data import MultiSourceDataProvider
 from src.models.data_models import FinancialMetrics
 import statistics
 
@@ -97,7 +97,7 @@ class ValuationAnalyzer:
         Args:
             data_provider: 数据提供者
         """
-        self.data_provider = data_provider or AkshareDataProvider
+        self.data_provider = data_provider or MultiSourceDataProvider()
         self.valuation_cache: Dict[str, ValuationTrend] = {}
 
     def analyze_valuation_history(
@@ -279,10 +279,7 @@ class ValuationAnalyzer:
     ) -> Optional[List[Tuple[datetime, float]]]:
         """获取历史价格数据"""
         try:
-            if isinstance(self.data_provider, MultiSourceDataProvider):
-                df = self.data_provider.get_historical_price(stock_code, days)
-            else:
-                df = AkshareDataProvider.get_historical_price(stock_code, days)
+            df = self.data_provider.get_historical_price(stock_code, days)
 
             if df is None or df.empty:
                 return None
@@ -305,10 +302,7 @@ class ValuationAnalyzer:
     def _get_financial_metrics(self, stock_code: str) -> Optional[FinancialMetrics]:
         """获取财务指标"""
         try:
-            if isinstance(self.data_provider, MultiSourceDataProvider):
-                return self.data_provider.get_financial_metrics(stock_code)
-            else:
-                return AkshareDataProvider.get_financial_metrics(stock_code)
+            return self.data_provider.get_financial_metrics(stock_code)
         except Exception as e:
             logger.warning(f"获取 {stock_code} 财务指标失败: {str(e)}")
             return None

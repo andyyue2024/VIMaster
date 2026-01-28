@@ -4,9 +4,19 @@
 import logging
 from src.agents.base_agent import BaseAgent
 from src.models.data_models import StockAnalysisContext
-from src.data.akshare_provider import AkshareDataProvider
+from src.data import MultiSourceDataProvider
 
 logger = logging.getLogger(__name__)
+
+# 共享的数据提供者实例
+_data_provider = None
+
+def get_data_provider() -> MultiSourceDataProvider:
+    """获取共享的数据提供者实例"""
+    global _data_provider
+    if _data_provider is None:
+        _data_provider = MultiSourceDataProvider()
+    return _data_provider
 
 
 class MoatAgent(BaseAgent):
@@ -58,7 +68,7 @@ class MoatAgent(BaseAgent):
                 moat.overall_score = 3.0
 
             # 根据行业特性判断网络效应和转换成本
-            industry_info = AkshareDataProvider.get_industry_info(context.stock_code)
+            industry_info = get_data_provider().get_industry_info(context.stock_code)
             if industry_info:
                 industry = industry_info.get('industry', '').lower()
                 if any(word in industry for word in ['互联网', '电商', '社交', '平台']):

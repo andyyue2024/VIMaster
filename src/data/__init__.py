@@ -9,14 +9,18 @@ from src.data.cache_config import CacheConfig, CacheConfigManager, get_cache_con
 from src.data.mock_provider import MockDataProvider, MOCK_STOCKS_DATA
 
 __all__ = [
+    # 数据提供者
     "AkshareDataProvider",
     "TuShareProvider",
     "BaoStockProvider",
     "MockDataProvider",
     "MOCK_STOCKS_DATA",
+    # 多源统一管理（推荐使用）
     "MultiSourceDataProvider",
+    # 基础类
     "BaseDataSource",
     "DataSourceType",
+    "DataValidator",
     # Cache layer
     "RealTimeCache",
     "CacheEntry",

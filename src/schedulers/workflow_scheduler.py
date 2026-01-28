@@ -16,7 +16,7 @@ from src.agents.value_investing_agents import (
     ValuationAgent, SafetyMarginAgent, BuySignalAgent,
     SellSignalAgent, RiskManagementAgent, BehavioralDisciplineAgent
 )
-from src.data.akshare_provider import AkshareDataProvider
+from src.data import MultiSourceDataProvider
 from src.utils import get_monitor, log_exception
 
 logger = logging.getLogger(__name__)
@@ -79,7 +79,8 @@ class WorkflowScheduler:
         # 步骤 1: 数据准备
         logger.info(f"步骤 1: 获取财务数据")
         try:
-            metrics = AkshareDataProvider.get_financial_metrics(stock_code)
+            data_provider = MultiSourceDataProvider()
+            metrics = data_provider.get_financial_metrics(stock_code)
             if not metrics:
                 logger.error(f"无法获取股票 {stock_code} 的财务数据")
                 return None

@@ -4,12 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 更新测试用例，增强数据源类型和模拟数据的验证">
-      <change afterPath="$PROJECT_DIR$/src/data/mock_provider.py" afterDir="false" />
+    <list default="true" id="7669f0bf-ce31-4493-9b49-ce8383cb42d9" name="Changes" comment="feat: 更新 akshare_provider 模块">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/features.txt" beforeDir="false" afterPath="$PROJECT_DIR$/features.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agents/moat_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/moat_agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/analysis/industry_comparator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/analysis/industry_comparator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/analysis/valuation_history_analyzer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/analysis/valuation_history_analyzer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/api_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/api_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/akshare_provider.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/akshare_provider.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/mock_provider.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/mock_provider.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data/multi_source_provider.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/multi_source_provider.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/schedulers/workflow_scheduler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/schedulers/workflow_scheduler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/unit/test_multi_source_provider.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/unit/test_multi_source_provider.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,6 +41,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="SOFT" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {}
@@ -76,32 +82,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python tests.Python tests in test_api_service.py.executor": "Run",
-    "Python tests.Python tests in test_desktop_app.py.executor": "Run",
-    "Python tests.Python tests in test_multi_source_provider.py.executor": "Run",
-    "Python.api_service.executor": "Run",
-    "Python.conftest.executor": "Run",
-    "Python.demo.executor": "Run",
-    "Python.demo_analyze.executor": "Run",
-    "Python.demo_visualization.executor": "Run",
-    "Python.quick_test.executor": "Run",
-    "Python.run.executor": "Run",
-    "Python.run_api.executor": "Run",
-    "Python.run_desktop.executor": "Run",
-    "Python.run_web.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "E:/Workplace-Pycharm/VIMaster/src/agents/experts",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python tests.Python tests in test_api_service.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test_desktop_app.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test_multi_source_provider.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python.api_service.executor&quot;: &quot;Run&quot;,
+    &quot;Python.conftest.executor&quot;: &quot;Run&quot;,
+    &quot;Python.demo.executor&quot;: &quot;Run&quot;,
+    &quot;Python.demo_analyze.executor&quot;: &quot;Run&quot;,
+    &quot;Python.demo_visualization.executor&quot;: &quot;Run&quot;,
+    &quot;Python.quick_test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run_api.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run_desktop.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run_web.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/Workplace-Pycharm/VIMaster/src/agents/experts&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\Workplace-Pycharm\VIMaster\src\agents\experts" />

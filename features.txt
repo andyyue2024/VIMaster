@@ -12,8 +12,16 @@ PC 客户端 o
 添加多个数据源（如 tushare、baostock） o
 实施API重试机制  o
 支持更多股票的预定义数据、添加更多模拟股票数据 o
-
 7.1.2
+重构src/data下的数据源模块
+支持多数据源自动切换管理，对外提供统一调度管理，确保如果有MOCK数据时，最差命中MOCK数据
+数据源优先级：akshare、tushare、baostock、MOCK
+实现实时数据缓存机制、添加本地缓存层
+丰富MOCK数据源，支持更多股票的预定义数据、添加更多模拟股票数据
+限定src目录下出去src/data外，将直接调用AkshareDataProvider获取数据的代码修改为调用MultiSourceDataProvider获取
+
+
+7.1.3
 机器学习模型集成、机器学习模型整合  o
 增加历史标签数据，使用 fit 训练权重（当前模型支持简单梯度下降）
 引入回归/分类模型（如 sklearn），并提供可选依赖
